@@ -81,6 +81,20 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+
+    --teal: #0F7B6C;
+    --teal-mid: #1A9E8A;
+    --teal-light: #E6F4F2;
+    --teal-pale: #F0FAF8;
+    --navy: #1E2D3D;
+    --navy-mid: #2E4057;
+    --navy-light: #3A5068;
+    --slate: #4A6278;
+    --slate-light: #A8BAC8;
+    --surface: #EEF5F7;
+    --card: #FFFFFF;
+    --border: #DDE8ED;
+    --border-strong: #C5D5DE;
 }
 
 .dark {
