@@ -12,6 +12,8 @@ export default function Dashboard() {
             <div className="flex flex-row gap-2"></div>
         </section>
 
+        <section></section>
+
         <section className="flex flex-row gap-4 p-4">
             <div className="flex flex-col gap-2">
                 <div className="bg-green-400 w-3 h-3 rounded-sm"></div>
@@ -20,13 +22,13 @@ export default function Dashboard() {
             </div>
 
             <div className="flex flex-col gap-2">
-                <div className="bg-gray-400 w-3 h-3 rounded-sm"></div>
+                <div className="bg-green-200 w-3 h-3 rounded-sm"></div>
                 <h2 className="text-2xl font-semibold">4</h2>
                 <h6 className="text-2xl">Completed Visits</h6>
             </div>
 
             <div className="flex flex-col gap-2">
-                <div className="bg-gray-400 w-3 h-3 rounded-sm"></div>
+                <div className="bg-green-200 w-3 h-3 rounded-sm"></div>
                 <h2 className="text-2xl font-semibold">3</h2>
                 <h6 className="text-2xl">Medical records</h6>
             </div>
