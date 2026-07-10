@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/auth-context'
 import { LayoutGrid, Calendar, Stethoscope, ClipboardList, User } from 'lucide-react'
 
@@ -23,9 +23,9 @@ export default function Sidebar() {
 
   return (
     <aside className="w-60 shrink-0 bg-navy flex flex-col min-h-screen">
-      <div className="px-5 py-6 border-b border-white/10">
+      <Link to="/" className="px-5 py-6 border-b border-white/10">
         <span className="font-display font-bold text-[19px] text-white">Book<span style={{color:'#5CD6C4'}}>Pro</span></span>
-      </div>
+      </Link>
       <div className="flex-1 px-3 py-4 flex flex-col">
         <p className="text-[10px] font-semibold text-white/30 uppercase tracking-widest px-2 pt-1 pb-2">Main</p>
         {navItems.map(item => (
