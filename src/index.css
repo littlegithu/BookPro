@@ -46,6 +46,26 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+
+    --color-teal:          #0F7B6C;
+    --color-teal-mid:      #1A9E8A;
+    --color-teal-light:    #E6F4F2;
+    --color-teal-pale:     #F0FAF8;
+    --color-navy:          #1E2D3D;
+    --color-navy-mid:      #2E4057;
+    --color-navy-light:    #3A5068;
+    --color-slate:         #4A6278;
+    --color-slate-light:   #A8BAC8;
+    --color-surface:       #EEF5F7;
+    --color-card:          #FFFFFF;
+    --color-border:        #DDE8ED;
+    --color-border-strong: #C5D5DE;
+    --color-success-bg:    #E6F4F0;
+    --color-success-text:  #0A6B5E;
+    --color-warning-bg:    #FEF6E4;
+    --color-warning-text:  #B07D1A;
+    --color-danger-bg:     #FDECEA;
+    --color-danger-text:   #C0392B;
 }
 
 :root {
@@ -82,21 +102,14 @@
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
 
-    --teal: #0F7B6C;
-    --teal-mid: #1A9E8A;
-    --teal-light: #E6F4F2;
-    --teal-pale: #F0FAF8;
-    --navy: #1E2D3D;
-    --navy-mid: #2E4057;
-    --navy-light: #3A5068;
-    --slate: #4A6278;
-    --slate-light: #A8BAC8;
-    --surface: #EEF5F7;
-    --card: #FFFFFF;
-    --border: #DDE8ED;
-    --border-strong: #C5D5DE;
-    --danger-bg: #FDECEA;
-    --danger-text: #C0392B;
+    --font-display: "Playfair Display", serif;
+    --font-sans:    "Inter", sans-serif;
+
+    --radius-sm:  6px;
+    --radius-md:  8px;
+    --radius-lg:  10px;
+    --radius-xl:  12px;
+    --radius-2xl: 16px;
 }
 
 .dark {
