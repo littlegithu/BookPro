@@ -1,11 +1,12 @@
 import AppointmentCard from './AppointmentCard'
+import { CalendarIcon } from 'lucide-react'
 import EmptyState from '../shared/EmptyState'
 
 export default function AppointmentList({ appointments = [], onCancel }) {
   if (appointments.length === 0) {
     return (
       <EmptyState
-        icon="📅"
+        icon={CalendarIcon}
         title="No upcoming appointments"
         description="Book a checkup with one of our verified doctors."
         actionLabel="Find a doctor"

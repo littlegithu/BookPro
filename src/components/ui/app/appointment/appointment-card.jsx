@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { CalendarIcon, StethoscopeIcon } from 'lucide-react'
 import StatusBadge from '../shared/StatusBadge'
 
 export default function AppointmentCard({ appointment, onCancel }) {
@@ -13,8 +13,8 @@ export default function AppointmentCard({ appointment, onCancel }) {
       <div className="flex-1 min-w-0">
         <p className="text-[13px] font-medium text-(--navy)">{doctorName}</p>
         <p className="text-[11px] text-(--slate-light) mt-0.5 flex gap-2.5">
-          <span>📅 {date} · {time}</span>
-          <span>🩺 {specialty}</span>
+          <span className="inline-flex items-center gap-1"><CalendarIcon className="size-3.5" />{date} · {time}</span>
+          <span className="inline-flex items-center gap-1"><StethoscopeIcon className="size-3.5" />{specialty}</span>
         </p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
