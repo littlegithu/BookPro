@@ -95,6 +95,8 @@
     --card: #FFFFFF;
     --border: #DDE8ED;
     --border-strong: #C5D5DE;
+    --danger-bg: #FDECEA;
+    --danger-text: #C0392B;
 }
 
 .dark {
