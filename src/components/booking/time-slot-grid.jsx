@@ -1,4 +1,4 @@
-import TimeSlot from './TimeSlot'
+import TimeSlot from './time-slot'
 
 export default function TimeSlotGrid({ slots = [], selected, onSelect }) {
   return (

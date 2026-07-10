@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/auth-context'
-import AuthForm from '../components/ui/app/auth/auth-form'
+import AuthForm from '../components/auth/auth-form'
 
 export default function RegisterPage() {
   const { login } = useAuth()

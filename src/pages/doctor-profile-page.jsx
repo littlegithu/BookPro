@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { Briefcase, MapPin, Clock, Check } from 'lucide-react'
 import Navbar from '../components/layout/navbar'
 import Breadcrumb from '../components/shared/breadcrumb'
-import SpecialtyBadge from '../components/shared/speciality-badge'
+import SpecialtyBadge from '../components/shared/specialty-badge'
 import BookingForm from '../components/booking/booking-form'
 
 const DOCTORS = {

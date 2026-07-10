@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
-import AppointmentList from '../components/ui/app/appointment/appointment-list'
-import PastVisitList from '../components/ui/app/appointment/past-visit-list'
+import AppointmentList from '../components/appointment/appointment-list'
+import PastVisitList from '../components/appointment/past-visit-list'
 
 const ALL = [
   { id: 1, doctorName: 'Dr. Jane Mwangi', specialty: 'General Practice', date: 'Mon 14 Jul', time: '10:00 AM', status: 'confirmed' },

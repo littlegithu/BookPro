@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
 import { Calendar, Stethoscope } from 'lucide-react'
-import StatusBadge from '../shared/StatusBadge'
+import StatusBadge from '../shared/status-badge'
 
 export default function AppointmentCard({ appointment, onCancel }) {
   const { id, doctorName, specialty, date, time, status } = appointment

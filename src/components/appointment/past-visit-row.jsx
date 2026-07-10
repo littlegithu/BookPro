@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { CalendarIcon, ArrowRightIcon } from 'lucide-react'
-import StatusBadge from '../shared/StatusBadge'
+import StatusBadge from '../shared/status-badge'
 
 export default function PastVisitRow({ appointment }) {
   const { id, doctorName, specialty, date, status } = appointment

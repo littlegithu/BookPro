@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import TimeSlotGrid from './TimeSlotGrid'
-import FeeBreakdown from './FeeBreakdown'
-import TrustIndicator from './TrustIndicator'
-import ErrorMessage from '../shared/ErrorMessage'
+import TimeSlotGrid from './time-slot-grid'
+import FeeBreakdown from './fee-breakdown'
+import TrustIndicator from './trust-indicator'
+import ErrorMessage from '../shared/error-message'
 
 const DEFAULT_SLOTS = [
   { time: '8:00 AM' }, { time: '8:30 AM' }, { time: '10:00 AM' },

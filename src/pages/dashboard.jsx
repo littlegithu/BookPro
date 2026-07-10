@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Calendar, CheckCircle, ClipboardList, Clock, Stethoscope } from 'lucide-react'
 import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
-import AppointmentList from '../components/ui/app/appointment/appointment-list'
-import PastVisitList from '../components/ui/app/appointment/past-visit-list'
+import AppointmentList from '../components/appointment/appointment-list'
+import PastVisitList from '../components/appointment/past-visit-list'
 import StatusBadge from '../components/shared/status-badge'
 
 const UPCOMING = [

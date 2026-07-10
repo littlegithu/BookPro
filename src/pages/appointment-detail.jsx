@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import StatusBadge from '../components/shared/status-badge'
-import MedicalRecordCard from '../components/ui/app/appointment/medical-record-card'
+import MedicalRecordCard from '../components/appointment/medical-record-card'
 import Breadcrumb from '../components/shared/breadcrumb'
 
 const APPOINTMENTS = {

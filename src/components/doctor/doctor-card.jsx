@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import SpecialtyBadge from '../shared/SpecialtyBadge'
+import SpecialtyBadge from '../shared/specialty-badge'
 
 export default function DoctorCard({ doctor }) {
   const { id, name, specialty, location, tags = [], availability } = doctor

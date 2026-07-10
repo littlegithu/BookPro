@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import DoctorCard from './DoctorCard'
-import SpecialtyFilter from './SpecialtyFilter'
+import DoctorCard from './doctor-card'
+import SpecialtyFilter from './specialty-filter'
 import EmptyState from '../shared/empty-state'
 import { Stethoscope } from 'lucide-react'
 
