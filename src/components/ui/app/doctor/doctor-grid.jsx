@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import DoctorCard from './DoctorCard'
 import SpecialtyFilter from './SpecialtyFilter'
-import EmptyState from '../shared/EmptyState'
+import EmptyState from '../shared/empty-state'
 import { Stethoscope } from 'lucide-react'
 
 export default function DoctorGrid({ doctors = [], specialties = [] }) {

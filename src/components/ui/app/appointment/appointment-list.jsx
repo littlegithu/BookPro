@@ -1,5 +1,5 @@
 import AppointmentCard from './AppointmentCard'
-import EmptyState from '../shared/EmptyState'
+import EmptyState from '../shared/empty-state'
 import { Calendar } from 'lucide-react'
 
 export default function AppointmentList({ appointments = [], onCancel }) {

@@ -1,6 +1,6 @@
 import PastVisitRow from './PastVisitRow'
 import { FilesIcon } from 'lucide-react'
-import EmptyState from '../shared/EmptyState'
+import EmptyState from '../shared/empty-state'
 
 export default function PastVisitList({ appointments = [] }) {
   if (appointments.length === 0) {
