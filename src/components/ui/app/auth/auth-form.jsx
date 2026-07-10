@@ -1,4 +1,4 @@
-import ErrorMessage from '../shared/ErrorMessage'
+import ErrorMessage from '../shared/error-message'
 
 export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmit, error, loading, footer }) {
   return (

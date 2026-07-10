@@ -1,5 +1,5 @@
-import Navbar from '../components/layout/Navbar'
-import DoctorGrid from '../components/doctor/DoctorGrid'
+import Navbar from '../components/ui/app/layout/navbar'
+import DoctorGrid from '../components/ui/app/doctor/doctor-grid'
 
 const DOCTORS = [
   { id: 1, name: 'Dr. Jane Mwangi', specialty: 'General Practice', location: 'Nairobi', tags: ['Family Medicine','Checkups'], availability: 'Available today' },
@@ -18,9 +18,9 @@ export default function BrowsePage() {
     <div className="bg-surface min-h-screen">
       <Navbar />
       <div className="max-w-7xl mx-auto px-15 py-10">
-        <p className="text-[11px] font-semibold text-(--teal) uppercase tracking-wider mb-2">Find a doctor</p>
-        <h1 className="font-display font-bold text-[36px] text-(--navy) mb-2">Browse by specialty</h1>
-        <p className="text-[15px] text-(--slate) mb-8 max-w-135">Every doctor on BookPro is verified and licensed. Filter by specialty to find the care you need.</p>
+        <p className="text-[11px] font-semibold text-teal uppercase tracking-wider mb-2">Find a doctor</p>
+        <h1 className="font-display font-bold text-[36px] text-navy mb-2">Browse by specialty</h1>
+        <p className="text-[15px] text-slate mb-8 max-w-135">Every doctor on BookPro is verified and licensed. Filter by specialty to find the care you need.</p>
         <DoctorGrid doctors={DOCTORS} specialties={SPECIALTIES} />
       </div>
     </div>

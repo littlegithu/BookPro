@@ -1,9 +1,9 @@
 import { useParams, Link } from 'react-router-dom'
-import DashboardLayout from '../components/layout/DashboardLayout'
-import Topbar from '../components/layout/Topbar'
-import StatusBadge from '../components/shared/StatusBadge'
-import MedicalRecordCard from '../components/appointment/MedicalRecordCard'
-import Breadcrumb from '../components/shared/Breadcrumb'
+import DashboardLayout from '../components/ui/app/layout/dashboard-layout'
+import Topbar from '../components/ui/app/layout/topbar'
+import StatusBadge from '../components/ui/app/shared/status-badge'
+import MedicalRecordCard from '../components/ui/app/appointment/medical-record-card'
+import Breadcrumb from '../components/ui/app/shared/breadcrumb'
 
 const APPOINTMENTS = {
   3: { id:3, doctorName:'Dr. Amara Patel', specialty:'Dermatology', date:'12 May 2025', time:'11:00 AM', status:'completed', reason:'Skin checkup', record:{ diagnosis:'Mild eczema', prescription:'Hydrocortisone cream 1%, apply twice daily', followUpDate:'12 August 2025' } },

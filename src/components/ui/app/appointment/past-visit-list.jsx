@@ -1,4 +1,4 @@
-import PastVisitRow from './PastVisitRow'
+import PastVisitRow from './past-visit-row'
 import { FilesIcon } from 'lucide-react'
 import EmptyState from '../shared/empty-state'
 

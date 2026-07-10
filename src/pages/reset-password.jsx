@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle } from 'lucide-react'
-import AuthForm from '../components/auth/AuthForm'
+import AuthForm from '../components/ui/app/auth/auth-form'
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('')

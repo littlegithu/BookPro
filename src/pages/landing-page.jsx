@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Calendar, Shield, ClipboardList, Timer, Play } from 'lucide-react'
-import Navbar from '../components/layout/Navbar'
-import DoctorGrid from '../components/doctor/DoctorGrid'
+import Navbar from '../components/ui/app/layout/navbar'
+import DoctorGrid from '../components/ui/app/doctor/doctor-grid'
 
 const DOCTORS = [
   { id: 1, name: 'Dr. Jane Mwangi',  specialty: 'General Practice', location: 'Nairobi', tags: ['Family Medicine','Checkups'], availability: 'Available today' },
@@ -27,7 +27,6 @@ export default function LandingPage() {
     <div className="bg-surface min-h-screen">
       <Navbar />
 
-      {/* Hero */}
       <div className="max-w-7xl mx-auto px-15 py-22 grid grid-cols-2 gap-18 items-center">
         <div>
           <span className="inline-flex items-center gap-1.5 bg-teal-light text-teal text-[11px] font-semibold px-3.5 py-1.5 rounded-full mb-5 uppercase tracking-wider">
@@ -54,7 +53,6 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Hero visual */}
         <div className="bg-card rounded-2xl border border-border p-6 flex flex-col gap-2.5 shadow-card">
           <p className="text-[10px] font-semibold text-slate-light uppercase tracking-widest mb-1">Your upcoming appointments</p>
           {[
@@ -77,14 +75,12 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Filter + Grid */}
       <div className="bg-card border-y border-border py-5 px-15">
         <div className="max-w-7xl mx-auto">
           <DoctorGrid doctors={DOCTORS} specialties={SPECIALTIES} />
         </div>
       </div>
 
-      {/* Features */}
       <div id="how-it-works" className="max-w-7xl mx-auto px-15 py-16">
         <p className="text-[11px] font-semibold text-teal uppercase tracking-wider mb-2">Why BookPro</p>
         <h2 className="font-display font-bold text-[32px] text-navy mb-10">Care that fits your life</h2>
@@ -99,7 +95,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* CTA strip */}
       <div className="bg-teal py-14 px-15">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-8">
           <div>
@@ -112,7 +107,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="bg-navy px-15 pt-14 pb-8">
         <div className="max-w-7xl mx-auto grid grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-10">
           <div>

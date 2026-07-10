@@ -1,4 +1,4 @@
-import AppointmentCard from './AppointmentCard'
+import AppointmentCard from './appointment-card'
 import EmptyState from '../shared/empty-state'
 import { Calendar } from 'lucide-react'
 
