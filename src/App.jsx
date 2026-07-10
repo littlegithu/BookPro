@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/auth-context'
-import ProtectedRoute from './components/ui/app/layout/protected-route'
+import ProtectedRoute from './components/layout/protected-route'
 
 import LandingPage from './pages/landing-page'
 import LoginPage from './pages/login-page'

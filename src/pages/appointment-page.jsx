@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import DashboardLayout from '../components/ui/app/layout/dashboard-layout'
-import Topbar from '../components/ui/app/layout/topbar'
+import DashboardLayout from '../components/layout/dashboard-layout'
+import Topbar from '../components/layout/topbar'
 import AppointmentList from '../components/ui/app/appointment/appointment-list'
 import PastVisitList from '../components/ui/app/appointment/past-visit-list'
 

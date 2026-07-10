@@ -1,9 +1,9 @@
 import { useParams, Link } from 'react-router-dom'
 import { Briefcase, MapPin, Clock, Check } from 'lucide-react'
-import Navbar from '../components/ui/app/layout/navbar'
-import Breadcrumb from '../components/ui/app/shared/breadcrumb'
-import SpecialtyBadge from '../components/ui/app/shared/speciality-badge'
-import BookingForm from '../components/ui/app/booking/booking-form'
+import Navbar from '../components/layout/navbar'
+import Breadcrumb from '../components/shared/breadcrumb'
+import SpecialtyBadge from '../components/shared/speciality-badge'
+import BookingForm from '../components/booking/booking-form'
 
 const DOCTORS = {
   1: {id:1, name:'Dr. Jane Mwangi', specialty:'General Practice', location:'Kenyatta National Hospital, Nairobi', experience:'12 years', hours:'Mon – Fri, 8am – 4pm', rating:4.9, reviews:142, tags:['General Practice','Family Medicine','Preventive Care','Checkups'], bio:'Dr. Jane Mwangi is a board-certified general practitioner with over 12 years of experience in family and preventive medicine. She completed her medical degree at the University of Nairobi and has since focused on making primary care accessible and patient-centred.', specialties:['Routine checkups','Chronic disease management','Vaccinations','Nutrition & wellness','Respiratory care','Preventive screening']},

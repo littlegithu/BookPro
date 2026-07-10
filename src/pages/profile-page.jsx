@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import DashboardLayout from '../components/ui/app/layout/dashboard-layout'
-import Topbar from '../components/ui/app/layout/topbar'
+import DashboardLayout from '../components/layout/dashboard-layout'
+import Topbar from '../components/layout/topbar'
 import { useAuth } from '../context/auth-context'
-import ErrorMessage from '../components/ui/app/shared/error-message'
+import ErrorMessage from '../components/shared/error-message'
 
 export default function ProfilePage() {
   const { user } = useAuth()

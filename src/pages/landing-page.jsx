@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Calendar, Shield, ClipboardList, Timer, Play } from 'lucide-react'
-import Navbar from '../components/ui/app/layout/navbar'
+import Navbar from '../components/layout/navbar'
 import DoctorGrid from '../components/ui/app/doctor/doctor-grid'
 
 const DOCTORS = [

@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Calendar, CheckCircle, ClipboardList, Clock, Stethoscope } from 'lucide-react'
-import DashboardLayout from '../components/ui/app/layout/dashboard-layout'
-import Topbar from '../components/ui/app/layout/topbar'
+import DashboardLayout from '../components/layout/dashboard-layout'
+import Topbar from '../components/layout/topbar'
 import AppointmentList from '../components/ui/app/appointment/appointment-list'
 import PastVisitList from '../components/ui/app/appointment/past-visit-list'
-import StatusBadge from '../components/ui/app/shared/status-badge'
+import StatusBadge from '../components/shared/status-badge'
 
 const UPCOMING = [
   { id: 1, doctorName: 'Dr. Jane Mwangi', specialty: 'General Practice', date: 'Mon 14 Jul', time: '10:00 AM', status: 'confirmed'},
