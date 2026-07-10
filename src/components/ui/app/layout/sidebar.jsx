@@ -22,7 +22,7 @@ export default function Sidebar() {
     }`
 
   return (
-    <aside className="w-60 flex-shrink-0 bg-navy flex flex-col min-h-screen">
+    <aside className="w-60 shrink-0 bg-navy flex flex-col min-h-screen">
       <div className="px-5 py-6 border-b border-white/10">
         <span className="font-display font-bold text-[19px] text-white">Book<span style={{color:'#5CD6C4'}}>Pro</span></span>
       </div>
@@ -44,7 +44,7 @@ export default function Sidebar() {
           <span>+</span> Book appointment
         </NavLink>
         <div className="mt-3 px-3 py-3 rounded-lg flex items-center gap-2.5" style={{background:'rgba(255,255,255,0.05)'}}>
-          <div className="w-8 h-8 rounded-full bg-teal flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-teal flex items-center justify-center text-white text-xs font-semibold shrink-0">
             {user?.name?.slice(0,2).toUpperCase() ?? 'U'}
           </div>
           <div>

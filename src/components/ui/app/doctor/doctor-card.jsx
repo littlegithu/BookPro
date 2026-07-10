@@ -7,7 +7,7 @@ export default function DoctorCard({ doctor }) {
 
   return (
     <div className="bg-card rounded-xl border border-border p-5 flex flex-col hover:border-teal hover:shadow-[0_4px_16px_rgba(15,123,108,0.10)] transition-all">
-      <div className="w-13 h-13 rounded-full bg-teal-light flex items-center justify-center text-teal font-semibold text-base mb-3.5 flex-shrink-0">
+      <div className="w-13 h-13 rounded-full bg-teal-light flex items-center justify-center text-teal font-semibold text-base mb-3.5 shrink-0">
         {initials}
       </div>
       <p className="text-[14px] font-semibold text-navy mb-0.5">{name}</p>

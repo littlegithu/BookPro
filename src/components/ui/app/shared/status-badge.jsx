@@ -8,7 +8,7 @@ const variants = {
 export default function StatusBadge({ status }) {
   const key = status?.toLowerCase()
   return (
-    <span className={`text-[11px] font-semibold px-[10px] py-[3px] rounded-full ${variants[key] ?? variants.completed}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.75 rounded-full ${variants[key] ?? variants.completed}`}>
       {status?.charAt(0).toUpperCase() + status?.slice(1)}
     </span>
   )

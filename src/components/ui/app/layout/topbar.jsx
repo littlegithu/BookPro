@@ -2,7 +2,7 @@ import { Search, Bell } from 'lucide-react'
 
 export default function Topbar({ title, subtitle }) {
   return (
-    <div className="h-16 bg-card border-b border-border flex items-center justify-between px-8 flex-shrink-0">
+    <div className="h-16 bg-card border-b border-border flex items-center justify-between px-8 shrink-0">
       <div>
         <h1 className="font-display font-bold text-[20px] text-navy leading-tight">{title}</h1>
         {subtitle && <p className="text-xs text-slate-light mt-0.5">{subtitle}</p>}
