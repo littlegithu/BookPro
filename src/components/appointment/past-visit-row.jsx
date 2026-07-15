@@ -13,7 +13,7 @@ export default function PastVisitRow({ appointment }) {
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-[13px] font-medium text-navy">{doctorName}</p>
-        <p className="text-[11px] text-(--slate-light) mt-0.5 inline-flex items-center gap-1"><CalendarIcon className="size-3.5" />{date} · {specialty}</p>
+        <p className="text-[11px] text-slate-light mt-1 inline-flex items-center gap-1"><CalendarIcon className="size-3 text-slate-light mr-1" />{date} · {specialty}</p>
       </div>
       <StatusBadge status={status} />
       <Link to={`/appointments/${id}`} className="text-[11px] font-medium text-teal hover:underline ml-2 inline-flex items-center gap-0.5">

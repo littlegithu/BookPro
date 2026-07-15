@@ -17,7 +17,7 @@ export default function Navbar() {
         {isAuthenticated ? (
           <>
             <Link to="/dashboard" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors">Dashboard</Link>
-            <button onClick={() => { logout(); navigate('/login') }} className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors">Logout</button>
+            <button onClick={() => { logout(); navigate('/login') }} className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors">Login</button>
           </>
         ) : (
           <>

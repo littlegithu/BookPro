@@ -57,7 +57,7 @@ export default function LandingPage() {
           <p className="text-[10px] font-semibold text-slate-light uppercase tracking-widest mb-1">Your upcoming appointments</p>
           {[
             { initials:'JM', name:'Dr. Jane Mwangi',  meta:'Mon 14 Jul · 10:00 AM · General Practice', badge:'Confirmed', badgeCls:'bg-success-bg text-success-text', active:true },
-            { initials:'KO', name:'Dr. Kevin Omondi', meta:'Wed 16 Jul · 2:00 PM · Pediatrics',          badge:'Pending',   badgeCls:'bg-warning-bg text-warning-text',  active:false },
+            { initials:'KO', name:'Dr. Kevin Omondi', meta:'Wed 16 Jul · 2:00 PM · Pediatrics', badge:'Pending', badgeCls:'bg-warning-bg text-warning-text', active:false },
           ].map(a => (
             <div key={a.name} className={`flex items-center gap-3 px-4 py-3.5 rounded-lg border border-border bg-surface ${a.active ? 'border-l-3 border-l-teal rounded-l-none' : ''}`}>
               <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold shrink-0">{a.initials}</div>
