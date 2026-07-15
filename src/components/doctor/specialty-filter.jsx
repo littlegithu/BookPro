@@ -1,6 +1,6 @@
 export default function SpecialtyFilter({ specialties, active, onChange }) {
   return (
-    <div className="flex items-center gap-2 flex-wrap mb-6">
+    <div className="flex items-center gap-2 flex-wrap mb-8">
       <span className="text-[12px] font-medium text-slate mr-1">Filter by:</span>
       {specialties.map(s => (
         <button
