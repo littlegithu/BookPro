@@ -17,7 +17,6 @@ export default function RegisterPage() {
     if (!name || !email || !password) { setError('Please fill in all fields.'); return }
     if (password !== confirm) { setError('Passwords do not match.'); return }
     setError(''); setLoading(true)
-    // Replace with: POST /api/register
     setTimeout(() => {
       login({ name, email }, 'mock-jwt-token')
       setLoading(false)

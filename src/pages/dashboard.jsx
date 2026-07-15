@@ -5,7 +5,6 @@ import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import AppointmentList from '../components/appointment/appointment-list'
 import PastVisitList from '../components/appointment/past-visit-list'
-import StatusBadge from '../components/shared/status-badge'
 
 const UPCOMING = [
   { id: 1, doctorName: 'Dr. Jane Mwangi', specialty: 'General Practice', date: 'Mon 14 Jul', time: '10:00 AM', status: 'confirmed'},

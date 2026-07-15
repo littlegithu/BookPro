@@ -13,7 +13,6 @@ export default function ResetPasswordPage() {
   const handleSubmit = () => {
     if (!email || !password) { setError('Please fill in all fields.'); return }
     setError(''); setLoading(true)
-    // Replace with: POST /api/reset-password
     setTimeout(() => { setLoading(false); setDone(true) }, 800)
   }
 
@@ -33,8 +32,8 @@ export default function ResetPasswordPage() {
       title="Reset password"
       subtitle="Enter your email and a new password"
       fields={[
-        { name:'email',    label:'Email address', type:'email',    placeholder:'you@email.com',    value:email,    onChange:setEmail },
-        { name:'password', label:'New password',  type:'password', placeholder:'Your new password',value:password, onChange:setPassword },
+        { name:'email', label:'Email address', type:'email', placeholder:'you@email.com', value:email, onChange:setEmail },
+        { name:'password', label:'New password', type:'password', placeholder:'Your new password',value:password, onChange:setPassword },
       ]}
       submitLabel="Reset password"
       onSubmit={handleSubmit}

@@ -6,7 +6,7 @@ import ErrorMessage from '../components/shared/error-message'
 
 export default function ProfilePage() {
   const { user } = useAuth()
-  const [name, setName]   = useState(user?.name ?? '')
+  const [name, setName] = useState(user?.name ?? '')
   const [email, setEmail] = useState(user?.email ?? '')
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
@@ -14,7 +14,6 @@ export default function ProfilePage() {
   const handleSave = () => {
     if (!name || !email) { setError('Name and email are required.'); return }
     setError('')
-    // Replace with: PUT /api/profile
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }

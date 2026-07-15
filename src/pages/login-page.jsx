@@ -9,15 +9,14 @@ export default function LoginPage() {
   const location = useLocation()
   const from = location.state?.from?.pathname ?? '/dashboard'
 
-  const [email, setEmail]       = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError]       = useState('')
-  const [loading, setLoading]   = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
     if (!email || !password) { setError('Please fill in all fields.'); return }
     setError(''); setLoading(true)
-    // Replace with: POST /api/login
     setTimeout(() => {
       login({ name: 'Iann', email }, 'mock-jwt-token')
       setLoading(false)
