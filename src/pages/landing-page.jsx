@@ -24,7 +24,7 @@ export default function LandingPage() {
           <h1 className="font-display font-bold text-[52px] text-navy leading-[1.12] mb-5">
             Book your <em className="italic text-teal">checkup</em><br />in minutes
           </h1>
-          <p className="text-[16px] text-slate leading-[1.75] mb-8 max-w-[480px]">
+          <p className="text-[16px] text-slate leading-[1.75] mb-8 max-w-120">
             Find verified doctors across our network of partner hospitals, pick a time that works for you, and walk in ready.
           </p>
           <div className="flex gap-3 items-center">
@@ -53,13 +53,13 @@ export default function LandingPage() {
             { initials: 'KO', name: 'Dr. Kevin Omondi', hospital: 'Aga Khan University Hospital', meta: 'Wed 16 Jul · 2:00 PM · Pediatrics', badge: 'Pending', badgeCls: 'bg-warning-bg text-warning-text', active: false },
           ].map(a => (
             <div key={a.name} className={`flex items-center gap-3 px-4 py-3.5 rounded-lg border border-border bg-surface ${a.active ? 'border-l-3 border-l-teal rounded-l-none' : ''}`}>
-              <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold flex-shrink-0">{a.initials}</div>
+              <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold shrink-0">{a.initials}</div>
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-medium text-navy">{a.name}</p>
                 <p className="text-[11px] text-slate-light mt-0.5">🏥 {a.hospital}</p>
                 <p className="text-[11px] text-slate-light flex items-center gap-1.5 mt-0.5"><Calendar size={11} /> {a.meta}</p>
               </div>
-              <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${a.badgeCls}`}>{a.badge}</span>
+              <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0 ${a.badgeCls}`}>{a.badge}</span>
             </div>
           ))}
           <div className="border-t border-border pt-3 flex items-center justify-between">
@@ -116,7 +116,7 @@ export default function LandingPage() {
             <h2 className="font-display font-bold text-[28px] text-white mb-1.5">Ready to take care of your health?</h2>
             <p className="text-[14px] text-white/70">Book with verified doctors across {HOSPITALS.length} partner hospitals.</p>
           </div>
-          <Link to="/register" className="flex-shrink-0 bg-white text-teal text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:bg-teal-light transition-colors">
+          <Link to="/register" className="shrink-0 bg-white text-teal text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:bg-teal-light transition-colors">
             Create a free account
           </Link>
         </div>
@@ -127,7 +127,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-10">
           <div>
             <p className="font-display font-bold text-[18px] text-white">Book<span style={{ color: '#5CD6C4' }}>Pro</span></p>
-            <p className="text-[13px] mt-3 max-w-[220px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.42)' }}>
+            <p className="text-[13px] mt-3 max-w-55 leading-[1.75]" style={{ color: 'rgba(255,255,255,0.42)' }}>
               Clinical checkups made simple across our network of partner hospitals.
             </p>
           </div>
