@@ -51,6 +51,7 @@ export default function LandingPage() {
           {[
             { initials: 'JM', name: 'Dr. Jane Mwangi',  hospital: 'Kenyatta National Hospital', meta: 'Mon 14 Jul · 10:00 AM · General Practice', badge: 'Confirmed', badgeCls: 'bg-success-bg text-success-text', active: true },
             { initials: 'KO', name: 'Dr. Kevin Omondi', hospital: 'Aga Khan University Hospital', meta: 'Wed 16 Jul · 2:00 PM · Pediatrics', badge: 'Pending', badgeCls: 'bg-warning-bg text-warning-text', active: false },
+            { initials: 'BM', name: 'Dr. Brian Mutua', hospital: 'MP Shah Hospital', meta: 'Fri 18 Jul · 12:00 PM · Dental Care', badge: 'Pending', badgeCls: 'bg-warning-bg text-warning-text', active: false }
           ].map(a => (
             <div key={a.name} className={`flex items-center gap-3 px-4 py-3.5 rounded-lg border border-border bg-surface ${a.active ? 'border-l-3 border-l-teal rounded-l-none' : ''}`}>
               <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold shrink-0">{a.initials}</div>
@@ -73,12 +74,11 @@ export default function LandingPage() {
       <div className="bg-navy/5 border-y border-border py-5 px-15">
         <div className="max-w-7xl mx-auto">
           <p className="text-[11px] font-semibold text-slate-light uppercase tracking-wider mb-3">Our partner hospitals</p>
-          <div className="flex gap-4 flex-wrap">
+          <div className="flex w-full gap-4">
             {HOSPITALS.map(h => (
-              <div key={h.id} className="flex items-center gap-2.5 bg-card border border-border rounded-lg px-4 py-2.5">
-                <span className="text-lg"><Hospital size={16} /></span>
-                <div>
-                  <p className="text-[13px] font-medium text-navy">{h.name}</p>
+              <div key={h.id} className="flex items-center justify-between gap-2.5 border border-border rounded-lg px-4 py-2.5">
+                <div className="flex flex-col items-center">
+                  <p className="text-[16px] font-medium text-navy">{h.name}</p>
                   <p className="text-[11px] text-slate-light">{h.location}</p>
                 </div>
               </div>

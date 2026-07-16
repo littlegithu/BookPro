@@ -1,6 +1,6 @@
 export default function HospitalFilter({ hospitals, active, onChange }) {
   return (
-    <div className="flex items-center gap-2 flex-wrap mb-3">
+    <div className="flex items-center gap-2 flex-wrap mb-3.5">
       <span className="text-[12px] font-medium text-slate mr-1">Hospital:</span>
       <button
         onClick={() => onChange(null)}
