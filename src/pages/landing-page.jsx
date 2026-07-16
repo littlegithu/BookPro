@@ -2,19 +2,7 @@ import { Link } from 'react-router-dom'
 import { Calendar, Shield, ClipboardList, Timer, Play } from 'lucide-react'
 import Navbar from '../components/layout/navbar'
 import DoctorGrid from '../components/doctor/doctor-grid'
-
-const DOCTORS = [
-  { id: 1, name: 'Dr. Jane Mwangi',  specialty: 'General Practice', location: 'Nairobi', tags: ['Family Medicine','Checkups'], availability: 'Available today' },
-  { id: 2, name: 'Dr. Kevin Omondi', specialty: 'Pediatrics', location: 'Nairobi', tags: ['Child Health','Vaccines'], availability: 'Available Wed' },
-  { id: 3, name: 'Dr. Amara Patel',  specialty: 'Dermatology', location: 'Nairobi', tags: ['Skin Care','Acne'], availability: 'Available Fri' },
-  { id: 4, name: 'Dr. Rita Lee', specialty: 'Cardiology', location: 'Nairobi', tags: ['Heart Health','ECG'], availability: 'Available Thu' },
-  { id: 5, name: 'Dr. Brian Mutua', specialty: 'Dentistry', location: 'Nairobi', tags: ['Dental Care','Orthodontics'],  availability: 'Available Mon' },
-  { id: 6, name: 'Dr. Sarah Wanjiku',specialty: 'General Practice',  location: 'Nairobi', tags: ['Checkups','Nutrition'], availability: 'Available Tue' },
-  { id: 7, name: 'Dr. David Otieno', specialty: 'Pediatrics', location: 'Nairobi', tags: ['Child Health','Growth'], availability: 'Available Wed' },
-  { id: 8, name: 'Dr. Nancy Kamau', specialty: 'Dermatology', location: 'Nairobi', tags: ['Skin Care','Allergies'], availability: 'Available Fri' },
-]
-
-const SPECIALTIES = ['General Practice','Pediatrics','Dentistry','Dermatology','Cardiology']
+import { DOCTORS, SPECIALTIES, HOSPITALS } from '../data/mock-data'
 
 const FEATURES = [
   { icon: <Timer size={22} />, title: 'Book in under 2 minutes', desc: 'Pick a doctor, choose a slot, confirm. No phone calls, no waiting on hold.' },
