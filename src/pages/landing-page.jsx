@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Calendar, Shield, ClipboardList, Timer, Play, Hospital } from 'lucide-react'
+import { Calendar, Shield, ClipboardList, Timer, Play, Hospital, MapPin } from 'lucide-react'
 import Navbar from '../components/layout/navbar'
 import DoctorGrid from '../components/doctor/doctor-grid'
 import { DOCTORS, SPECIALTIES, HOSPITALS } from '../data/mock-data'
@@ -63,7 +63,7 @@ export default function LandingPage() {
               <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0 ${a.badgeCls}`}>{a.badge}</span>
             </div>
           ))}
-          <div className="border-t border-border pt-3 flex items-center justify-between">
+          <div className="border-t border-border pt-3 mt-1.5 flex items-center justify-between">
             <p className="text-[11px] text-slate-light">Last visit: Dr. Patel · Aga Khan · 12 May 2025</p>
             <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-surface text-slate border border-border">Completed</span>
           </div>
@@ -71,15 +71,15 @@ export default function LandingPage() {
       </div>
 
       {/* Hospital strip */}
-      <div className="bg-navy/5 border-y border-border py-5 px-15">
+      <div className="max-w-7xl mx-auto border-t border-border py-10 px-10">
         <div className="max-w-7xl mx-auto">
-          <p className="text-[11px] font-semibold text-slate-light uppercase tracking-wider mb-3">Our partner hospitals</p>
+          <p className="text-[11px] font-semibold text-slate-light uppercase tracking-wider mb-3.5 px-10">Our partnered hospitals</p>
           <div className="flex w-full gap-4">
             {HOSPITALS.map(h => (
-              <div key={h.id} className="flex items-center justify-between gap-2.5 border border-border rounded-lg px-4 py-2.5">
-                <div className="flex flex-col items-center">
-                  <p className="text-[16px] font-medium text-navy">{h.name}</p>
-                  <p className="text-[11px] text-slate-light">{h.location}</p>
+              <div key={h.id} className="flex max-w-7xl mx-auto items-center justify-between gap-3 px-8 py-2.5">
+                <div className="flex flex-col items-start gap-1.5">
+                  <p className="text-[24px] font-medium text-navy flex flex-row items-center gap-1.5"><span><Hospital size={16} /></span>{h.name}</p>
+                  <p className="text-[11px] text-slate-light flex flex-row items-center gap-1.5"><span><MapPin size={16} /></span>{h.location}</p>
                 </div>
               </div>
             ))}
@@ -88,7 +88,7 @@ export default function LandingPage() {
       </div>
 
       {/* Doctor grid */}
-      <div className="bg-card border-b border-border py-5 px-15">
+      <div className="bg-card border-b border-border py-10 px-15">
         <div className="max-w-7xl mx-auto">
           <DoctorGrid doctors={DOCTORS} specialties={SPECIALTIES} hospitals={HOSPITALS} />
         </div>
