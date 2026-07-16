@@ -5,10 +5,25 @@ import Breadcrumb from '../components/shared/breadcrumb'
 import SpecialtyBadge from '../components/shared/specialty-badge'
 import BookingForm from '../components/booking/booking-form'
 
-const DOCTORS = {
-  1: {id:1, name:'Dr. Jane Mwangi', specialty:'General Practice', location:'Kenyatta National Hospital, Nairobi', experience:'12 years', hours:'Mon – Fri, 8am – 4pm', rating:4.9, reviews:142, tags:['General Practice','Family Medicine','Preventive Care','Checkups'], bio:'Dr. Jane Mwangi is a board-certified general practitioner with over 12 years of experience in family and preventive medicine. She completed her medical degree at the University of Nairobi and has since focused on making primary care accessible and patient-centred.', specialties:['Routine checkups','Chronic disease management','Vaccinations','Nutrition & wellness','Respiratory care','Preventive screening']},
-  2: {id:2, name:'Dr. Kevin Omondi', specialty:'Pediatrics', location:'Aga Khan Hospital, Nairobi', experience:'8 years',  hours:'Mon – Sat, 9am – 5pm', rating:4.8, reviews:98,  tags:['Pediatrics','Child Health','Vaccines'], bio:'Dr. Kevin Omondi is a dedicated pediatrician passionate about child health and development.', specialties:['Child checkups','Vaccinations','Growth monitoring','Nutrition'] },
-}
+const HOSPITALS = [
+  { id: 1, name: 'Kenyatta National Hospital',      location: 'Nairobi CBD',        phone: '+254 20 272 6300' },
+  { id: 2, name: 'Aga Khan University Hospital',    location: 'Parklands, Nairobi', phone: '+254 20 366 2000' },
+  { id: 3, name: 'MP Shah Hospital',                location: 'Parklands, Nairobi', phone: '+254 20 428 1000' },
+]
+
+const DOCTORS = [
+  { id: 1, name: 'Dr. Jane Mwangi',   specialty: 'General Practice', experience: '12 years', hours: 'Mon–Fri, 8am–4pm', rating: 4.9, reviews: 142, tags: ['Family Medicine','Checkups'],   availability: 'Available today', hospital: HOSPITALS[0], bio: 'Board-certified GP with 12 years experience in family and preventive medicine. She completed her degree at the University of Nairobi and focuses on making primary care accessible.', specialties: ['Routine checkups','Chronic disease management','Vaccinations','Nutrition & wellness','Respiratory care','Preventive screening'] },
+  { id: 2, name: 'Dr. Kevin Omondi',  specialty: 'Pediatrics',       experience: '8 years',  hours: 'Mon–Sat, 9am–5pm', rating: 4.8, reviews: 98,  tags: ['Child Health','Vaccines'],     availability: 'Available Wed',   hospital: HOSPITALS[1], bio: 'Dedicated pediatrician passionate about child health and development.', specialties: ['Child checkups','Vaccinations','Growth monitoring','Child nutrition'] },
+  { id: 3, name: 'Dr. Amara Patel',   specialty: 'Dermatology',      experience: '10 years', hours: 'Tue–Sat, 10am–6pm',rating: 4.7, reviews: 76,  tags: ['Skin Care','Acne'],           availability: 'Available Fri',   hospital: HOSPITALS[1], bio: 'Specialist in skin conditions and aesthetic dermatology.', specialties: ['Acne treatment','Eczema','Skin cancer screening','Aesthetic dermatology'] },
+  { id: 4, name: 'Dr. Rita Lee',      specialty: 'Cardiology',       experience: '15 years', hours: 'Mon–Fri, 8am–3pm', rating: 4.9, reviews: 201, tags: ['Heart Health','ECG'],          availability: 'Available Thu',   hospital: HOSPITALS[0], bio: 'Cardiologist focused on preventive heart health and chronic disease management.', specialties: ['ECG','Heart failure management','Hypertension','Preventive cardiology'] },
+  { id: 5, name: 'Dr. Brian Mutua',   specialty: 'Dentistry',        experience: '7 years',  hours: 'Mon–Fri, 9am–5pm', rating: 4.6, reviews: 54,  tags: ['Dental Care','Orthodontics'], availability: 'Available Mon',   hospital: HOSPITALS[2], bio: 'General dentist with expertise in restorative and preventive dental care.', specialties: ['Dental checkups','Fillings','Orthodontics','Teeth whitening'] },
+  { id: 6, name: 'Dr. Sarah Wanjiku', specialty: 'General Practice', experience: '9 years',  hours: 'Mon–Fri, 8am–4pm', rating: 4.8, reviews: 113, tags: ['Checkups','Nutrition'],       availability: 'Available Tue',   hospital: HOSPITALS[2], bio: 'Family medicine practitioner with a focus on nutrition and wellness.', specialties: ['Wellness checkups','Nutrition counselling','Chronic disease management','Preventive care'] },
+  { id: 7, name: 'Dr. David Otieno',  specialty: 'Pediatrics',       experience: '6 years',  hours: 'Mon–Sat, 8am–5pm', rating: 4.7, reviews: 67,  tags: ['Child Health','Growth'],      availability: 'Available Wed',   hospital: HOSPITALS[0], bio: 'Pediatrician specialising in growth monitoring and child nutrition.', specialties: ['Growth monitoring','Child nutrition','Vaccinations','Developmental assessment'] },
+  { id: 8, name: 'Dr. Nancy Kamau',   specialty: 'Dermatology',      experience: '11 years', hours: 'Tue–Fri, 9am–4pm', rating: 4.8, reviews: 89,  tags: ['Skin Care','Allergies'],     availability: 'Available Fri',   hospital: HOSPITALS[2], bio: 'Dermatologist with expertise in skin allergies and chronic skin conditions.', specialties: ['Allergies','Eczema','Psoriasis','Skin checkups'] },
+]
+
+const SPECIALTIES = ['General Practice','Pediatrics','Dentistry','Dermatology','Cardiology']
+
 
 export default function DoctorProfilePage() {
   const { id } = useParams()
