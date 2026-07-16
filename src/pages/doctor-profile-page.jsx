@@ -78,11 +78,11 @@ export default function DoctorProfilePage() {
               <div className="bg-card rounded-xl border border-border p-7">
                 <h2 className="font-display font-semibold text-[18px] text-navy mb-4">Hospital</h2>
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-navy/8 flex items-center justify-center text-2xl shrink-0"><Hospital size={40} /></div>
+                  <div className="w-16 h-16 rounded-lg bg-navy/8 flex items-center justify-center text-2xl shrink-0"><Hospital size={30} /></div>
                   <div>
                     <p className="text-[15px] font-semibold text-navy mb-1">{hospital.name}</p>
-                    <p className="text-[13px] text-slate-light mb-0.5"><MapPin size={16} /> {hospital.location}</p>
-                    <p className="text-[13px] text-slate-light"><Phone size={16} /> {hospital.phone}</p>
+                    <p className="text-[13px] text-slate-light mb-0.5 flex flex-row gap-1.5"><MapPin size={16} /> {hospital.location}</p>
+                    <p className="text-[13px] text-slate-light flex flex-row gap-1.5"><Phone size={16} /> {hospital.phone}</p>
                   </div>
                 </div>
               </div>
