@@ -1,10 +1,10 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Briefcase, MapPin, Clock, Check, Stethoscope, Hospital, Phone } from 'lucide-react'
 import Navbar from '../components/layout/navbar'
 import Breadcrumb from '../components/shared/breadcrumb'
 import SpecialtyBadge from '../components/shared/specialty-badge'
 import BookingForm from '../components/booking/booking-form'
-import { DOCTORS, SPECIALTIES, HOSPITALS } from '../data/mock-data'
+import { DOCTORS } from '../data/mock-data'
 
 export default function DoctorProfilePage() {
   const { id } = useParams()
