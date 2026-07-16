@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Calendar, Shield, ClipboardList, Timer, Play } from 'lucide-react'
+import { Calendar, Shield, ClipboardList, Timer, Play, Hospital } from 'lucide-react'
 import Navbar from '../components/layout/navbar'
 import DoctorGrid from '../components/doctor/doctor-grid'
 import { DOCTORS, SPECIALTIES, HOSPITALS } from '../data/mock-data'
@@ -56,7 +56,7 @@ export default function LandingPage() {
               <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold shrink-0">{a.initials}</div>
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-medium text-navy">{a.name}</p>
-                <p className="text-[11px] text-slate-light mt-0.5">🏥 {a.hospital}</p>
+                <p className="text-[11px] text-slate-light mt-0.5"><Hospital size={40} /> {a.hospital}</p>
                 <p className="text-[11px] text-slate-light flex items-center gap-1.5 mt-0.5"><Calendar size={11} /> {a.meta}</p>
               </div>
               <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0 ${a.badgeCls}`}>{a.badge}</span>
@@ -76,7 +76,7 @@ export default function LandingPage() {
           <div className="flex gap-4 flex-wrap">
             {HOSPITALS.map(h => (
               <div key={h.id} className="flex items-center gap-2.5 bg-card border border-border rounded-lg px-4 py-2.5">
-                <span className="text-lg">🏥</span>
+                <span className="text-lg"><Hospital size={40} /></span>
                 <div>
                   <p className="text-[13px] font-medium text-navy">{h.name}</p>
                   <p className="text-[11px] text-slate-light">{h.location}</p>
