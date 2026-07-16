@@ -31,17 +31,17 @@ export default function DashboardPage() {
           {/* Stats row */}
           <div className="grid grid-cols-3 gap-3.5">
             <div className="bg-teal rounded-lg border border-teal p-5">
-              <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center mb-3.5"><Calendar size={20} /></div>
+              <div className="w-9 h-9 rounded-lg text-navy bg-white/15 flex items-center justify-center mb-3.5"><Calendar size={20} /></div>
               <p className="font-display font-bold text-[28px] text-white">{upcoming.length}</p>
               <p className="text-[12px] text-white/62 mt-0.5">Upcoming appointments</p>
             </div>
             <div className="bg-card rounded-lg border border-border p-5">
-              <div className="w-8 h-8 rounded-lg bg-teal-light flex items-center justify-center mb-3.5"><CheckCircle size={20} /></div>
+              <div className="w-9 h-9 rounded-lg text-slate bg-teal-light flex items-center justify-center mb-3.5"><CheckCircle size={20} /></div>
               <p className="font-display font-bold text-[28px] text-navy">4</p>
               <p className="text-[12px] text-slate-light mt-0.5">Completed visits</p>
             </div>
             <div className="bg-card rounded-lg border border-border p-5">
-              <div className="w-8 h-8 rounded-lg bg-teal-light flex items-center justify-center mb-3.5"><ClipboardList size={20} /></div>
+              <div className="w-9 h-9 rounded-lg text-slate bg-teal-light flex items-center justify-center mb-3.5"><ClipboardList size={20} /></div>
               <p className="font-display font-bold text-[28px] text-navy">3</p>
               <p className="text-[12px] text-slate-light mt-0.5">Medical records</p>
             </div>
