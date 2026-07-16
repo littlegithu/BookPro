@@ -12,7 +12,14 @@ export default function DoctorCard({ doctor }) {
       </div>
       <div className="gap-0 flex flex-col items-start justify-center">
         <p className="text-[14px] font-semibold text-navy mb-0.5">{name}</p>
-        <p className="text-[12px] text-slate-light mb-2.5">{specialty} · {location}</p>
+        <p className="text-[12px] text-slate-light mb-2.5">{specialty}</p>
+      </div>
+      <div>
+        {hospital && (
+          <p className="text-[11px] text-navy/60 bg-surface border border-border rounded-md px-2 py-0.5 mb-2.5 w-fit">
+            🏥 {hospital.name}
+          </p>
+        )}
       </div>
       <div className="flex flex-wrap gap-1.5 mb-3.5">
         {tags.map(tag => <SpecialtyBadge key={tag} label={tag} />)}
