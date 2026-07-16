@@ -37,8 +37,8 @@ export default function DoctorProfilePage() {
 
                   {/* Hospital info */}
                   {hospital && (
-                    <div className="flex items-center gap-1.5 text-[13px] text-navy/70 bg-surface border border-border rounded-lg px-3 py-1.5 w-fit mb-3">
-                      <span className="font-medium"><Stethoscope size={16} />{hospital.name}</span>
+                    <div className="flex flex-row items-center gap-2 text-[13px] text-navy/70 bg-surface border border-border rounded-lg px-3 py-1.5 w-fit mb-3">
+                      <span className="font-medium flex flex-row items-center gap-2"><Stethoscope size={16} className="text-slate-light" />{hospital.name}</span>
                       <span className="text-slate-light">· {hospital.location}</span>
                     </div>
                   )}
@@ -81,8 +81,8 @@ export default function DoctorProfilePage() {
                   <div className="w-16 h-16 rounded-lg bg-navy/8 flex items-center justify-center text-2xl shrink-0"><Hospital size={30} /></div>
                   <div>
                     <p className="text-[15px] font-semibold text-navy mb-1">{hospital.name}</p>
-                    <p className="text-[13px] text-slate-light mb-0.5 flex flex-row gap-1.5"><MapPin size={16} /> {hospital.location}</p>
-                    <p className="text-[13px] text-slate-light flex flex-row gap-1.5"><Phone size={16} /> {hospital.phone}</p>
+                    <p className="text-[13px] text-slate-light mb-0.5 flex flex-row items-center gap-1.5"><MapPin size={16} /> {hospital.location}</p>
+                    <p className="text-[13px] text-slate-light flex flex-row items-center gap-1.5"><Phone size={16} /> {hospital.phone}</p>
                   </div>
                 </div>
               </div>
