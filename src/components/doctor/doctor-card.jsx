@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import SpecialtyBadge from '../shared/specialty-badge'
+import { Hospital } from 'lucide-react'
 
 export default function DoctorCard({ doctor }) {
   const { id, name, specialty, location, tags = [], availability } = doctor
@@ -14,10 +15,10 @@ export default function DoctorCard({ doctor }) {
         <p className="text-[14px] font-semibold text-navy mb-0.5">{name}</p>
         <p className="text-[12px] text-slate-light mb-2.5">{specialty}</p>
       </div>
-      <div>
+      <div className="gap-0 flex flex-col items-start justify-center">
         {hospital && (
           <p className="text-[11px] text-navy/60 bg-surface border border-border rounded-md px-2 py-0.5 mb-2.5 w-fit">
-            🏥 {hospital.name}
+            <span className="flex items-center gap-2"><Hospital size={14} /> {hospital.name}</span>
           </p>
         )}
       </div>
