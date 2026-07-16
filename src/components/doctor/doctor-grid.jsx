@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import DoctorCard from './DoctorCard'
-import SpecialtyFilter from './SpecialtyFilter'
-import HospitalFilter from './HospitalFilter'
-import EmptyState from '../shared/EmptyState'
+import DoctorCard from './doctor-card'
+import SpecialtyFilter from './specialty-filter'
+import HospitalFilter from './hospital-filter'
+import EmptyState from '../shared/empty-state'
 
 export default function DoctorGrid({ doctors = [], specialties = [], hospitals = [] }) {
   const [activeSpecialty, setActiveSpecialty] = useState('All')

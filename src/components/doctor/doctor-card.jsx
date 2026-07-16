@@ -3,7 +3,7 @@ import SpecialtyBadge from '../shared/specialty-badge'
 import { Hospital } from 'lucide-react'
 
 export default function DoctorCard({ doctor }) {
-  const { id, name, specialty, location, tags = [], availability } = doctor
+  const { id, name, specialty, hospital, tags = [], availability } = doctor
   const initials = name.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0,2).toUpperCase()
 
   return (
