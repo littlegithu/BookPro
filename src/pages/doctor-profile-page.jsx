@@ -6,9 +6,9 @@ import SpecialtyBadge from '../components/shared/specialty-badge'
 import BookingForm from '../components/booking/booking-form'
 
 const HOSPITALS = [
-  { id: 1, name: 'Kenyatta National Hospital',      location: 'Nairobi CBD',        phone: '+254 20 272 6300' },
-  { id: 2, name: 'Aga Khan University Hospital',    location: 'Parklands, Nairobi', phone: '+254 20 366 2000' },
-  { id: 3, name: 'MP Shah Hospital',                location: 'Parklands, Nairobi', phone: '+254 20 428 1000' },
+  { id: 1, name: 'Kenyatta National Hospital', location: 'Nairobi CBD', phone: '+254 20 272 6300' },
+  { id: 2, name: 'Aga Khan University Hospital', location: 'Parklands, Nairobi', phone: '+254 20 366 2000' },
+  { id: 3, name: 'MP Shah Hospital', location: 'Parklands, Nairobi', phone: '+254 20 428 1000' },
 ]
 
 const DOCTORS = [
@@ -24,10 +24,17 @@ const DOCTORS = [
 
 const SPECIALTIES = ['General Practice','Pediatrics','Dentistry','Dermatology','Cardiology']
 
-
 export default function DoctorProfilePage() {
   const { id } = useParams()
-  const doctor = DOCTORS[id] ?? DOCTORS[1]
+  const doctor = DOCTORS.find(d => d.id === Number(id)) ?? DOCTORS[0]
+  const { hospital } = doctor
+
+  const initials = doctor.name
+    .split(' ')
+    .filter(n => n !== 'Dr.')
+    .map(n => n[0])
+    .join('')
+    .slice(0, 2)
 
   return (
     <div className="bg-surface min-h-screen">
