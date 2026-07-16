@@ -4,6 +4,8 @@ export const HOSPITALS = [
   { id: 3, name: 'MP Shah Hospital', location: 'Parklands, Nairobi', phone: '+254 20 428 1000' },
 ]
 
+export const SPECIALTIES = ['General Practice','Pediatrics','Dentistry','Dermatology','Cardiology']
+
 export const DOCTORS = [
   { id: 1, name: 'Dr. Jane Mwangi', specialty: SPECIALTIES[0], experience: '12 years', hours: 'Mon–Fri, 8am–4pm', rating: 4.9, reviews: 142, tags: ['Family Medicine','Checkups'], availability: 'Available today', hospital: HOSPITALS[0], bio: 'Board-certified GP with 12 years experience in family and preventive medicine. She completed her degree at the University of Nairobi and focuses on making primary care accessible.', specialties: ['Routine checkups','Chronic disease management','Vaccinations','Nutrition & wellness','Respiratory care','Preventive screening'] },
   { id: 2, name: 'Dr. Kevin Omondi', specialty: SPECIALTIES[1], experience: '8 years', hours: 'Mon–Sat, 9am–5pm', rating: 4.8, reviews: 98, tags: ['Child Health','Vaccines'], availability: 'Available Wed', hospital: HOSPITALS[1], bio: 'Dedicated pediatrician passionate about child health and development.', specialties: ['Child checkups','Vaccinations','Growth monitoring','Child nutrition'] },
@@ -14,5 +16,3 @@ export const DOCTORS = [
   { id: 7, name: 'Dr. David Otieno', specialty: SPECIALTIES[1], experience: '6 years', hours: 'Mon–Sat, 8am–5pm', rating: 4.7, reviews: 67,  tags: ['Child Health','Growth'], availability: 'Available Wed', hospital: HOSPITALS[0], bio: 'Pediatrician specializing in growth monitoring and child nutrition.', specialties: ['Growth monitoring','Child nutrition','Vaccinations','Developmental assessment'] },
   { id: 8, name: 'Dr. Nancy Kamau', specialty: SPECIALTIES[3], experience: '11 years', hours: 'Tue–Fri, 9am–4pm', rating: 4.8, reviews: 89,  tags: ['Skin Care','Allergies'], availability: 'Available Fri', hospital: HOSPITALS[2], bio: 'Dermatologist with expertise in skin allergies and chronic skin conditions.', specialties: ['Allergies','Eczema','Psoriasis','Skin checkups'] },
 ]
-
-export const SPECIALTIES = ['General Practice','Pediatrics','Dentistry','Dermatology','Cardiology']
