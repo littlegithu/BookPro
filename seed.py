@@ -1,5 +1,6 @@
+from datetime import datetime
 from app import app
-from model import db, User, Doctor, patient, Appointment, Review, Hospital
+from model import Appointment, Doctor, Hospital, Review, User, db, patient
 
 with app.app_context():
     db.session.query(User).delete()
@@ -142,18 +143,24 @@ with app.app_context():
             last_name="Doe",
             email_address="dr.john.doe@gmail.com",
             phone="0700000021",
+            specialty="Cardiology",
+            hospital_id=1,
         ),
         Doctor(
             first_name="Dr. Mary",
             last_name="Adams",
             email_address="dr.mary.adams@gmail.com",
             phone="0700000022",
+            specialty="Pediatrics",
+            hospital_id=1,
         ),
         Doctor(
             first_name="Dr. Peter",
             last_name="Nguyen",
             email_address="dr.peter.nguyen@gmail.com",
             phone="0700000023",
+            specialty="Dermatology",
+            hospital_id=2,
         ),
     ]
     db.session.add_all(doctors)
@@ -192,22 +199,22 @@ with app.app_context():
 
     appointments = [
         Appointment(
-            first_name="Alice",
-            last_name="Johnson",
-            email_address="alice.johnson@gmail.com",
-            phone="0700000001",
+            appointment_date=datetime(2026, 7, 29, 10, 0, 0),
+            status='scheduled',
+            patient_id=1,
+            doctor_id=1,
         ),
         Appointment(
-            first_name="Carol",
-            last_name="Williams",
-            email_address="carol.williams@gmail.com",
-            phone="0700000003",
+            appointment_date=datetime(2026, 7, 29, 14, 0, 0),
+            status='scheduled',
+            patient_id=3,
+            doctor_id=2,
         ),
         Appointment(
-            first_name="Eva",
-            last_name="Jones",
-            email_address="eva.jones@gmail.com",
-            phone="0700000005",
+            appointment_date=datetime(2026, 7, 30, 9, 0, 0),
+            status='cancelled',
+            patient_id=5,
+            doctor_id=3,
         ),
     ]
     db.session.add_all(appointments)
@@ -216,16 +223,16 @@ with app.app_context():
 
     reviews = [
         Review(
-            first_name="Bob",
-            last_name="Smith",
-            email_address="bob.smith@gmail.com",
-            phone="0700000002",
+            rating=5,
+            comment='Excellent doctor, very professional',
+            patient_id=1,
+            doctor_id=1,
         ),
         Review(
-            first_name="David",
-            last_name="Brown",
-            email_address="david.brown@gmail.com",
-            phone="0700000004",
+            rating=4,
+            comment='Good service but long waiting time',
+            patient_id=2,
+            doctor_id=1,
         ),
     ]
     db.session.add_all(reviews)
@@ -238,12 +245,16 @@ with app.app_context():
             last_name="Hospital",
             email_address="central.hospital@gmail.com",
             phone="0700000030",
+            address="123 Main St, Nairobi CBD",
+            city="Nairobi",
         ),
         Hospital(
             first_name="St. Mary",
             last_name="Hospital",
             email_address="stmary.hospital@gmail.com",
             phone="0700000031",
+            address="456 Oak Avenue, Westlands",
+            city="Nairobi",
         ),
     ]
     db.session.add_all(hospitals)
