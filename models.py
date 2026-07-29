@@ -1,7 +1,9 @@
-from extensions import db
 from datetime import datetime
-from sqlalchemy import CheckConstraint, event
+
+from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import validates
+
+from extensions import db
 
 
 class User(db.Model):
@@ -29,8 +31,8 @@ class User(db.Model):
         return password
 
 
-class patient(db.Model):
-    __tablename__ = "patient"
+class Patient(db.Model):
+    __tablename__ = "patients"
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)
@@ -51,7 +53,7 @@ class patient(db.Model):
 
 
 class Doctor(db.Model):
-    __tablename__ = "doctor"
+    __tablename__ = "doctors"
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)
@@ -75,7 +77,7 @@ class Doctor(db.Model):
 
 
 class Review(db.Model):
-    __tablename__ = "review"
+    __tablename__ = "reviews"
 
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer, nullable=True)
@@ -91,7 +93,7 @@ class Review(db.Model):
 
 
 class Appointment(db.Model):
-    __tablename__ = "appointment"
+    __tablename__ = "appointments"
 
     id = db.Column(db.Integer, primary_key=True)
     appointment_date = db.Column(db.DateTime(), nullable=True)
@@ -107,7 +109,7 @@ class Appointment(db.Model):
 
 
 class Hospital(db.Model):
-    __tablename__ = "hospital"
+    __tablename__ = "hospitals"
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)

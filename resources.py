@@ -1,8 +1,8 @@
 from flask import abort, request
 from flask_restful import Resource
 
-from model import Appointment, Doctor, Hospital, Review, User, db, patient
-from schema import (
+from models import Appointment, Doctor, Hospital, Review, User, db, patient
+from schemas import (
     Appointment_schema,
     Appointments_schema,
     Doctor_schema,

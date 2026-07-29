@@ -2,8 +2,8 @@ from flask import jsonify, request
 from flask_bcrypt import check_password_hash, generate_password_hash
 from sqlalchemy.exc import IntegrityError
 
-from model import User, db
-from schema import user_schema, users_schema
+from models import User, db
+from schemas import user_schema, users_schema
 
 
 def hash_password(password):

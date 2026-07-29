@@ -1,18 +1,6 @@
 from datetime import datetime
 from app import app
-from model import Appointment, Doctor, Hospital, Review, User, db, patient
-
-with app.app_context():
-    db.session.query(User).delete()
-    db.session.query(Doctor).delete()
-    db.session.query(patient).delete()
-    db.session.query(Appointment).delete()
-    db.session.query(Review).delete()
-    db.session.query(Hospital).delete()
-
-from datetime import datetime
-from app import app
-from model import Appointment, Doctor, Hospital, Review, User, db, patient
+from models import Appointment, Doctor, Hospital, Review, User, db, patient
 from auth import hash_password
 
 with app.app_context():
