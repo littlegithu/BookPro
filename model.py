@@ -12,7 +12,7 @@ class User(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     email_address = db.Column(db.String(150), nullable=False, unique=True)
     phone = db.Column(db.String(20), nullable=False, unique=True)
-    password = db.Column(db.String(255), nullable=True)
+    password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.now)
     updated_at = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
 
