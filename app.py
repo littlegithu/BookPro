@@ -27,8 +27,8 @@ load_dotenv()
 app = Flask(__name__)
 
 # app config
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # initialize extensions
