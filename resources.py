@@ -24,7 +24,7 @@ def get_json_data():
         abort(400, description="Invalid JSON body")
     return data
 
-
+# Users
 class UserList(Resource):
     def get(self):
         users = User.query.all()
@@ -45,7 +45,7 @@ class UserList(Resource):
 
 class UserDetail(Resource):
     def get(self, id):
-        user = User.query.get_or_404(id)
+        user = User.query.filter_by(id=id)
         return user_schema.dump(user)
 
     def put(self, id):
@@ -77,6 +77,7 @@ class UserLogin(Resource):
         return {"message": "Login successful", "user": user_schema.dump(user)}, 200
 
 
+# Patients
 class PatientList(Resource):
     def get(self):
         patients = Patient.query.all()
@@ -95,7 +96,7 @@ class PatientList(Resource):
 
 class PatientDetail(Resource):
     def get(self, id):
-        patient_instance = Patient.query.get_or_404(id)
+        patient_instance = Patient.query.filter_by(id=id)
         return Patients_schema.dump(patient_instance)
 
     def put(self, id):
@@ -116,6 +117,7 @@ class PatientDetail(Resource):
         return {"message": "Patient deleted successfully"}, 200
 
 
+# Doctors
 class DoctorList(Resource):
     def get(self):
         doctors = Doctor.query.all()
@@ -134,7 +136,7 @@ class DoctorList(Resource):
 
 class DoctorDetail(Resource):
     def get(self, id):
-        doctor = Doctor.query.get_or_404(id)
+        doctor = Doctor.query.filter_by(id=id)
         return Doctors_schema.dump(doctor)
 
     def put(self, id):
@@ -155,6 +157,7 @@ class DoctorDetail(Resource):
         return {"message": "Doctor deleted successfully"}, 200
 
 
+# Reviews
 class ReviewList(Resource):
     def get(self):
         reviews = Review.query.all()
@@ -173,7 +176,7 @@ class ReviewList(Resource):
 
 class ReviewDetail(Resource):
     def get(self, id):
-        review = Review.query.get_or_404(id)
+        review = Review.query.filter_by(id=id)
         return Reviews_schema.dump(review)
 
     def put(self, id):
@@ -194,6 +197,7 @@ class ReviewDetail(Resource):
         return {"message": "Review deleted successfully"}, 200
 
 
+# Appointments
 class AppointmentList(Resource):
     def get(self):
         appointments = Appointment.query.all()
@@ -216,7 +220,7 @@ class AppointmentList(Resource):
 
 class AppointmentDetail(Resource):
     def get(self, id):
-        appointment = Appointment.query.get_or_404(id)
+        appointment = Appointment.query.filter_by(id=id)
         return Appointments_schema.dump(appointment)
 
     def put(self, id):
@@ -241,6 +245,7 @@ class AppointmentDetail(Resource):
         return {"message": "Appointment deleted successfully"}, 200
 
 
+# Hospitals
 class HospitalList(Resource):
     def get(self):
         hospitals = Hospital.query.all()
@@ -259,7 +264,7 @@ class HospitalList(Resource):
 
 class HospitalDetail(Resource):
     def get(self, id):
-        hospital = Hospital.query.get_or_404(id)
+        hospital = Hospital.query.filter_by(id=id)
         return Hospitals_schema.dump(hospital)
 
     def put(self, id):
