@@ -1,7 +1,7 @@
 from flask import abort, request
 from flask_restful import Resource
 
-from models import Appointment, Doctor, Hospital, Review, User, db, patient
+from models import Appointment, Doctor, Hospital, Patient, Review, User, db
 from schemas import (
     Appointment_schema,
     Appointments_schema,
@@ -79,7 +79,7 @@ class UserLogin(Resource):
 
 class PatientList(Resource):
     def get(self):
-        patients = patient.query.all()
+        patients = Patient.query.all()
         return Patients_schema.dump(patients)
 
     def post(self):
@@ -87,7 +87,7 @@ class PatientList(Resource):
         errors = Patient_schema.validate(data)
         if errors:
             return errors, 400
-        patient_instance = patient(**data)
+        patient_instance = Patient(**data)
         db.session.add(patient_instance)
         db.session.commit()
         return Patient_schema.dump(patient_instance), 201
@@ -95,11 +95,11 @@ class PatientList(Resource):
 
 class PatientDetail(Resource):
     def get(self, id):
-        patient_instance = patient.query.get_or_404(id)
+        patient_instance = Patient.query.get_or_404(id)
         return Patients_schema.dump(patient_instance)
 
     def put(self, id):
-        patient_instance = patient.query.get_or_404(id)
+        patient_instance = Patient.query.get_or_404(id)
         data = get_json_data()
         errors = Patient_schema.validate(data, partial=True)
         if errors:
@@ -110,7 +110,7 @@ class PatientDetail(Resource):
         return Patient_schema.dump(patient_instance)
 
     def delete(self, id):
-        patient_instance = patient.query.get_or_404(id)
+        patient_instance = Patient.query.get_or_404(id)
         db.session.delete(patient_instance)
         db.session.commit()
         return {"message": "Patient deleted successfully"}, 200
