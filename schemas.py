@@ -16,8 +16,8 @@ class BaseSchema(Schema):
 class UserSchema(BaseSchema):
     password = fields.Str(required=True, load_only=True, validate=validate.Length(min=8))
 
-    doctor = fields.Nested("DoctorSchema", exclude=("user",), dump_only=True)
-    patient = fields.Nested("PatientSchema", exclude=("user",), dump_only=True)
+    doctor = fields.Nested("DoctorSchema", dump_only=True)
+    patient = fields.Nested("PatientSchema", dump_only=True)
 
 
 
@@ -37,6 +37,7 @@ class ReviewSchema(Schema):
     comment = fields.Str(required=False)
     patient_id = fields.Int(required=True, load_only=True)
     doctor_id = fields.Int(required=True, load_only=True)
+    appointment_id = fields.Int(required=False, load_only=True)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -47,6 +48,7 @@ class AppointmentSchema(Schema):
     status = fields.Str(required=False, validate=validate.OneOf(['scheduled', 'completed', 'cancelled']))
     patient_id = fields.Int(required=True, load_only=True)
     doctor_id = fields.Int(required=True, load_only=True)
+    hospital_id = fields.Int(required=False, load_only=True)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 

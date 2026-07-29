@@ -1,12 +1,13 @@
 from datetime import datetime
+
 from app import app
-from models import Appointment, Doctor, Hospital, Review, User, db, patient
 from auth import hash_password
+from models import Appointment, Doctor, Hospital, Patient, Review, User, db
 
 with app.app_context():
     db.session.query(User).delete()
     db.session.query(Doctor).delete()
-    db.session.query(patient).delete()
+    db.session.query(Patient).delete()
     db.session.query(Appointment).delete()
     db.session.query(Review).delete()
     db.session.query(Hospital).delete()
@@ -189,25 +190,25 @@ with app.app_context():
     print(f"Seeded {len(doctors)} doctors.")
 
     patients = [
-        patient(
+        Patient(
             first_name="Alice",
             last_name="Johnson",
             email_address="alice.johnson@gmail.com",
             phone="0700000001",
         ),
-        patient(
+        Patient(
             first_name="Bob",
             last_name="Smith",
             email_address="bob.smith@gmail.com",
             phone="0700000002",
         ),
-        patient(
+        Patient(
             first_name="Carol",
             last_name="Williams",
             email_address="carol.williams@gmail.com",
             phone="0700000003",
         ),
-        patient(
+        Patient(
             first_name="David",
             last_name="Brown",
             email_address="david.brown@gmail.com",
