@@ -59,6 +59,12 @@ class Patient(db.Model):
 class Doctor(db.Model):
     __tablename__ = "doctors"
 
+    __table_args__ = (
+        CheckConstraint("length(first_name) >= 1", name="ck_doctor_first_name_length"),
+        CheckConstraint("length(last_name) >= 1", name="ck_doctor_last_name_length"),
+        CheckConstraint("email_address LIKE '%@%'", name="ck_doctor_email_format"),
+    )
+
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
@@ -69,19 +75,17 @@ class Doctor(db.Model):
     created_at = db.Column(db.DateTime(), default=datetime.now)
     updated_at = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
 
-    appointments = db.relationship('Appointment', backref='doctor', lazy=True)
-    reviews = db.relationship('Review', backref='doctor', lazy=True)
-    hospital = db.relationship('Hospital', backref='doctors')
-
-    __table_args__ = (
-        CheckConstraint("length(first_name) >= 1", name="ck_doctor_first_name_length"),
-        CheckConstraint("length(last_name) >= 1", name="ck_doctor_last_name_length"),
-        CheckConstraint("email_address LIKE '%@%'", name="ck_doctor_email_format"),
-    )
+    appointments = db.relationship('Appointment', back_populates='doctor', lazy=True)
+    reviews = db.relationship('Review', back_populates='doctor', lazy=True)
+    hospital = db.relationship('Hospital', back_populates='doctors')
 
 
 class Review(db.Model):
     __tablename__ = "reviews"
+
+    __table_args__ = (
+        CheckConstraint("rating >= 1 AND rating <= 5", name="ck_review_rating_range"),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer, nullable=True)
@@ -91,9 +95,9 @@ class Review(db.Model):
     created_at = db.Column(db.DateTime(), default=datetime.now)
     updated_at = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
 
-    __table_args__ = (
-        CheckConstraint("rating >= 1 AND rating <= 5", name="ck_review_rating_range"),
-    )
+    patient = db.relationship('Patient', back_populates='reviews')
+    doctor = db.relationship('Doctor', back_populates='reviews')
+    appointment = db.relationship('Appointment', back_populates='reviews')
 
 
 class Appointment(db.Model):
