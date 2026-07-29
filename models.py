@@ -9,6 +9,12 @@ from extensions import db
 class User(db.Model):
     __tablename__ = "users"
 
+    __table_args__ = (
+        CheckConstraint("length(first_name) >= 1", name="ck_user_first_name_length"),
+        CheckConstraint("length(last_name) >= 1", name="ck_user_last_name_length"),
+        CheckConstraint("email_address LIKE '%@%'", name="ck_user_email_format"),
+    )
+
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
@@ -18,11 +24,8 @@ class User(db.Model):
     created_at = db.Column(db.DateTime(), default=datetime.now)
     updated_at = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
 
-    __table_args__ = (
-        CheckConstraint("length(first_name) >= 1", name="ck_user_first_name_length"),
-        CheckConstraint("length(last_name) >= 1", name="ck_user_last_name_length"),
-        CheckConstraint("email_address LIKE '%@%'", name="ck_user_email_format"),
-    )
+    doctor = db.relationship('Doctor', uselist=False, back_populates='user')
+    patient = db.relationship('Patient', uselist=False, back_populates='user')
 
     @validates("password")
     def validate_password(self, key, password):
@@ -34,6 +37,12 @@ class User(db.Model):
 class Patient(db.Model):
     __tablename__ = "patients"
 
+    __table_args__ = (
+        CheckConstraint("length(first_name) >= 1", name="ck_patient_first_name_length"),
+        CheckConstraint("length(last_name) >= 1", name="ck_patient_last_name_length"),
+        CheckConstraint("email_address LIKE '%@%'", name="ck_patient_email_format"),
+    )
+
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
@@ -42,14 +51,9 @@ class Patient(db.Model):
     created_at = db.Column(db.DateTime(), default=datetime.now)
     updated_at = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
 
-    appointments = db.relationship('Appointment', backref='patient', lazy=True)
-    reviews = db.relationship('Review', backref='patient', lazy=True)
-
-    __table_args__ = (
-        CheckConstraint("length(first_name) >= 1", name="ck_patient_first_name_length"),
-        CheckConstraint("length(last_name) >= 1", name="ck_patient_last_name_length"),
-        CheckConstraint("email_address LIKE '%@%'", name="ck_patient_email_format"),
-    )
+    user = db.relationship('User', back_populates='patient')
+    appointments = db.relationship('Appointment', back_populates='patient')
+    reviews = db.relationship('Review', back_populates='patient')
 
 
 class Doctor(db.Model):
