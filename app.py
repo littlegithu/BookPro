@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+import os
 from flask import Flask
 from flask_restful import Api
 
@@ -26,7 +27,9 @@ load_dotenv()
 app = Flask(__name__)
 
 # app config
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///demo.db"
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI", "sqlite:///demo.db")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # initialize extensions
 migrate.init_app(app=app, db=db)
