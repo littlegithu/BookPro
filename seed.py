@@ -219,7 +219,7 @@ with app.app_context():
             patient_id=patients[0].id,
             doctor_id=doctors[0].id,
             hospital_id=hospitals[0].id,
-            appointment_date=datetime(2026, 7, 29, 10, 0, 0),
+            appointment_date=datetime(2026, 7, 29, 10, 0, 0),  # noqa: DTZ001
             appointment_time=time(10, 0),
             status="Scheduled",
             notes="Follow-up visit for hypertension check.",
@@ -228,7 +228,7 @@ with app.app_context():
             patient_id=patients[1].id,
             doctor_id=doctors[1].id,
             hospital_id=hospitals[0].id,
-            appointment_date=datetime(2026, 7, 30, 9, 0, 0),
+            appointment_date=datetime(2026, 7, 30, 9, 0, 0),  # noqa: DTZ001
             appointment_time=time(9, 0),
             status="Scheduled",
             notes="Child vaccination appointment.",
@@ -237,7 +237,7 @@ with app.app_context():
             patient_id=patients[2].id,
             doctor_id=doctors[2].id,
             hospital_id=hospitals[1].id,
-            appointment_date=datetime(2026, 7, 29, 14, 0, 0),
+            appointment_date=datetime(2026, 7, 29, 14, 0, 0),  # noqa: DTZ001
             appointment_time=time(14, 0),
             status="Scheduled",
             notes="Skin rash consultation.",
@@ -246,7 +246,7 @@ with app.app_context():
             patient_id=patients[3].id,
             doctor_id=doctors[0].id,
             hospital_id=hospitals[2].id,
-            appointment_date=datetime(2026, 7, 28, 11, 0, 0),
+            appointment_date=datetime(2026, 7, 28, 11, 0, 0),  # noqa: DTZ001
             appointment_time=time(11, 0),
             status="Completed",
             notes="Routine cardiac screening.",
@@ -255,7 +255,7 @@ with app.app_context():
             patient_id=patients[4].id,
             doctor_id=doctors[1].id,
             hospital_id=hospitals[1].id,
-            appointment_date=datetime(2026, 7, 31, 8, 30, 0),
+            appointment_date=datetime(2026, 7, 31, 8, 30, 0),  # noqa: DTZ001
             appointment_time=time(8, 30),
             status="Cancelled",
             notes="Annual pediatric check-up.",
