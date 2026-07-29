@@ -103,6 +103,10 @@ class Review(db.Model):
 class Appointment(db.Model):
     __tablename__ = "appointments"
 
+    __table_args__ = (
+        CheckConstraint("status IN ('scheduled', 'completed', 'cancelled')", name="ck_appointment_status"),
+    )
+
     id = db.Column(db.Integer, primary_key=True)
     appointment_date = db.Column(db.DateTime(), nullable=True)
     status = db.Column(db.String(20), nullable=True)
@@ -111,13 +115,20 @@ class Appointment(db.Model):
     created_at = db.Column(db.DateTime(), default=datetime.now)
     updated_at = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
 
-    __table_args__ = (
-        CheckConstraint("status IN ('scheduled', 'completed', 'cancelled')", name="ck_appointment_status"),
-    )
+    patient = db.relationship('Patient', back_populates='appointments')
+    doctor = db.relationship('Doctor', back_populates='appointments')
+    hospital = db.relationship('Hospital', back_populates='appointments')
+    reviews = db.relationship('Review', back_populates='appointment')
 
 
 class Hospital(db.Model):
     __tablename__ = "hospitals"
+
+    __table_args__ = (
+        CheckConstraint("length(first_name) >= 1", name="ck_hospital_first_name_length"),
+        CheckConstraint("length(last_name) >= 1", name="ck_hospital_last_name_length"),
+        CheckConstraint("email_address LIKE '%@%'", name="ck_hospital_email_format"),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)
@@ -129,8 +140,4 @@ class Hospital(db.Model):
     created_at = db.Column(db.DateTime(), default=datetime.now)
     updated_at = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
 
-    __table_args__ = (
-        CheckConstraint("length(first_name) >= 1", name="ck_hospital_first_name_length"),
-        CheckConstraint("length(last_name) >= 1", name="ck_hospital_last_name_length"),
-        CheckConstraint("email_address LIKE '%@%'", name="ck_hospital_email_format"),
-    )
+    appointments = db.relationship('Appointment', back_populates='hospital')
