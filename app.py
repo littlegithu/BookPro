@@ -2,8 +2,12 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask
+from flask_bcrypt import Bcrypt
+from flask_cors import CORS
+from flask_migrate import Migrate
+from flask_restful import Api
 
-from extensions import api, bcrypt, db, migrate
+from extensions import db
 from resources import (
     AppointmentDetail,
     AppointmentList,
@@ -26,15 +30,19 @@ load_dotenv()
 # create an instance of the flask app
 app = Flask(__name__)
 
+bcrypt = Bcrypt(app=app)
+
 # app config
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # initialize extensions
-migrate.init_app(app=app, db=db)
+migrate = Migrate(app=app, db=db)
+
 db.init_app(app=app)
-bcrypt.init_app(app)
+
+api = Api(app=app)
 
 # register resources
 api.add_resource(UserList, "/users")

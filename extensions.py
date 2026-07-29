@@ -15,6 +15,3 @@ metadata = MetaData(
 )
 
 db = SQLAlchemy(metadata=metadata)
-migrate = Migrate()
-bcrypt = Bcrypt()
-api = Api()
