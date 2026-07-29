@@ -14,7 +14,11 @@ class BaseSchema(Schema):
 
 
 class UserSchema(BaseSchema):
-    password = fields.Str(required=True, load_only=True, validate=validate.Length(min=6))
+    password = fields.Str(required=True, load_only=True, validate=validate.Length(min=8))
+
+    doctor = fields.Nested("DoctorSchema", exclude=("user",), dump_only=True)
+    patient = fields.Nested("PatientSchema", exclude=("user",), dump_only=True)
+
 
 
 class PatientSchema(BaseSchema):

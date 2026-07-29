@@ -29,8 +29,8 @@ class User(db.Model):
 
     @validates("password")
     def validate_password(self, key, password):
-        if password and len(password) < 6:
-            raise ValueError("Password must be at least 6 characters")
+        if password and len(password) < 8:
+            raise ValueError("Password must be at least 8 characters")
         return password
 
 
