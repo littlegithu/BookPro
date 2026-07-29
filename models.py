@@ -12,7 +12,7 @@ class User(db.Model):
     __table_args__ = (
         CheckConstraint("length(first_name) >= 1", name="ck_user_first_name_length"),
         CheckConstraint("length(last_name) >= 1", name="ck_user_last_name_length"),
-        CheckConstraint("email_address LIKE '%@%'", name="ck_user_email_format"),
+        CheckConstraint("email LIKE '%@%'", name="ck_user_email_format"),
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -40,13 +40,14 @@ class Patient(db.Model):
     __table_args__ = (
         CheckConstraint("length(first_name) >= 1", name="ck_patient_first_name_length"),
         CheckConstraint("length(last_name) >= 1", name="ck_patient_last_name_length"),
-        CheckConstraint("email_address LIKE '%@%'", name="ck_patient_email_format"),
+        CheckConstraint("email LIKE '%@%'", name="ck_patient_email_format"),
     )
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
     dob = db.Column(db.Date, nullable=False)
     gender = db.Column(db.String(20), nullable=False)
     address = db.Column(db.String(200), nullable=False)
@@ -65,13 +66,14 @@ class Doctor(db.Model):
     __table_args__ = (
         CheckConstraint("length(first_name) >= 1", name="ck_doctor_first_name_length"),
         CheckConstraint("length(last_name) >= 1", name="ck_doctor_last_name_length"),
-        CheckConstraint("email_address LIKE '%@%'", name="ck_doctor_email_format"),
+        CheckConstraint("email LIKE '%@%'", name="ck_doctor_email_format"),
     )
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
     specialty = db.Column(db.String(50), nullable=False)
     bio = db.Column(db.String(250), nullable=True)
     available = db.Column(db.Boolean, default=True, nullable=False)
@@ -84,7 +86,6 @@ class Doctor(db.Model):
     user = db.relationship('User', back_populates='doctor')
     appointments = db.relationship('Appointment', back_populates='doctor', lazy=True)
     reviews = db.relationship('Review', back_populates='doctor', lazy=True)
-    hospital = db.relationship('Hospital', back_populates='doctors')
 
 
 class Review(db.Model):
@@ -112,7 +113,7 @@ class Appointment(db.Model):
     __tablename__ = "appointments"
 
     __table_args__ = (
-        CheckConstraint("status IN ('scheduled', 'completed', 'cancelled')", name="ck_appointment_status"),
+        CheckConstraint("status IN ('Scheduled', 'Completed', 'Cancelled')", name="ck_appointment_status"),
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -136,9 +137,8 @@ class Hospital(db.Model):
     __tablename__ = "hospitals"
 
     __table_args__ = (
-        CheckConstraint("length(first_name) >= 1", name="ck_hospital_first_name_length"),
-        CheckConstraint("length(last_name) >= 1", name="ck_hospital_last_name_length"),
-        CheckConstraint("email_address LIKE '%@%'", name="ck_hospital_email_format"),
+        CheckConstraint("length(name) >= 1", name="ck_hospital_first_name_length"),
+        CheckConstraint("email LIKE '%@%'", name="ck_hospital_email_format"),
     )
 
     id = db.Column(db.Integer, primary_key=True)

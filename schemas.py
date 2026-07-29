@@ -4,7 +4,7 @@ from marshmallow import Schema, fields, validate
 class BaseSchema(Schema):
     first_name = fields.Str(required=True, validate=validate.Length(min=1, max=100))
     last_name = fields.Str(required=True, validate=validate.Length(min=1, max=100))
-    email_address = fields.Email(required=True)
+    email = fields.Email(required=True)
     phone = fields.Str(required=True, validate=validate.Regexp(
         r'^(?:\+254|0)?(7|1)\d{8}$',
         error="Phone must be a valid Kenyan phone number, e.g. 0712345678 or +254712345678"

@@ -1,242 +1,264 @@
-from datetime import datetime
+from datetime import date, datetime, time
 
 from app import app
 from auth import hash_password
 from models import Appointment, Doctor, Hospital, Patient, Review, User, db
 
 with app.app_context():
-    db.session.query(User).delete()
+    db.session.query(Review).delete()
+    db.session.query(Appointment).delete()
     db.session.query(Doctor).delete()
     db.session.query(Patient).delete()
-    db.session.query(Appointment).delete()
-    db.session.query(Review).delete()
     db.session.query(Hospital).delete()
+    db.session.query(User).delete()
+    db.session.commit()
 
     users = [
         User(
             first_name="Alice",
             last_name="Johnson",
-            email_address="alice.johnson@gmail.com",
-            phone="0700000001",
+            email="alice.johnson@example.com",
+            phone="0712345678",
             password=hash_password("password123"),
         ),
         User(
-            first_name="Bob",
-            last_name="Smith",
-            email_address="bob.smith@gmail.com",
-            phone="0700000002",
+            first_name="Brian",
+            last_name="Mwangi",
+            email="brian.mwangi@example.com",
+            phone="0723456789",
             password=hash_password("password123"),
         ),
         User(
             first_name="Carol",
-            last_name="Williams",
-            email_address="carol.williams@gmail.com",
-            phone="0700000003",
+            last_name="Ndegwa",
+            email="carol.ndegwa@example.com",
+            phone="0734567890",
             password=hash_password("password123"),
         ),
         User(
             first_name="David",
-            last_name="Brown",
-            email_address="david.brown@gmail.com",
-            phone="0700000004",
+            last_name="Otieno",
+            email="david.otieno@example.com",
+            phone="0745678901",
             password=hash_password("password123"),
         ),
         User(
             first_name="Eva",
-            last_name="Jones",
-            email_address="eva.jones@gmail.com",
-            phone="0700000005",
+            last_name="Kipchoge",
+            email="eva.kipchoge@example.com",
+            phone="0756789012",
             password=hash_password("password123"),
         ),
         User(
-            first_name="Frank",
-            last_name="Garcia",
-            email_address="frank.garcia@gmail.com",
-            phone="0700000006",
+            first_name="Faith",
+            last_name="Wanjiku",
+            email="faith.wanjiku@example.com",
+            phone="0767890123",
             password=hash_password("password123"),
         ),
         User(
-            first_name="Grace",
-            last_name="Martinez",
-            email_address="grace.martinez@gmail.com",
-            phone="0700000007",
+            first_name="George",
+            last_name="Kamau",
+            email="george.kamau@example.com",
+            phone="0778901234",
             password=hash_password("password123"),
         ),
         User(
-            first_name="Henry",
-            last_name="Davis",
-            email_address="henry.davis@gmail.com",
-            phone="0700000008",
+            first_name="Hannah",
+            last_name="Chebet",
+            email="hannah.chebet@example.com",
+            phone="0789012345",
             password=hash_password("password123"),
         ),
         User(
-            first_name="Irene",
-            last_name="Wilson",
-            email_address="irene.wilson@gmail.com",
-            phone="0700000009",
+            first_name="Ian",
+            last_name="Mutua",
+            email="ian.mutua@example.com",
+            phone="0790123456",
             password=hash_password("password123"),
         ),
         User(
-            first_name="James",
-            last_name="Taylor",
-            email_address="james.taylor@gmail.com",
-            phone="0700000010",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Karen",
-            last_name="Anderson",
-            email_address="karen.anderson@gmail.com",
-            phone="0700000011",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Leo",
-            last_name="Thomas",
-            email_address="leo.thomas@gmail.com",
-            phone="0700000012",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Mia",
-            last_name="Jackson",
-            email_address="mia.jackson@gmail.com",
-            phone="0700000013",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Nathan",
-            last_name="White",
-            email_address="nathan.white@gmail.com",
-            phone="0700000014",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Olivia",
-            last_name="Harris",
-            email_address="olivia.harris@gmail.com",
-            phone="0700000015",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Paul",
-            last_name="Martin",
-            email_address="paul.martin@gmail.com",
-            phone="0700000016",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Quinn",
-            last_name="Thompson",
-            email_address="quinn.thompson@gmail.com",
-            phone="0700000017",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Rachel",
-            last_name="Clark",
-            email_address="rachel.clark@gmail.com",
-            phone="0700000018",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Samuel",
-            last_name="Lewis",
-            email_address="samuel.lewis@gmail.com",
-            phone="0700000019",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Tina",
-            last_name="Walker",
-            email_address="tina.walker@gmail.com",
-            phone="0700000020",
+            first_name="Jane",
+            last_name="Achieng",
+            email="jane.achieng@example.com",
+            phone="0701234567",
             password=hash_password("password123"),
         ),
     ]
-
     db.session.add_all(users)
     db.session.commit()
     print(f"Seeded {len(users)} users.")
 
-    doctors = [
-        Doctor(
-            first_name="Dr. John",
-            last_name="Doe",
-            email_address="dr.john.doe@gmail.com",
-            phone="0700000021",
-            specialty="Cardiology",
-            hospital_id=1,
-        ),
-        Doctor(
-            first_name="Dr. Mary",
-            last_name="Adams",
-            email_address="dr.mary.adams@gmail.com",
-            phone="0700000022",
-            specialty="Pediatrics",
-            hospital_id=1,
-        ),
-        Doctor(
-            first_name="Dr. Peter",
-            last_name="Nguyen",
-            email_address="dr.peter.nguyen@gmail.com",
-            phone="0700000023",
-            specialty="Dermatology",
-            hospital_id=2,
-        ),
-    ]
-    db.session.add_all(doctors)
-    db.session.commit()
-    print(f"Seeded {len(doctors)} doctors.")
-
     patients = [
         Patient(
+            user_id=users[0].id,
             first_name="Alice",
             last_name="Johnson",
-            email_address="alice.johnson@gmail.com",
-            phone="0700000001",
+            email="alice.johnson@example.com",
+            dob=date(1992, 4, 15),
+            gender="Female",
+            address="14 Kijabe Street, Nairobi",
+            phone="0712345678",
         ),
         Patient(
-            first_name="Bob",
-            last_name="Smith",
-            email_address="bob.smith@gmail.com",
-            phone="0700000002",
+            user_id=users[1].id,
+            first_name="Brian",
+            last_name="Mwangi",
+            email="brian.mwangi@example.com",
+            dob=date(1988, 11, 2),
+            gender="Male",
+            address="22 Mombasa Road, Nairobi",
+            phone="0723456789",
         ),
         Patient(
+            user_id=users[2].id,
             first_name="Carol",
-            last_name="Williams",
-            email_address="carol.williams@gmail.com",
-            phone="0700000003",
+            last_name="Ndegwa",
+            email="carol.ndegwa@example.com",
+            dob=date(1995, 7, 21),
+            gender="Female",
+            address="9 Kiambu Lane, Kiambu",
+            phone="0734567890",
         ),
         Patient(
+            user_id=users[3].id,
             first_name="David",
-            last_name="Brown",
-            email_address="david.brown@gmail.com",
-            phone="0700000004",
+            last_name="Otieno",
+            email="david.otieno@example.com",
+            dob=date(1985, 1, 30),
+            gender="Male",
+            address="5 Kisumu Avenue, Kisumu",
+            phone="0745678901",
+        ),
+        Patient(
+            user_id=users[4].id,
+            first_name="Eva",
+            last_name="Kipchoge",
+            email="eva.kipchoge@example.com",
+            dob=date(2000, 9, 10),
+            gender="Female",
+            address="31 Eldoret Road, Eldoret",
+            phone="0756789012",
         ),
     ]
     db.session.add_all(patients)
     db.session.commit()
     print(f"Seeded {len(patients)} patients.")
 
+    doctors = [
+        Doctor(
+            user_id=users[5].id,
+            first_name="Faith",
+            last_name="Wanjiku",
+            email="faith.wanjiku@example.com",
+            specialty="Cardiology",
+            bio="Experienced cardiologist with over 10 years in clinical practice.",
+            available=True,
+            rating=4.8,
+            phone="0767890123",
+            years_practice=12,
+        ),
+        Doctor(
+            user_id=users[6].id,
+            first_name="George",
+            last_name="Kamau",
+            email="george.kamau@example.com",
+            specialty="Pediatrics",
+            bio="Dedicated pediatrician passionate about child wellness.",
+            available=True,
+            rating=4.5,
+            phone="0778901234",
+            years_practice=8,
+        ),
+        Doctor(
+            user_id=users[7].id,
+            first_name="Hannah",
+            last_name="Chebet",
+            email="hannah.chebet@example.com",
+            specialty="Dermatology",
+            bio="Board-certified dermatologist specializing in skin care.",
+            available=False,
+            rating=4.6,
+            phone="0789012345",
+            years_practice=6,
+        ),
+    ]
+    db.session.add_all(doctors)
+    db.session.commit()
+    print(f"Seeded {len(doctors)} doctors.")
+
+    hospitals = [
+        Hospital(
+            name="Nairobi General Hospital",
+            address="001 Hospital Hill, Nairobi",
+            phone="0201234567",
+            email="info@nairobigenhospital.co.ke",
+            website="https://nairobigenhospital.co.ke",
+        ),
+        Hospital(
+            name="Mombasa Medical Centre",
+            address="78 Nyali Bridge Road, Mombasa",
+            phone="0412345678",
+            email="info@mombasamedical.co.ke",
+            website="https://mombasamedical.co.ke",
+        ),
+        Hospital(
+            name="Kisumu County Referral",
+            address="12 Lake Basin Road, Kisumu",
+            phone="0571234567",
+            email="info@kisumuhospital.co.ke",
+            website="https://kisumuhospital.co.ke",
+        ),
+    ]
+    db.session.add_all(hospitals)
+    db.session.commit()
+    print(f"Seeded {len(hospitals)} hospitals.")
+
     appointments = [
         Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
             appointment_date=datetime(2026, 7, 29, 10, 0, 0),
-            status='scheduled',
-            patient_id=1,
-            doctor_id=1,
+            appointment_time=time(10, 0),
+            status="Scheduled",
+            notes="Follow-up visit for hypertension check.",
         ),
         Appointment(
-            appointment_date=datetime(2026, 7, 29, 14, 0, 0),
-            status='scheduled',
-            patient_id=3,
-            doctor_id=2,
-        ),
-        Appointment(
+            patient_id=patients[1].id,
+            doctor_id=doctors[1].id,
+            hospital_id=hospitals[0].id,
             appointment_date=datetime(2026, 7, 30, 9, 0, 0),
-            status='cancelled',
-            patient_id=5,
-            doctor_id=3,
+            appointment_time=time(9, 0),
+            status="Scheduled",
+            notes="Child vaccination appointment.",
+        ),
+        Appointment(
+            patient_id=patients[2].id,
+            doctor_id=doctors[2].id,
+            hospital_id=hospitals[1].id,
+            appointment_date=datetime(2026, 7, 29, 14, 0, 0),
+            appointment_time=time(14, 0),
+            status="Scheduled",
+            notes="Skin rash consultation.",
+        ),
+        Appointment(
+            patient_id=patients[3].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[2].id,
+            appointment_date=datetime(2026, 7, 28, 11, 0, 0),
+            appointment_time=time(11, 0),
+            status="Completed",
+            notes="Routine cardiac screening.",
+        ),
+        Appointment(
+            patient_id=patients[4].id,
+            doctor_id=doctors[1].id,
+            hospital_id=hospitals[1].id,
+            appointment_date=datetime(2026, 7, 31, 8, 30, 0),
+            appointment_time=time(8, 30),
+            status="Cancelled",
+            notes="Annual pediatric check-up.",
         ),
     ]
     db.session.add_all(appointments)
@@ -245,40 +267,34 @@ with app.app_context():
 
     reviews = [
         Review(
+            appointment_id=appointments[0].id,
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
             rating=5,
-            comment='Excellent doctor, very professional',
-            patient_id=1,
-            doctor_id=1,
+            comment="Dr. Wanjiku was thorough and very attentive during my check-up.",
         ),
         Review(
+            appointment_id=appointments[1].id,
+            patient_id=patients[1].id,
+            doctor_id=doctors[1].id,
             rating=4,
-            comment='Good service but long waiting time',
-            patient_id=2,
-            doctor_id=1,
+            comment="Good service but the waiting time was longer than expected.",
+        ),
+        Review(
+            appointment_id=appointments[2].id,
+            patient_id=patients[2].id,
+            doctor_id=doctors[2].id,
+            rating=5,
+            comment="Excellent diagnosis and treatment plan for my skin condition.",
+        ),
+        Review(
+            appointment_id=appointments[3].id,
+            patient_id=patients[3].id,
+            doctor_id=doctors[0].id,
+            rating=4,
+            comment="The cardiac screening was well explained and professional.",
         ),
     ]
     db.session.add_all(reviews)
     db.session.commit()
     print(f"Seeded {len(reviews)} reviews.")
-
-    hospitals = [
-        Hospital(
-            first_name="Central",
-            last_name="Hospital",
-            email_address="central.hospital@gmail.com",
-            phone="0700000030",
-            address="123 Main St, Nairobi CBD",
-            city="Nairobi",
-        ),
-        Hospital(
-            first_name="St. Mary",
-            last_name="Hospital",
-            email_address="stmary.hospital@gmail.com",
-            phone="0700000031",
-            address="456 Oak Avenue, Westlands",
-            city="Nairobi",
-        ),
-    ]
-    db.session.add_all(hospitals)
-    db.session.commit()
-    print(f"Seeded {len(hospitals)} hospitals.")
