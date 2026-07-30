@@ -23,7 +23,7 @@ def get_json_data():
         abort(400, description="Invalid JSON body")
     return data
 
-# Users
+
 class UserList(Resource):
     def get(self):
         users = User.query.all()
