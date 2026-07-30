@@ -1,8 +1,9 @@
 from datetime import datetime
 
-from extensions import db
 from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import validates
+
+from extensions import db
 
 
 class User(db.Model):
