@@ -15,9 +15,9 @@ export default function HospitalFilter({ hospitals, active, onChange }) {
       {hospitals.map(h => (
         <button
           key={h.id}
-          onClick={() => onChange(h.id)}
+          onClick={() => onChange(h.name)}
           className={`text-[12px] font-medium px-4 py-1.5 rounded-full border transition-colors cursor-pointer ${
-            active === h.id
+            active === h.name
               ? 'bg-navy text-white border-navy'
               : 'border-border-strong text-slate hover:bg-surface hover:border-navy hover:text-navy'
           }`}

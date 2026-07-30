@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
     localStorage.getItem('bookpro_token') || null
   )
 
-  const login = (userData, jwtToken) => {
+  const login = async (userData, jwtToken) => {
     setUser(userData)
     setToken(jwtToken)
     localStorage.setItem('bookpro_user', JSON.stringify(userData))

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
+import { registerUser as apiRegisterUser, fetchPatientByEmail } from '../services/api'
 
 export default function RegisterPage() {
   const { login } = useAuth()
@@ -13,15 +14,35 @@ export default function RegisterPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name || !email || !password) { setError('Please fill in all fields.'); return }
     if (password !== confirm) { setError('Passwords do not match.'); return }
     setError(''); setLoading(true)
-    setTimeout(() => {
-      login({ name, email }, 'mock-jwt-token')
-      setLoading(false)
+    try {
+      const [firstName, lastName] = name.split(' ')
+      const user = await apiRegisterUser({
+        first_name: firstName || name,
+        last_name: lastName || name,
+        email: email,
+        phone: '',
+        password,
+      })
+      const patient = await fetchPatientByEmail(user.email)
+      const userData = {
+        id: user.id,
+        name: `${user.first_name} ${user.last_name}`,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        patientId: patient?.id || null,
+      }
+      login(userData, 'mock-jwt-token')
       navigate('/dashboard', { replace: true })
-    }, 800)
+    } catch (err) {
+      setError(err.message || 'Registration failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -39,6 +60,14 @@ export default function RegisterPage() {
       error={error}
       loading={loading}
       footer={<span>Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link></span>}
+      extra={
+        <button
+          onClick={() => navigate('/dashboard', { replace: true })}
+          className="w-full mt-4 border border-border text-navy text-[14px] font-medium py-3.5 rounded-lg hover:bg-surface transition-colors cursor-pointer"
+        >
+          Continue as guest
+        </button>
+      }
     />
   )
 }
