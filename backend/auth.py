@@ -1,7 +1,6 @@
 from flask import jsonify, request
 from flask_bcrypt import check_password_hash, generate_password_hash
 from model import Patient, User, db
-from schema import user_schema, users_schema
 from sqlalchemy.exc import IntegrityError
 
 
