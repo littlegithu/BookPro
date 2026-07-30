@@ -1,11 +1,10 @@
 import os
 
 from dotenv import load_dotenv
+from extensions import api, bcrypt, db, migrate
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
-
-from extensions import api, bcrypt, db, migrate
 from resources import (
     AppointmentDetail,
     AppointmentList,

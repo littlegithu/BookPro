@@ -1,10 +1,9 @@
 from datetime import date, datetime, time
 
-from sqlalchemy import text
-
 from app import app
 from auth import hash_password
 from model import Appointment, Doctor, Hospital, Patient, Review, User, db
+from sqlalchemy import text
 
 with app.app_context():
     db.session.query(Review).delete()
