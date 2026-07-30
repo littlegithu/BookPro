@@ -63,7 +63,7 @@ export default function DoctorProfilePage() {
 
   return (
     <div className="bg-surface min-h-screen">
-      <Navbar />
+      <Navbar showLogo={false} />
       <div className="max-w-7xl mx-auto px-15">
         <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Doctors', to: '/doctors' }, { label: doctor.name }]} />
 

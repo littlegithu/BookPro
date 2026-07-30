@@ -12,6 +12,7 @@ import BrowsePage from './pages/browse-page'
 import DoctorProfilePage from './pages/doctor-profile-page'
 import DashboardPage from './pages/dashboard'
 import AppointmentsPage from './pages/appointment-page'
+import MedicalRecordsPage from './pages/medical-records-page'
 import AppointmentDetailPage from './pages/appointment-detail'
 import ProfilePage from './pages/profile-page'
 
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/appointments/:id" element={<AppointmentDetailPage />} />
+          <Route path="/medical-records" element={<MedicalRecordsPage />} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>

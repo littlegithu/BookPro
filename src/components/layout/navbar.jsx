@@ -3,15 +3,17 @@ import { useAuth } from '../../context/auth-context'
 import { useNavigate } from 'react-router-dom'
 import ThemeToggle from '../theme/theme-toggle'
 
-export default function Navbar() {
+export default function Navbar({ showLogo = true }) {
   const { isAuthenticated, logout } = useAuth()
   const navigate = useNavigate()
 
   return (
     <nav className="bg-card border-b border-border h-16 flex items-center justify-between px-15 sticky top-0 z-50">
-      <Link to="/" className="font-display font-bold text-xl text-navy">
-        Book<span className="text-teal">Pro</span>
-      </Link>
+      {showLogo && (
+        <Link to="/" className="font-display font-bold text-xl text-navy">
+          Book<span className="text-teal">Pro</span>
+        </Link>
+      )}
       <div className="flex items-center gap-1">
         <ThemeToggle />
         <Link to="/doctors" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors">Browse doctors</Link>
