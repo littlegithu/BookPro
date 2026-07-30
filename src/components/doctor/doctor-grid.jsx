@@ -1,17 +1,20 @@
 import { useState } from 'react'
+import { Stethoscope } from 'lucide-react'
 import DoctorCard from './doctor-card'
 import SpecialtyFilter from './specialty-filter'
 import HospitalFilter from './hospital-filter'
 import EmptyState from '../shared/empty-state'
 
-export default function DoctorGrid({ doctors = [], specialties = [], hospitals = [] }) {
+export default function DoctorGrid({ doctors = [], specialties = [], hospitals = [], searchQuery = '' }) {
   const [activeSpecialty, setActiveSpecialty] = useState('All')
   const [activeHospital, setActiveHospital] = useState(null)
 
   const filtered = doctors.filter(d => {
     const matchesSpecialty = activeSpecialty === 'All' || d.specialty === activeSpecialty
-    const matchesHospital = activeHospital === null || d.hospital?.id === activeHospital
-    return matchesSpecialty && matchesHospital
+    const matchesHospital = activeHospital === null || d.hospital_name === activeHospital
+    const query = searchQuery.toLowerCase().trim()
+    const matchesSearch = !query || d.name.toLowerCase().includes(query) || d.specialty.toLowerCase().includes(query) || (d.hospital_name && d.hospital_name.toLowerCase().includes(query))
+    return matchesSpecialty && matchesHospital && matchesSearch
   })
 
   return (
@@ -24,7 +27,7 @@ export default function DoctorGrid({ doctors = [], specialties = [], hospitals =
         />
       )}
       <SpecialtyFilter
-        specialties={['All', ...specialties]}
+        specialties={specialties}
         active={activeSpecialty}
         onChange={setActiveSpecialty}
       />

@@ -1,6 +1,6 @@
 import ErrorMessage from '../shared/error-message'
 
-export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmit, error, loading, footer }) {
+export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmit, error, loading, footer, extra }) {
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center px-4">
       <div className="bg-card rounded-2xl border border-border p-8 w-full max-w-md shadow-card">
@@ -30,6 +30,7 @@ export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmi
         >
           {loading ? 'Please wait…' : submitLabel}
         </button>
+        {extra && <div className="mt-3">{extra}</div>}
         {footer && <div className="mt-5 text-center text-[13px] text-slate-light">{footer}</div>}
       </div>
     </div>

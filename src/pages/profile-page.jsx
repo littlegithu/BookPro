@@ -1,21 +1,42 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import { useAuth } from '../context/auth-context'
 import ErrorMessage from '../components/shared/error-message'
+import { updateUser } from '../services/api'
 
 export default function ProfilePage() {
-  const { user } = useAuth()
+  const { user, login } = useAuth()
   const [name, setName] = useState(user?.name ?? '')
   const [email, setEmail] = useState(user?.email ?? '')
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!name || !email) { setError('Name and email are required.'); return }
-    setError('')
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    setError(''); setLoading(true)
+    try {
+      const [firstName, lastName] = name.split(' ')
+      const updated = await updateUser(user.id, {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+      })
+      login({
+        ...user,
+        name: `${updated.first_name} ${updated.last_name}`,
+        email: updated.email,
+        first_name: updated.first_name,
+        last_name: updated.last_name,
+      }, localStorage.getItem('bookpro_token'))
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } catch (err) {
+      setError(err.message || 'Failed to update profile')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -53,9 +74,10 @@ export default function ProfilePage() {
 
           <button
             onClick={handleSave}
-            className="w-full mt-2 bg-teal text-white text-[14px] font-semibold py-3.5 rounded-lg hover:bg-teal-mid transition-colors cursor-pointer"
+            disabled={loading}
+            className="w-full mt-2 bg-teal text-white text-[14px] font-semibold py-3.5 rounded-lg hover:bg-teal-mid transition-colors disabled:opacity-60 cursor-pointer"
           >
-            {saved ? '✓ Saved!' : 'Save changes'}
+            {loading ? 'Saving…' : saved ? '✓ Saved!' : 'Save changes'}
           </button>
         </div>
       </div>

@@ -5,7 +5,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme {
     --font-heading: var(--font-sans);
     --font-sans: 'Inter Variable', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
@@ -144,6 +144,26 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+
+    --color-teal:          #5CD6C4;
+    --color-teal-mid:      #1A9E8A;
+    --color-teal-light:    rgba(92, 214, 196, 0.15);
+    --color-teal-pale:     rgba(92, 214, 196, 0.25);
+    --color-navy:          #E2E8F0;
+    --color-navy-mid:      #94A3B8;
+    --color-navy-light:    #64748B;
+    --color-slate:         #94A3B8;
+    --color-slate-light:   #64748B;
+    --color-surface:       #1E293B;
+    --color-card:          #0F172A;
+    --color-border:        #334155;
+    --color-border-strong: #475569;
+    --color-success-bg:    rgba(92, 214, 196, 0.15);
+    --color-success-text:  #5CD6C4;
+    --color-warning-bg:    rgba(251, 191, 36, 0.15);
+    --color-warning-text:  #FBBF24;
+    --color-danger-bg:     rgba(239, 68, 68, 0.15);
+    --color-danger-text:   #EF4444;
 }
 
 @layer base {
