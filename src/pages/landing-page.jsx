@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Calendar, Shield, ClipboardList, Timer, Play, Hospital, MapPin } from 'lucide-react'
 import Navbar from '../components/layout/navbar'
 import DoctorGrid from '../components/doctor/doctor-grid'
-import { DOCTORS, SPECIALTIES, HOSPITALS } from '../data/mock-data'
+import { fetchDoctors, fetchHospitals } from '../services/api'
 
 const FEATURES = [
   { icon: <Timer size={22} className="text-teal" />, title: 'Book in under 2 minutes',    desc: 'Pick a doctor, choose a slot, confirm. No phone calls, no waiting on hold.' },
@@ -11,6 +12,31 @@ const FEATURES = [
 ]
 
 export default function LandingPage() {
+  const [doctors, setDoctors] = useState([])
+  const [hospitals, setHospitals] = useState([])
+  const [specialties, setSpecialties] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const [doctorsData, hospitalsData] = await Promise.all([
+          fetchDoctors(),
+          fetchHospitals(),
+        ])
+        setDoctors(doctorsData)
+        setHospitals(hospitalsData)
+        const specialtySet = new Set(doctorsData.map(d => d.specialty).filter(Boolean))
+        setSpecialties(['All', ...Array.from(specialtySet)])
+      } catch (err) {
+        console.error('Failed to load landing data:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
+
   return (
     <div className="bg-surface min-h-screen">
       <Navbar />
@@ -36,7 +62,7 @@ export default function LandingPage() {
             </a>
           </div>
           <div className="flex gap-9 mt-11 pt-9 border-t border-border">
-            {[['120+','Verified doctors'],['3','Partner hospitals'],['4.9★','Average rating']].map(([v, l]) => (
+            {[['120+','Verified doctors'],['3+','Partner hospitals'],['4.9★','Average rating']].map(([v, l]) => (
               <div key={l}>
                 <p className="font-display font-bold text-[28px] text-navy">{v}</p>
                 <p className="text-[12px] text-slate-light mt-0.5">{l}</p>
@@ -47,25 +73,27 @@ export default function LandingPage() {
 
         {/* Hero visual */}
         <div className="bg-card rounded-2xl border border-border p-6 flex flex-col gap-2.5 shadow-[0_4px_24px_rgba(30,45,61,0.06)]">
-          <p className="text-[10px] font-semibold text-slate-light uppercase tracking-widest mb-1">Your upcoming appointments</p>
-          {[
-            { initials: 'JM', name: 'Dr. Jane Mwangi',  hospital: 'Kenyatta National Hospital', meta: 'Mon 14 Jul · 10:00 AM · General Practice', badge: 'Confirmed', badgeCls: 'bg-success-bg text-success-text', active: true },
-            { initials: 'KO', name: 'Dr. Kevin Omondi', hospital: 'Aga Khan University Hospital', meta: 'Wed 16 Jul · 2:00 PM · Pediatrics', badge: 'Pending', badgeCls: 'bg-warning-bg text-warning-text', active: false },
-            { initials: 'BM', name: 'Dr. Brian Mutua', hospital: 'MP Shah Hospital', meta: 'Fri 18 Jul · 12:00 PM · Dental Care', badge: 'Pending', badgeCls: 'bg-warning-bg text-warning-text', active: false }
-          ].map(a => (
-            <div key={a.name} className={`flex items-center gap-3 px-4 py-3.5 rounded-lg border border-border bg-surface ${a.active ? 'border-l-3 border-l-teal rounded-l-none' : ''}`}>
-              <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold shrink-0">{a.initials}</div>
-              <div className="flex-1 gap-2 min-w-0">
-                <p className="text-[13px] font-medium text-navy">{a.name}</p>
-                <p className="text-[11px] text-slate-light flex items-center gap-1.5 mt-0.5"><Hospital size={16} /> {a.hospital}</p>
-                <p className="text-[11px] text-slate-light flex items-center gap-1.5 mt-0.5"><Calendar size={11} /> {a.meta}</p>
-              </div>
-              <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0 ${a.badgeCls}`}>{a.badge}</span>
+          <p className="text-[10px] font-semibold text-slate-light uppercase tracking-widest mb-1">How it works</p>
+          <div className="flex items-start gap-3 px-4 py-3.5 rounded-lg border border-border bg-surface">
+            <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold shrink-0">1</div>
+            <div>
+              <p className="text-[13px] font-medium text-navy">Search doctors</p>
+              <p className="text-[11px] text-slate-light mt-0.5">Browse by specialty or hospital</p>
             </div>
-          ))}
-          <div className="border-t border-border pt-3 mt-1.5 flex items-center justify-between">
-            <p className="text-[11px] text-slate-light">Last visit: Dr. Patel · Aga Khan · 12 May 2025</p>
-            <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-surface text-slate border border-border">Completed</span>
+          </div>
+          <div className="flex items-start gap-3 px-4 py-3.5 rounded-lg border border-border bg-surface">
+            <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold shrink-0">2</div>
+            <div>
+              <p className="text-[13px] font-medium text-navy">Book a slot</p>
+              <p className="text-[11px] text-slate-light mt-0.5">Pick a date and time that works</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 px-4 py-3.5 rounded-lg border border-border bg-surface">
+            <div className="w-10 h-10 rounded-full bg-teal-light flex items-center justify-center text-teal text-[13px] font-semibold shrink-0">3</div>
+            <div>
+              <p className="text-[13px] font-medium text-navy">Attend checkup</p>
+              <p className="text-[11px] text-slate-light mt-0.5">Walk in ready for your appointment</p>
+            </div>
           </div>
         </div>
       </div>
@@ -75,7 +103,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <p className="text-[11px] font-semibold text-slate-light uppercase tracking-wider mb-3.5 px-10">Our partnered hospitals</p>
           <div className="flex w-full gap-4">
-            {HOSPITALS.map(h => (
+            {hospitals.map(h => (
               <div key={h.id} className="flex max-w-7xl mx-auto items-center justify-between gap-3 px-8 py-2.5">
                 <div className="flex flex-col items-start gap-1.5">
                   <p className="text-[24px] font-medium text-navy flex flex-row items-center gap-1.5"><span><Hospital size={16} /></span>{h.name}</p>
@@ -90,7 +118,11 @@ export default function LandingPage() {
       {/* Doctor grid */}
       <div className="bg-card border-b border-border py-10 px-15">
         <div className="max-w-7xl mx-auto">
-          <DoctorGrid doctors={DOCTORS} specialties={SPECIALTIES} hospitals={HOSPITALS} />
+          {loading ? (
+            <p className="text-slate">Loading doctors...</p>
+          ) : (
+            <DoctorGrid doctors={doctors} specialties={specialties} hospitals={hospitals} />
+          )}
         </div>
       </div>
 
@@ -114,7 +146,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-8">
           <div>
             <h2 className="font-display font-bold text-[28px] text-white mb-1.5">Ready to take care of your health?</h2>
-            <p className="text-[14px] text-white/70">Book with verified doctors across {HOSPITALS.length} partner hospitals.</p>
+            <p className="text-[14px] text-white/70">Book with verified doctors across {hospitals.length} partner hospitals.</p>
           </div>
           <Link to="/register" className="shrink-0 bg-white text-teal text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:bg-teal-light transition-colors">
             Create a free account

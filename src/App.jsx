@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/auth-context'
+import { ThemeProvider } from './context/theme-context'
 import ProtectedRoute from './components/layout/protected-route'
+import DashboardLayout from './components/layout/dashboard-layout'
 
 import LandingPage from './pages/landing-page'
 import LoginPage from './pages/login-page'
@@ -15,20 +17,22 @@ import ProfilePage from './pages/profile-page'
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/doctors" element={<BrowsePage />} />
-        <Route path="/doctors/:id" element={<DoctorProfilePage />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/doctors" element={<DashboardLayout><BrowsePage /></DashboardLayout>} />
+          <Route path="/doctors/:id" element={<DashboardLayout><DoctorProfilePage /></DashboardLayout>} />
 
-        <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-        <Route path="/appointments" element={<ProtectedRoute><AppointmentsPage /></ProtectedRoute>} />
-        <Route path="/appointments/:id" element={<ProtectedRoute><AppointmentDetailPage /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-      </Routes>
-    </AuthProvider>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/appointments" element={<AppointmentsPage />} />
+          <Route path="/appointments/:id" element={<AppointmentDetailPage />} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        </Routes>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }

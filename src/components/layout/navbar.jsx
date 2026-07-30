@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/auth-context'
 import { useNavigate } from 'react-router-dom'
+import ThemeToggle from '../theme/theme-toggle'
 
 export default function Navbar() {
   const { isAuthenticated, logout } = useAuth()
@@ -12,6 +13,7 @@ export default function Navbar() {
         Book<span className="text-teal">Pro</span>
       </Link>
       <div className="flex items-center gap-1">
+        <ThemeToggle />
         <Link to="/doctors" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors">Browse doctors</Link>
         <a href="#how-it-works" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors">How it works</a>
         {isAuthenticated ? (

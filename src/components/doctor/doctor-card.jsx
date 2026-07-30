@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import SpecialtyBadge from '../shared/specialty-badge'
-import { Hospital } from 'lucide-react'
+import { Hospital, Briefcase, Clock, Phone, Star } from 'lucide-react'
 
 export default function DoctorCard({ doctor }) {
-  const { id, name, specialty, hospital, tags = [], availability } = doctor
+  const { id, name, specialty, hospital_name, tags = [], availability, experience, hours, phone, rating, reviews } = doctor
   const initials = name.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0,2).toUpperCase()
 
   return (
@@ -16,15 +16,27 @@ export default function DoctorCard({ doctor }) {
         <p className="text-[12px] text-slate-light mb-2.5">{specialty}</p>
       </div>
       <div className="gap-0 flex flex-col items-start justify-center">
-        {hospital && (
+        {hospital_name && (
           <p className="text-[11px] text-navy/60 bg-surface border border-border rounded-md px-2 py-0.5 mb-2.5 w-fit">
-            <span className="flex items-center gap-2"><Hospital size={14} /> {hospital.name}</span>
+            <span className="flex items-center gap-2"><Hospital size={14} /> {hospital_name}</span>
           </p>
         )}
       </div>
       <div className="flex flex-wrap gap-1.5 mb-3.5">
         {tags.map(tag => <SpecialtyBadge key={tag} label={tag} />)}
+        {tags.length === 0 && doctor.specialties.slice(0, 2).map(s => <SpecialtyBadge key={s} label={s} />)}
       </div>
+      <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3.5 text-[11px] text-slate-light">
+        {experience && <span className="flex items-center gap-1.5"><Briefcase size={14} /> {experience}</span>}
+        {hours && <span className="flex items-center gap-1.5"><Clock size={14} /> {hours}</span>}
+        {phone && <span className="flex items-center gap-1.5"><Phone size={14} /> {phone}</span>}
+      </div>
+      {reviews > 0 && (
+        <div className="flex items-center gap-1.5 mb-3.5 text-[11px] text-slate-light">
+          <Star size={14} className="text-yellow-400 fill-yellow-400" />
+          <span>{rating} ({reviews} reviews)</span>
+        </div>
+      )}
       <div className="flex items-center justify-between pt-3 border-t border-border mt-auto">
         <span className="flex items-center gap-1.5 text-[11px] text-teal font-medium">
           <span className="w-1.5 h-1.5 rounded-full bg-teal" />{availability}
