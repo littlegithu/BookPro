@@ -1,4 +1,4 @@
-gitfrom flask import abort, request
+from flask import abort, request
 from flask_restful import Resource
 from model import Appointment, Doctor, Hospital, Patient, Review, User, db
 from schema import (
