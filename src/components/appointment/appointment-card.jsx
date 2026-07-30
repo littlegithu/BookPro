@@ -19,9 +19,10 @@ export default function AppointmentCard({ appointment, onCancel }) {
       </div>
       <div className="flex items-center gap-2 shrink-0">
         <StatusBadge status={status} />
+       
         <button
           onClick={() => onCancel?.(id)}
-          className="text-[11px] text-slate-light border border-border px-2.5 py-1 rounded-md hover:text-danger-text hover:border-danger-text transition-colors"
+          className="text-[11px] text-slate-light border border-border px-2.6 py-1 rounded-md hover:text-danger-text hover:border-danger-text transition-colors"
         >
           Cancel
         </button>
