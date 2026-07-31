@@ -2,8 +2,8 @@ import ErrorMessage from '../shared/error-message'
 
 export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmit, error, loading, footer, extra }) {
   return (
-    <div className="min-h-screen bg-surface flex items-center justify-center px-4">
-      <div className="bg-card rounded-2xl border border-border p-8 w-full max-w-md shadow-card">
+    <div className="w-full max-w-md px-4">
+      <div className="bg-card rounded-2xl border border-border p-8 shadow-card">
         <div className="text-center mb-7">
           <h1 className="font-display font-bold text-2xl text-navy mb-2">{title}</h1>
           <p className="text-sm text-slate-light">{subtitle}</p>
@@ -26,7 +26,7 @@ export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmi
         <button
           onClick={onSubmit}
           disabled={loading}
-          className="w-full mt-6 bg-teal text-white text-[14px] font-semibold py-3.5 rounded-lg hover:bg-teal-mid transition-colors disabled:opacity-60 cursor-pointer inline-flex items-center justify-center gap-2"
+          className="w-full mt-6 bg-teal text-white text-[14px] font-semibold py-3.5 rounded-lg hover:bg-teal-mid transition-colors disabled:opacity-60 cursor-pointer inline-flex items-center justify-center gap-2 min-h-[44px]"
         >
           {loading && (
             <span className="inline-block w-4 h-4 border-2 border-white/70 border-t-white rounded-full animate-spin" aria-hidden="true" />

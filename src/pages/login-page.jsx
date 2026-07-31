@@ -41,37 +41,27 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface pt-16">
+    <div className="min-h-screen bg-surface pt-16 flex items-center justify-center">
       <Navbar />
-      <div className="max-w-md mx-auto px-4 pt-10">
-        <AuthForm
-          title="Welcome back"
-          subtitle="Log in to your BookPro account"
-          fields={[
-            { name:'email', label:'Email address', type:'email', placeholder:'you@email.com', value:email, onChange:setEmail },
-            { name:'password', label:'Password', type:'password', placeholder:'Your password', value:password, onChange:setPassword },
-          ]}
-          submitLabel="Log in"
-          onSubmit={handleSubmit}
-          error={error}
-          loading={loading}
-          footer={
-            <span>
-              Don't have an account? <Link to="/register" className="text-teal hover:underline font-medium">Sign up</Link>
-              <br />
-              <Link to="/reset-password" className="text-teal hover:underline">Forgot password?</Link>
-            </span>
-          }
-          extra={
-            <button
-              onClick={() => navigate('/dashboard', { replace: true })}
-              className="w-full mt-4 border border-border text-navy text-[14px] font-medium py-3.5 rounded-lg hover:bg-surface transition-colors cursor-pointer"
-            >
-              Continue as guest
-            </button>
-          }
-        />
-      </div>
+      <AuthForm
+        title="Welcome back"
+        subtitle="Log in to your BookPro account"
+        fields={[
+          { name:'email', label:'Email address', type:'email', placeholder:'you@email.com', value:email, onChange:setEmail },
+          { name:'password', label:'Password', type:'password', placeholder:'Your password', value:password, onChange:setPassword },
+        ]}
+        submitLabel="Log in"
+        onSubmit={handleSubmit}
+        error={error}
+        loading={loading}
+        footer={
+          <span>
+            Don't have an account? <Link to="/register" className="text-teal hover:underline font-medium">Sign up</Link>
+            <br />
+            <Link to="/reset-password" className="text-teal hover:underline">Forgot password?</Link>
+          </span>
+        }
+      />
     </div>
   )
 }
