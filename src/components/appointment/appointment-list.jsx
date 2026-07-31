@@ -19,4 +19,5 @@ export default function AppointmentList({ appointments = [], onCancel }) {
       {appointments.map(a => <AppointmentCard key={a.id} appointment={a} onCancel={onCancel} />)}
     </div>
   )
+
 }
