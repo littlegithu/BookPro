@@ -1,3 +1,4 @@
+
 import { useParams, Link } from 'react-router-dom'
 import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
@@ -6,18 +7,16 @@ import MedicalRecordCard from '../components/appointment/medical-record-card'
 import Breadcrumb from '../components/shared/breadcrumb'
 import { fetchAppointments, cancelAppointment } from '../services/api'
 import { useState, useEffect } from 'react'
-import { useAuth } from '../context/auth-context'
 
 export default function AppointmentDetailPage() {
   const { id } = useParams()
-  const { user } = useAuth()
   const [appt, setAppt] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function load() {
       try {
-        const data = await fetchAppointments(user?.patientId || null)
+        const data = await fetchAppointments()
         const found = data.find(a => a.id === Number(id))
         setAppt(found || data[0])
       } catch (err) {
@@ -27,7 +26,7 @@ export default function AppointmentDetailPage() {
       }
     }
     load()
-  }, [id, user?.patientId])
+  }, [id])
 
   const handleCancel = async () => {
     if (!appt) return
