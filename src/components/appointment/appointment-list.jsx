@@ -2,7 +2,7 @@ import AppointmentCard from './appointment-card'
 import EmptyState from '../shared/empty-state'
 import { Calendar } from 'lucide-react'
 
-export default function AppointmentList({ appointments = [], onCancel }) {
+export default function AppointmentList({ appointments = [], onCancel, cancellingId }) {
   if (appointments.length === 0) {
     return (
       <EmptyState
@@ -16,7 +16,7 @@ export default function AppointmentList({ appointments = [], onCancel }) {
   }
   return (
     <div>
-      {appointments.map(a => <AppointmentCard key={a.id} appointment={a} onCancel={onCancel} />)}
+      {appointments.map(a => <AppointmentCard key={a.id} appointment={a} onCancel={onCancel} cancellingId={cancellingId} />)}
     </div>
   )
 }

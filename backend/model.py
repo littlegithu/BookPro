@@ -19,13 +19,14 @@ class User(db.Model):
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
-    phone = db.Column(db.String, nullable=False, unique=True)
+    phone = db.Column(db.String, nullable=True, unique=True)
     password = db.Column(db.String, nullable=False)
+    profile_image = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     doctor = db.relationship('Doctor', uselist=False, back_populates='user')
-    patient = db.relationship('Patient', uselist=False, back_populates='user')
+    patient = db.relationship('Patient', back_populates='user', uselist=False)
 
     @validates("password")
     def validate_password(self, key, password):
@@ -51,11 +52,11 @@ class Patient(db.Model):
     dob = db.Column(db.Date, nullable=True)
     gender = db.Column(db.String(20), nullable=True)
     address = db.Column(db.String(200), nullable=True)
-    phone = db.Column(db.String, nullable=False, unique=True)
+    phone = db.Column(db.String, nullable=True, unique=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    user = db.relationship('User', back_populates='patient')
+    user = db.relationship('User', back_populates='patient', uselist=False)
     appointments = db.relationship('Appointment', back_populates='patient')
     reviews = db.relationship('Review', back_populates='patient')
 
@@ -152,7 +153,23 @@ class Appointment(db.Model):
     patient = db.relationship('Patient', back_populates='appointments')
     doctor = db.relationship('Doctor', back_populates='appointments')
     hospital = db.relationship('Hospital', back_populates='appointments')
-    reviews = db.relationship('Review', back_populates='appointment')
+    reviews = db.relationship('Review', back_populates='appointment', cascade='all, delete-orphan')
+    medical_record = db.relationship('MedicalRecord', back_populates='appointment', uselist=False, cascade='all, delete-orphan')
+
+
+class MedicalRecord(db.Model):
+    __tablename__ = "medical_records"
+
+    id = db.Column(db.Integer, primary_key=True)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False, unique=True)
+    diagnosis = db.Column(db.Text, nullable=True)
+    prescription = db.Column(db.Text, nullable=True)
+    follow_up_date = db.Column(db.DateTime, nullable=True)
+    additional_notes = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    appointment = db.relationship('Appointment', back_populates='medical_record')
 
 
 class Hospital(db.Model):

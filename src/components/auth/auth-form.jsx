@@ -26,9 +26,12 @@ export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmi
         <button
           onClick={onSubmit}
           disabled={loading}
-          className="w-full mt-6 bg-teal text-white text-[14px] font-semibold py-3.5 rounded-lg hover:bg-teal-mid transition-colors disabled:opacity-60 cursor-pointer"
+          className="w-full mt-6 bg-teal text-white text-[14px] font-semibold py-3.5 rounded-lg hover:bg-teal-mid transition-colors disabled:opacity-60 cursor-pointer inline-flex items-center justify-center gap-2"
         >
-          {loading ? 'Please wait…' : submitLabel}
+          {loading && (
+            <span className="inline-block w-4 h-4 border-2 border-white/70 border-t-white rounded-full animate-spin" aria-hidden="true" />
+          )}
+          <span>{loading ? 'Please wait…' : submitLabel}</span>
         </button>
         {extra && <div className="mt-3">{extra}</div>}
         {footer && <div className="mt-5 text-center text-[13px] text-slate-light">{footer}</div>}

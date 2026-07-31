@@ -1,5 +1,6 @@
 from flask import abort, request
 from flask_restful import Resource
+from sqlalchemy.orm import joinedload
 
 from model import Appointment, Doctor, Hospital, Review, User, db, Patient
 from schema import (
@@ -127,6 +128,48 @@ class DoctorList(Resource):
         doctors = query.all()
         return Doctors_schema.dump(doctors)
 
+
+class DoctorSearchSuggestions(Resource):
+    def get(self):
+        query = request.args.get('q', type=str)
+        if not query:
+            return []
+        pattern = f"%{query}%"
+        doctors = Doctor.query.filter(
+            db.or_(
+                Doctor.first_name.ilike(pattern),
+                Doctor.last_name.ilike(pattern),
+                Doctor.specialty.ilike(pattern),
+                Doctor.hospital_name.ilike(pattern),
+            )
+        ).limit(10).all()
+        hospitals = Hospital.query.filter(
+            db.or_(
+                Hospital.name.ilike(pattern),
+                Hospital.address.ilike(pattern),
+            )
+        ).limit(5).all()
+        results = []
+        for doctor in doctors:
+            label = f"{doctor.first_name} {doctor.last_name}"
+            if doctor.specialty:
+                label += f" — {doctor.specialty}"
+            if doctor.hospital_name:
+                label += f" @ {doctor.hospital_name}"
+            results.append({
+                'id': doctor.id,
+                'label': label,
+                'type': 'doctor',
+            })
+        for hospital in hospitals:
+            results.append({
+                'id': hospital.id,
+                'label': hospital.name,
+                'subtitle': hospital.address,
+                'type': 'hospital',
+            })
+        return results
+
     def post(self):
         data = get_json_data()
         errors = Doctor_schema.validate(data)
@@ -211,7 +254,7 @@ class DoctorReviews(Resource):
 # Appointments
 class AppointmentList(Resource):
     def get(self):
-        appointments = Appointment.query.all()
+        appointments = Appointment.query.options(db.joinedload(Appointment.medical_record)).all()
         return Appointments_schema.dump(appointments)
 
     def post(self):
@@ -231,7 +274,7 @@ class AppointmentList(Resource):
 
 class AppointmentDetail(Resource):
     def get(self, id):
-        appointment = Appointment.query.get_or_404(id)
+        appointment = Appointment.query.options(db.joinedload(Appointment.medical_record)).get_or_404(id)
         return Appointments_schema.dump(appointment)
 
     def put(self, id):

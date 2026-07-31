@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
-import { registerUser as apiRegisterUser, fetchPatientByEmail } from '../services/api'
+import { registerUser as apiRegisterUser } from '../services/api'
 
 export default function RegisterPage() {
   const { login } = useAuth()
@@ -24,17 +24,16 @@ export default function RegisterPage() {
         first_name: firstName || name,
         last_name: lastName || name,
         email: email,
-        phone: '',
         password,
       })
-      const patient = await fetchPatientByEmail(user.email)
       const userData = {
         id: user.id,
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
-        patientId: patient?.id || null,
+        patientId: user.patient?.id || null,
+        profile_image: user.profile_image || null,
       }
       login(userData, 'mock-jwt-token')
       navigate('/dashboard', { replace: true })

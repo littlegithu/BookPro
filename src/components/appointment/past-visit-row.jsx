@@ -8,12 +8,12 @@ export default function PastVisitRow({ appointment }) {
 
   return (
     <div className="flex items-center gap-3 py-2.5 border-b border-border last:border-0">
-      <div className="w-9 h-9 rounded-full bg-surface flex items-center justify-center text-[11px] font-semibold text-slate shrink-0 border border-border">
+      <div className="w-9 h-9 rounded-full bg-surface flex items-center justify-center text-[11px] font-semibold text-slate shrink-0 border border-border dark:bg-white/10 dark:text-white/80">
         {initials}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[13px] font-medium text-navy">{doctorName}</p>
-        <p className="text-[11px] text-slate-light mt-1 inline-flex items-center gap-1"><CalendarIcon className="size-3 text-slate-light mr-1" />{date} · {specialty}</p>
+        <p className="text-[13px] font-medium text-navy dark:text-white">{doctorName}</p>
+        <p className="text-[11px] text-slate-light mt-1 inline-flex items-center gap-1 dark:text-white/60"><CalendarIcon className="size-3 text-slate-light mr-1 dark:text-white/60" />{date} · {specialty}</p>
       </div>
       <StatusBadge status={status} />
       <Link to={`/appointments/${id}`} className="text-[11px] font-medium text-teal hover:underline ml-2 inline-flex items-center gap-0.5">

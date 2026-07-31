@@ -16,6 +16,8 @@ export default function AppointmentsPage() {
   const [tab, setTab] = useState(TABS.includes(initialTab) ? initialTab : 'All')
   const [appts, setAppts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [cancelError, setCancelError] = useState('')
+  const [cancellingId, setCancellingId] = useState(null)
 
   useEffect(() => {
     async function load() {
@@ -32,19 +34,24 @@ export default function AppointmentsPage() {
   }, [])
 
   const filtered = tab === 'All' ? appts
-    : tab === 'Upcoming' ? appts.filter(a => a.status === 'confirmed' || a.status === 'pending')
+    : tab === 'Upcoming' ? appts.filter(a => a.status === 'confirmed' || a.status === 'pending' || a.status === 'Scheduled')
     : tab === 'Completed' ? appts.filter(a => a.status === 'completed')
     : appts.filter(a => a.status === 'cancelled')
 
-  const upcoming = filtered.filter(a => a.status === 'confirmed' || a.status === 'pending')
+  const upcoming = filtered.filter(a => a.status === 'confirmed' || a.status === 'pending' || a.status === 'Scheduled')
   const past = filtered.filter(a => a.status === 'completed' || a.status === 'cancelled')
 
   const handleCancel = async (id) => {
+    setCancelError('')
+    setCancellingId(id)
     try {
       await cancelAppointment(id)
       setAppts(prev => prev.filter(a => a.id !== id))
     } catch (err) {
       console.error('Failed to cancel appointment:', err)
+      setCancelError(err.message || 'Failed to cancel appointment. Please try again.')
+    } finally {
+      setCancellingId(null)
     }
   }
 
@@ -71,13 +78,21 @@ export default function AppointmentsPage() {
         </div>
 
         {loading ? (
-          <p className="text-slate">Loading appointments...</p>
+          <div className="flex items-center justify-center py-10">
+            <span className="inline-block w-6 h-6 border-2 border-teal border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+          </div>
         ) : (
           <>
             {upcoming.length > 0 && (
               <div className="bg-card rounded-xl border border-border p-5 mb-5">
                 <h2 className="font-display font-semibold text-[17px] text-navy mb-4">Upcoming</h2>
-                <AppointmentList appointments={upcoming} onCancel={isAuthenticated ? handleCancel : undefined} />
+                <AppointmentList appointments={upcoming} onCancel={isAuthenticated ? handleCancel : undefined} cancellingId={cancellingId} />
+              </div>
+            )}
+            {cancelError && (
+              <div className="mb-5 text-[13px] text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
+                {cancelError}
+                <button onClick={() => setCancelError('')} className="ml-2 text-red-800 hover:text-red-900 font-medium">Dismiss</button>
               </div>
             )}
 

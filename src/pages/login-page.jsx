@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
 import Navbar from '../components/layout/navbar'
-import { loginUser as apiLoginUser, fetchPatientByEmail } from '../services/api'
+import { loginUser as apiLoginUser } from '../services/api'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -22,14 +22,14 @@ export default function LoginPage() {
     try {
       const result = await apiLoginUser({ email, password })
       const user = result.user
-      const patient = await fetchPatientByEmail(user.email)
       const userData = {
         id: user.id,
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
-        patientId: patient?.id || null,
+        patientId: user.patient?.id || null,
+        profile_image: user.profile_image || null,
       }
       login(userData, 'mock-jwt-token')
       navigate(from, { replace: true })
@@ -41,7 +41,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface pt-16">
       <Navbar />
       <div className="max-w-md mx-auto px-4 pt-10">
         <AuthForm

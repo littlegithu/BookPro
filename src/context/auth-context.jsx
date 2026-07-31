@@ -17,6 +17,12 @@ export function AuthProvider({ children }) {
     localStorage.setItem('bookpro_token', jwtToken)
   }
 
+  const updateProfileImage = (profileImage) => {
+    const updatedUser = { ...user, profile_image: profileImage }
+    setUser(updatedUser)
+    localStorage.setItem('bookpro_user', JSON.stringify(updatedUser))
+  }
+
   const logout = () => {
     setUser(null)
     setToken(null)
@@ -25,7 +31,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ user, token, login, logout, updateProfileImage, isAuthenticated: !!token }}>
       {children}
     </AuthContext.Provider>
   )

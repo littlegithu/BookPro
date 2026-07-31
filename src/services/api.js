@@ -82,7 +82,7 @@ export function transformAppointment(a) {
     time: timeStr,
     status: statusMap[a.status] || a.status,
     reason: a.notes || '',
-    record: null,
+    record: a.record || null,
     appointment_date: a.appointment_date,
     appointment_time: a.appointment_time,
     patient_id: a.patient_id,
@@ -126,6 +126,7 @@ export function transformUser(u) {
     email: u.email,
     phone: u.phone,
     name: `${u.first_name} ${u.last_name}`,
+    profile_image: u.profile_image || null,
   };
 }
 
@@ -166,6 +167,14 @@ export async function fetchDoctor(id) {
 
 export async function fetchDoctorReviews(doctorId) {
   const data = await request(`/doctors/${doctorId}/reviews`)
+  if (Array.isArray(data)) {
+    return data
+  }
+  return []
+}
+
+export async function fetchDoctorSearchSuggestions(query) {
+  const data = await request(`/doctors/search/suggestions?q=${encodeURIComponent(query)}`)
   if (Array.isArray(data)) {
     return data
   }

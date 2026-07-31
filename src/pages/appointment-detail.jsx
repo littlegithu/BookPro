@@ -42,7 +42,9 @@ export default function AppointmentDetailPage() {
       <DashboardLayout>
         <Topbar title="Appointment details" />
         <div className="p-7 max-w-2xl">
-          <p className="text-slate">Loading appointment...</p>
+          <div className="flex items-center justify-center py-10">
+            <span className="inline-block w-6 h-6 border-2 border-teal border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+          </div>
         </div>
       </DashboardLayout>
     )
@@ -87,7 +89,7 @@ export default function AppointmentDetailPage() {
             ))}
           </div>
 
-          {appt.record && <MedicalRecordCard record={appt.record} />}
+          {appt.record && <MedicalRecordCard record={appt.record} appointment={appt} />}
 
           {(appt.status === 'confirmed' || appt.status === 'pending') && (
             <div className="flex gap-3 mt-6 pt-6 border-t border-border">

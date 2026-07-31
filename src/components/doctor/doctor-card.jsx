@@ -7,17 +7,17 @@ export default function DoctorCard({ doctor }) {
   const initials = name.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0,2).toUpperCase()
 
   return (
-    <div className="bg-card rounded-xl border border-border shadow-[0_1px_2px_#CBD5E1] p-5 flex flex-col hover:border-teal hover:shadow-[0_4px_16px_rgba(15,123,108,0.10)] gap-1.5">
-      <div className="w-13 h-13 rounded-full bg-teal-light flex items-center justify-center text-teal font-semibold text-base mb-3.5 shrink-0">
+    <div className="bg-card rounded-xl border border-border shadow-[0_1px_2px_#CBD5E1] p-5 flex flex-col hover:border-teal hover:shadow-[0_4px_16px_rgba(15,123,108,0.10)] gap-1.5 dark:shadow-none dark:border-white/10 dark:hover:border-teal/50">
+      <div className="w-13 h-13 rounded-full bg-teal-light flex items-center justify-center text-teal font-semibold text-base mb-3.5 shrink-0 dark:bg-teal/25 dark:text-teal">
         {initials}
       </div>
       <div className="gap-0 flex flex-col items-start justify-center">
-        <p className="text-[14px] font-semibold text-navy mb-0.5">{name}</p>
-        <p className="text-[12px] text-slate-light mb-2.5">{specialty}</p>
+        <p className="text-[14px] font-semibold text-navy mb-0.5 dark:text-white">{name}</p>
+        <p className="text-[12px] text-slate-light mb-2.5 dark:text-white/60">{specialty}</p>
       </div>
       <div className="gap-0 flex flex-col items-start justify-center">
         {hospital_name && (
-          <p className="text-[11px] text-navy/60 bg-surface border border-border rounded-md px-2 py-0.5 mb-2.5 w-fit">
+          <p className="text-[11px] text-navy/60 bg-surface border border-border rounded-md px-2 py-0.5 mb-2.5 w-fit dark:bg-white/10 dark:text-white/70 dark:border-white/15">
             <span className="flex items-center gap-2"><Hospital size={14} /> {hospital_name}</span>
           </p>
         )}
@@ -26,22 +26,22 @@ export default function DoctorCard({ doctor }) {
         {tags.map(tag => <SpecialtyBadge key={tag} label={tag} />)}
         {tags.length === 0 && doctor.specialties.slice(0, 2).map(s => <SpecialtyBadge key={s} label={s} />)}
       </div>
-      <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3.5 text-[11px] text-slate-light">
+      <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3.5 text-[11px] text-slate-light dark:text-white/60">
         {experience && <span className="flex items-center gap-1.5"><Briefcase size={14} /> {experience}</span>}
         {hours && <span className="flex items-center gap-1.5"><Clock size={14} /> {hours}</span>}
         {phone && <span className="flex items-center gap-1.5"><Phone size={14} /> {phone}</span>}
       </div>
       {reviews > 0 && (
-        <div className="flex items-center gap-1.5 mb-3.5 text-[11px] text-slate-light">
+        <div className="flex items-center gap-1.5 mb-3.5 text-[11px] text-slate-light dark:text-white/60">
           <Star size={14} className="text-yellow-400 fill-yellow-400" />
           <span>{rating} ({reviews} reviews)</span>
         </div>
       )}
-      <div className="flex items-center justify-between pt-3 border-t border-border mt-auto">
+      <div className="flex items-center justify-between pt-3 border-t border-border mt-auto dark:border-white/10">
         <span className="flex items-center gap-1.5 text-[11px] text-teal font-medium">
           <span className="w-1.5 h-1.5 rounded-full bg-teal" />{availability}
         </span>
-        <Link to={`/doctors/${id}`} className="text-[12px] font-medium text-teal bg-teal-light px-3.5 py-1.5 rounded-md hover:bg-teal hover:text-white transition-colors">
+        <Link to={`/doctors/${id}`} className="text-[12px] font-medium text-teal bg-teal-light px-3.5 py-1.5 rounded-md hover:bg-teal hover:text-white transition-colors dark:bg-teal/25 dark:hover:bg-teal dark:hover:text-white">
           Book
         </Link>
       </div>
