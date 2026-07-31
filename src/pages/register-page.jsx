@@ -1,7 +1,9 @@
+
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
+import Navbar from '../components/layout/navbar'
 import { registerUser as apiRegisterUser } from '../services/api'
 
 export default function RegisterPage() {
@@ -45,28 +47,23 @@ export default function RegisterPage() {
   }
 
   return (
-    <AuthForm
-      title="Create your account"
-      subtitle="Start booking appointments in minutes"
-      fields={[
-        { name:'name', label:'Full name', type:'text', placeholder:'Your full name', value:name, onChange:setName },
-        { name:'email', label:'Email address', type:'email', placeholder:'you@email.com', value:email, onChange:setEmail },
-        { name:'password', label:'Password', type:'password', placeholder:'Create a password', value:password, onChange:setPassword },
-        { name:'confirm', label:'Confirm password', type:'password', placeholder:'Repeat password', value:confirm, onChange:setConfirm },
-      ]}
-      submitLabel="Create account"
-      onSubmit={handleSubmit}
-      error={error}
-      loading={loading}
-      footer={<span>Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link></span>}
-      extra={
-        <button
-          onClick={() => navigate('/dashboard', { replace: true })}
-          className="w-full mt-4 border border-border text-navy text-[14px] font-medium py-3.5 rounded-lg hover:bg-surface transition-colors cursor-pointer"
-        >
-          Continue as guest
-        </button>
-      }
-    />
+    <div className="min-h-screen bg-surface pt-16 flex items-center justify-center">
+      <Navbar />
+      <AuthForm
+        title="Create your account"
+        subtitle="Start booking appointments in minutes"
+        fields={[
+          { name:'name', label:'Full name', type:'text', placeholder:'Your full name', value:name, onChange:setName },
+          { name:'email', label:'Email address', type:'email', placeholder:'you@email.com', value:email, onChange:setEmail },
+          { name:'password', label:'Password', type:'password', placeholder:'Create a password', value:password, onChange:setPassword },
+          { name:'confirm', label:'Confirm password', type:'password', placeholder:'Repeat password', value:confirm, onChange:setConfirm },
+        ]}
+        submitLabel="Create account"
+        onSubmit={handleSubmit}
+        error={error}
+        loading={loading}
+        footer={<span>Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link></span>}
+      />
+    </div>
   )
 }
