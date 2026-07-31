@@ -7,14 +7,14 @@ import { fetchAppointments } from '../services/api'
 import { useAuth } from '../context/auth-context'
 
 export default function MedicalRecordsPage() {
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated } = useAuth()
   const [appts, setAppts] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function load() {
       try {
-        const data = await fetchAppointments(user?.patientId || null)
+        const data = await fetchAppointments()
         setAppts(data)
       } catch (err) {
         console.error('Failed to load medical records:', err)
@@ -23,7 +23,7 @@ export default function MedicalRecordsPage() {
       }
     }
     load()
-  }, [user?.patientId])
+  }, [])
 
   const records = appts.filter(a => a.status === 'completed' && a.record)
 
