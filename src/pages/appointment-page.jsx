@@ -10,7 +10,7 @@ import { fetchAppointments, cancelAppointment } from '../services/api'
 const TABS = ['All','Upcoming','Completed','Cancelled']
 
 export default function AppointmentsPage() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const [searchParams] = useSearchParams()
   const initialTab = searchParams.get('tab') || 'All'
   const [tab, setTab] = useState(TABS.includes(initialTab) ? initialTab : 'All')
@@ -22,7 +22,7 @@ export default function AppointmentsPage() {
   useEffect(() => {
     async function load() {
       try {
-        const data = await fetchAppointments()
+        const data = await fetchAppointments(user?.patientId || null)
         setAppts(data)
       } catch (err) {
         console.error('Failed to load appointments:', err)
@@ -31,7 +31,7 @@ export default function AppointmentsPage() {
       }
     }
     load()
-  }, [])
+  }, [user?.patientId])
 
   const filtered = tab === 'All' ? appts
     : tab === 'Upcoming' ? appts.filter(a => a.status === 'confirmed' || a.status === 'pending' || a.status === 'Scheduled')

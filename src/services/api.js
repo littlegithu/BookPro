@@ -189,10 +189,14 @@ export async function fetchHospitals() {
   return [];
 }
 
-export async function fetchAppointments() {
+export async function fetchAppointments(patientId) {
   const data = await request('/appointments');
   if (Array.isArray(data)) {
-    return data.map(transformAppointment);
+    let result = data.map(transformAppointment);
+    if (patientId != null) {
+      result = result.filter(a => a.patient_id === patientId);
+    }
+    return result;
   }
   return [];
 }
