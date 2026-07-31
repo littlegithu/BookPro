@@ -1,6 +1,7 @@
 from flask import abort, request
 from flask_restful import Resource
-from model import Appointment, Doctor, Hospital, Patient, Review, User, db
+
+from model import Appointment, Doctor, Hospital, Review, User, db, Patient
 from schema import (
     Appointment_schema,
     Appointments_schema,
@@ -23,7 +24,7 @@ def get_json_data():
         abort(400, description="Invalid JSON body")
     return data
 
-
+# Users
 class UserList(Resource):
     def get(self):
         users = User.query.all()
