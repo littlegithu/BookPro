@@ -20,7 +20,7 @@ export default function DashboardPage() {
   useEffect(() => {
     async function load() {
       try {
-        const data = await fetchAppointments(user?.patientId || null)
+        const data = await fetchAppointments()
         setAppointments(data)
       } catch (err) {
         console.error('Failed to load appointments:', err)
@@ -29,7 +29,7 @@ export default function DashboardPage() {
       }
     }
     load()
-  }, [user?.patientId])
+  }, [])
 
   const upcoming = appointments.filter(a => a.status === 'confirmed' || a.status === 'pending' || a.status === 'Scheduled')
   const past = appointments.filter(a => a.status === 'completed' || a.status === 'cancelled')
