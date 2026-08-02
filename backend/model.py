@@ -158,3 +158,14 @@ class Appointment(db.Model):
 
 class MedicalRecord(db.Model):
     __tablename__ = "medical_records"
+
+    id = db.Column(db.Integer, primary_key=True)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False, unique=True)
+    diagnosis = db.Column(db.Text, nullable=True)
+    prescription = db.Column(db.Text, nullable=True)
+    follow_up_date = db.Column(db.DateTime, nullable=True)
+    additional_notes = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    appointment = db.relationship('Appointment', back_populates='medical_record')
