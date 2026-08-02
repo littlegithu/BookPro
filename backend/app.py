@@ -11,6 +11,7 @@ from resources import (
     DoctorDetail,
     DoctorList,
     DoctorReviews,
+    DoctorSearchSuggestions,
     HospitalDetail,
     HospitalList,
     PatientDetail,
@@ -55,6 +56,7 @@ api.add_resource(PatientDetail, "/api/patients/<int:id>")
 api.add_resource(DoctorList, "/api/doctors")
 api.add_resource(DoctorDetail, "/api/doctors/<int:id>")
 api.add_resource(DoctorReviews, "/api/doctors/<int:doctor_id>/reviews")
+api.add_resource(DoctorSearchSuggestions, "/api/doctors/search/suggestions")
 
 api.add_resource(ReviewList, "/api/reviews")
 api.add_resource(ReviewDetail, "/api/reviews/<int:id>")

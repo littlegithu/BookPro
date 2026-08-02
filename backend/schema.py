@@ -5,7 +5,7 @@ class BaseSchema(Schema):
     first_name = fields.Str(required=True, validate=validate.Length(min=1, max=100))
     last_name = fields.Str(required=True, validate=validate.Length(min=1, max=100))
     email = fields.Email(required=True)
-    phone = fields.Str(required=True, validate=validate.Regexp(
+    phone = fields.Str(required=False, allow_none=True, validate=validate.Regexp(
         r'^(?:\+254|0)?(7|1)\d{8}$',
         error="Phone must be a valid Kenyan phone number, e.g. 0712345678 or +254712345678"
     ))
@@ -14,7 +14,9 @@ class BaseSchema(Schema):
 
 
 class UserSchema(BaseSchema):
+    id = fields.Int(dump_only=True)
     password = fields.Str(required=True, load_only=True, validate=validate.Length(min=8))
+    profile_image = fields.Str(required=False, allow_none=True)
 
     doctor = fields.Nested("DoctorSchema", dump_only=True)
     patient = fields.Nested("PatientSchema", dump_only=True)
@@ -75,6 +77,18 @@ class AppointmentSchema(Schema):
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
     doctor = fields.Nested("DoctorSchema", dump_only=True)
+    record = fields.Nested("MedicalRecordSchema", dump_only=True, attribute='medical_record')
+
+
+class MedicalRecordSchema(Schema):
+    id = fields.Int(dump_only=True)
+    appointment_id = fields.Int(dump_only=True)
+    diagnosis = fields.Str(required=False)
+    prescription = fields.Str(required=False)
+    follow_up_date = fields.DateTime(dump_only=True)
+    additional_notes = fields.Str(required=False)
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
 
 
 class HospitalSchema(Schema):
@@ -104,5 +118,9 @@ Reviews_schema = ReviewSchema(many=True)
 Appointment_schema = AppointmentSchema()
 Appointments_schema = AppointmentSchema(many=True)
 
+MedicalRecord_schema = MedicalRecordSchema()
+MedicalRecords_schema = MedicalRecordSchema(many=True)
+
 Hospital_schema = HospitalSchema()
+Hospitals_schema = HospitalSchema(many=True)
 Hospitals_schema = HospitalSchema(many=True)

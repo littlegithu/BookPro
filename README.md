@@ -16,13 +16,19 @@ BookPro/
 │   ├── seed.py
 │   ├── .env          # Contains Neon database URI and other secrets (not committed)
 │   └── Pipfile
-├── src/              # React frontend
-│   ├── pages/
-│   ├── components/
-│   ├── context/
-│   ├── services/
+├── frontend/         # React frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── services/
+│   │   └── ...
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── package.json
 │   └── ...
-└── package.json
+└── .gitignore
 ```
 
 ## Setup
@@ -64,6 +70,7 @@ The auth server will run on `http://localhost:3001`.
 In a new terminal:
 
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
