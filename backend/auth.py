@@ -33,3 +33,12 @@ def register_user(data):
     db.session.commit()
 
     return user
+
+
+def update_user_password(user, data):
+    if "password" in data:
+        data["password"] = hash_password(data["password"])
+    for key, value in data.items():
+        setattr(user, key, value)
+    db.session.commit()
+    return user
