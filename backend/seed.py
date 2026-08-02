@@ -179,3 +179,18 @@ with app.app_context():
             address="14 Kijabe Street, Nairobi",
             phone="0712345678",
         ),
+        Patient(
+            user_id=users[1].id,
+            first_name="Brian",
+            last_name="Mwangi",
+            email="brian.mwangi@example.com",
+            dob=date(1988, 11, 2),
+            gender="Male",
+            address="22 Mombasa Road, Nairobi",
+            phone="0723456789",
+        ),
+        Patient(
+            user_id=users[2].id,
+            first_name="Carol",
+            last_name="Ndegwa",
+            email="carol.ndegwa@example.com",
