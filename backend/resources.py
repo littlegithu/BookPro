@@ -17,3 +17,14 @@ from schema import (
     user_schema,
     users_schema,
 )
+
+
+def get_json_data():
+    data = request.get_json(force=True, silent=True)
+    if not data:
+        abort(400, description="Invalid JSON body")
+    return data
+
+# Users
+class UserList(Resource):
+    def get(self):
