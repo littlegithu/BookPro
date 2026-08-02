@@ -65,4 +65,12 @@ api.add_resource(AppointmentList, "/api/appointments")
 api.add_resource(AppointmentDetail, "/api/appointments/<int:id>")
 
 api.add_resource(HospitalList, "/api/hospitals")
+api.add_resource(HospitalDetail, "/api/hospitals/<int:id>")
+
+# initialize api
+api.init_app(app)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
