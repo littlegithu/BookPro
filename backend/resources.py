@@ -318,3 +318,20 @@ class HospitalDetail(Resource):
     def get(self, id):
         hospital = Hospital.query.get_or_404(id)
         return Hospitals_schema.dump(hospital)
+
+    def put(self, id):
+        hospital = Hospital.query.get_or_404(id)
+        data = get_json_data()
+        errors = Hospital_schema.validate(data, partial=True)
+        if errors:
+            return errors, 400
+        for key, value in data.items():
+            setattr(hospital, key, value)
+        db.session.commit()
+        return Hospital_schema.dump(hospital)
+
+    def delete(self, id):
+        hospital = Hospital.query.get_or_404(id)
+        db.session.delete(hospital)
+        db.session.commit()
+        return {"message": "Hospital deleted successfully"}, 200
