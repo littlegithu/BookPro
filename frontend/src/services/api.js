@@ -286,3 +286,24 @@ export async function deleteAdminDoctor(id) {
     method: 'DELETE',
   });
 }
+
+export async function registerHospital(data) {
+  return request('/hospitals/register', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function registerDoctor(data) {
+  return request('/doctors/register', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function registerStaff(data) {
+  return request('/staff/register', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}

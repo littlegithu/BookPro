@@ -8,6 +8,7 @@ import AdminLayout from './admin/components/AdminLayout'
 import LandingPage from './pages/landing-page'
 import LoginPage from './pages/login-page'
 import RegisterPage from './pages/register-page'
+import PortalPage from './pages/portal-page'
 import ResetPasswordPage from './pages/reset-password'
 import BrowsePage from './pages/browse-page'
 import DoctorProfilePage from './pages/doctor-profile-page'
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/portal" element={<PortalPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/doctors" element={<DashboardLayout><BrowsePage /></DashboardLayout>} />
           <Route path="/doctors/:id" element={<DashboardLayout><DoctorProfilePage /></DashboardLayout>} />
