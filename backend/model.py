@@ -169,3 +169,14 @@ class MedicalRecord(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     appointment = db.relationship('Appointment', back_populates='medical_record')
+
+
+class Hospital(db.Model):
+    __tablename__ = "hospitals"
+
+    __table_args__ = (
+        CheckConstraint("length(name) >= 1", name="ck_hospital_first_name_length"),
+        CheckConstraint("email LIKE '%@%'", name="ck_hospital_email_format"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
