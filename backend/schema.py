@@ -27,3 +27,14 @@ class PatientSchema(BaseSchema):
     dob = fields.Date(required=False)
     gender = fields.Str(required=False)
     address = fields.Str(required=False)
+
+
+class DoctorSchema(BaseSchema):
+    id = fields.Int(dump_only=True)
+    specialty = fields.Str(required=True)
+    specialties = fields.Str(required=False, dump_only=True)
+    profile_image = fields.Str(required=False, dump_only=True)
+    languages = fields.Str(required=False, dump_only=True)
+    education = fields.Str(required=False, dump_only=True)
+    certifications = fields.Str(required=False, dump_only=True)
+    working_days = fields.Str(required=False, dump_only=True)
