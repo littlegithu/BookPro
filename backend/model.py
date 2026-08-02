@@ -148,3 +148,13 @@ class Appointment(db.Model):
     notes = db.Column(db.String(500), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    patient = db.relationship('Patient', back_populates='appointments')
+    doctor = db.relationship('Doctor', back_populates='appointments')
+    hospital = db.relationship('Hospital', back_populates='appointments')
+    reviews = db.relationship('Review', back_populates='appointment', cascade='all, delete-orphan')
+    medical_record = db.relationship('MedicalRecord', back_populates='appointment', uselist=False, cascade='all, delete-orphan')
+
+
+class MedicalRecord(db.Model):
+    __tablename__ = "medical_records"
