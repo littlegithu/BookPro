@@ -102,3 +102,30 @@ class Doctor(db.Model):
     user = db.relationship('User', back_populates='doctor')
     appointments = db.relationship('Appointment', back_populates='doctor', lazy=True)
     review_objects = db.relationship('Review', back_populates='doctor', lazy=True)
+
+
+class Review(db.Model):
+    __tablename__ = "reviews"
+
+    __table_args__ = (
+        CheckConstraint("rating >= 1 AND rating <= 5", name="ck_review_rating_range"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'), nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+    comment = db.Column(db.String(500), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    patient = db.relationship('Patient', back_populates='reviews')
+    doctor = db.relationship('Doctor', back_populates='review_objects')
+    appointment = db.relationship('Appointment', back_populates='reviews')
+
+    @property
+    def patient_name(self):
+        if self.patient:
+            return f"{self.patient.first_name} {self.patient.last_name}"
+        return None
