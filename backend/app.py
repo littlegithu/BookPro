@@ -37,3 +37,9 @@ app.config["SESSION_COOKIE_SAMESITE"] = os.environ.get("SESSION_COOKIE_SAMESITE"
 app.config["SESSION_COOKIE_SECURE"] = os.environ.get("SESSION_COOKIE_SECURE", "False").lower() == "true"
 app.config["SESSION_COOKIE_HTTPONLY"] = os.environ.get("SESSION_COOKIE_HTTPONLY", "True").lower() == "true"
 
+CORS_ORIGINS = os.environ.get("ALLOWED_ORIGINS", "").split(",")
+CORS(app, supports_credentials=True, origins=[origin.strip() for origin in CORS_ORIGINS if origin.strip()])
+
+# initialize extensions
+migrate.init_app(app=app, db=db)
+
