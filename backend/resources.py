@@ -2,7 +2,8 @@ from flask import abort, request
 from flask_restful import Resource
 from sqlalchemy.orm import joinedload
 
-from model import Appointment, Doctor, Hospital, Review, User, db, Patient
+from extensions import db
+from model import Appointment, Doctor, Hospital, Review, User, Patient
 from schema import (
     Appointment_schema,
     Appointments_schema,
@@ -68,13 +69,16 @@ class UserDetail(Resource):
 
 class UserLogin(Resource):
     def post(self):
-        from auth import login_user
+        from auth import generate_token, login_user
 
         data = get_json_data()
         user = login_user(data)
         if not user:
             return {"message": "Invalid credentials"}, 401
-        return {"message": "Login successful", "user": user_schema.dump(user)}, 200
+        if not user.token:
+            user.token = generate_token()
+            db.session.commit()
+        return {"message": "Login successful", "token": user.token, "user": user_schema.dump(user)}, 200
 
 # Patients
 class PatientList(Resource):
@@ -252,7 +256,7 @@ class DoctorReviews(Resource):
 # Appointments
 class AppointmentList(Resource):
     def get(self):
-        appointments = Appointment.query.options(db.joinedload(Appointment.medical_record)).all()
+        appointments = Appointment.query.options(joinedload(Appointment.medical_record)).all()
         return Appointments_schema.dump(appointments)
 
     def post(self):
@@ -272,7 +276,7 @@ class AppointmentList(Resource):
 
 class AppointmentDetail(Resource):
     def get(self, id):
-        appointment = Appointment.query.options(db.joinedload(Appointment.medical_record)).get_or_404(id)
+        appointment = Appointment.query.options(joinedload(Appointment.medical_record)).get_or_404(id)
         return Appointments_schema.dump(appointment)
 
     def put(self, id):

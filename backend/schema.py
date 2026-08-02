@@ -17,6 +17,8 @@ class UserSchema(BaseSchema):
     id = fields.Int(dump_only=True)
     password = fields.Str(required=True, load_only=True, validate=validate.Length(min=8))
     profile_image = fields.Str(required=False, allow_none=True)
+    role = fields.Str(dump_only=True)
+    token = fields.Str(load_only=True, allow_none=True)
 
     doctor = fields.Nested("DoctorSchema", dump_only=True)
     patient = fields.Nested("PatientSchema", dump_only=True)
@@ -122,5 +124,4 @@ MedicalRecord_schema = MedicalRecordSchema()
 MedicalRecords_schema = MedicalRecordSchema(many=True)
 
 Hospital_schema = HospitalSchema()
-Hospitals_schema = HospitalSchema(many=True)
 Hospitals_schema = HospitalSchema(many=True)

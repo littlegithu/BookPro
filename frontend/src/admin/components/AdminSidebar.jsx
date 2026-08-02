@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, Users, Stethoscope, Hospital, Calendar, FileText, Star, Settings, LogOut } from 'lucide-react'
+import { NavLink, Link } from 'react-router-dom'
+import { LayoutDashboard, Users, Stethoscope, Hospital, Calendar, FileText, Star, LogOut } from 'lucide-react'
 
 const navItems = [
   { label: 'Dashboard', to: '/admin', icon: <LayoutDashboard size={18} /> },

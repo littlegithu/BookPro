@@ -21,6 +21,8 @@ class User(db.Model):
     phone = db.Column(db.String, nullable=True, unique=True)
     password = db.Column(db.String, nullable=False)
     profile_image = db.Column(db.Text, nullable=True)
+    role = db.Column(db.String(20), nullable=False, default='user')
+    token = db.Column(db.String(100), nullable=True, unique=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 

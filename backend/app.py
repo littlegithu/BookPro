@@ -1,10 +1,9 @@
 import os
 
 from dotenv import load_dotenv
-from extensions import api, bcrypt, db, migrate
 from flask import Flask
 from flask_cors import CORS
-from flask_restful import Api
+from extensions import api, bcrypt, db, migrate
 from resources import (
     AppointmentDetail,
     AppointmentList,
@@ -23,13 +22,10 @@ from resources import (
     UserLogin,
 )
 
-# load env vars
 load_dotenv()
 
-# create an instance of the flask app
 app = Flask(__name__)
 
-# app config
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI", "sqlite:///demo.db")
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -40,12 +36,12 @@ app.config["SESSION_COOKIE_HTTPONLY"] = os.environ.get("SESSION_COOKIE_HTTPONLY"
 CORS_ORIGINS = os.environ.get("ALLOWED_ORIGINS", "").split(",")
 CORS(app, supports_credentials=True, origins=[origin.strip() for origin in CORS_ORIGINS if origin.strip()])
 
-# initialize extensions
 migrate.init_app(app=app, db=db)
 db.init_app(app=app)
 bcrypt.init_app(app)
 
-# register resources
+api.init_app(app)
+
 api.add_resource(UserList, "/api/users")
 api.add_resource(UserDetail, "/api/users/<int:id>")
 api.add_resource(UserLogin, "/api/users/login")
@@ -67,16 +63,12 @@ api.add_resource(AppointmentDetail, "/api/appointments/<int:id>")
 api.add_resource(HospitalList, "/api/hospitals")
 api.add_resource(HospitalDetail, "/api/hospitals/<int:id>")
 
-# admin resources
 from admin.dashboard import AdminDashboard
 from admin.resources import AdminDoctorList, AdminDoctorDetail
 
 api.add_resource(AdminDashboard, "/api/admin/dashboard")
 api.add_resource(AdminDoctorList, "/api/admin/doctors")
 api.add_resource(AdminDoctorDetail, "/api/admin/doctors/<int:id>")
-
-# initialize api
-api.init_app(app)
 
 
 if __name__ == "__main__":

@@ -22,7 +22,12 @@ export default function LoginPage() {
     setError(''); setLoading(true)
     try {
       const result = await apiLoginUser({ email, password })
+      const token = result.token
       const user = result.user
+      if (!token) {
+        setError('No token received from server')
+        return
+      }
       const userData = {
         id: user.id,
         name: `${user.first_name} ${user.last_name}`,
@@ -32,7 +37,7 @@ export default function LoginPage() {
         patientId: user.patient?.id || null,
         profile_image: user.profile_image || null,
       }
-      login(userData, 'mock-jwt-token')
+      login(userData, token)
       navigate(from, { replace: true })
     } catch (err) {
       setError(err.message || 'Invalid credentials')
