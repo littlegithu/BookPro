@@ -252,3 +252,35 @@ export async function fetchPatient(id) {
   const data = await request(`/patients/${id}`);
   return transformPatient(data);
 }
+
+export async function fetchAdminDashboard() {
+  return request('/admin/dashboard');
+}
+
+export async function fetchAdminDoctors() {
+  const data = await request('/admin/doctors');
+  if (Array.isArray(data)) {
+    return data.map(transformDoctor);
+  }
+  return [];
+}
+
+export async function createAdminDoctor(data) {
+  return request('/admin/doctors', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateAdminDoctor(id, data) {
+  return request(`/admin/doctors/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteAdminDoctor(id) {
+  return request(`/admin/doctors/${id}`, {
+    method: 'DELETE',
+  });
+}

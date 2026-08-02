@@ -3,6 +3,7 @@ import { AuthProvider } from './context/auth-context'
 import { ThemeProvider } from './context/theme-context'
 import ProtectedRoute from './components/layout/protected-route'
 import DashboardLayout from './components/layout/dashboard-layout'
+import AdminLayout from './admin/components/AdminLayout'
 
 import LandingPage from './pages/landing-page'
 import LoginPage from './pages/login-page'
@@ -14,8 +15,9 @@ import DashboardPage from './pages/dashboard'
 import AppointmentsPage from './pages/appointment-page'
 import MedicalRecordsPage from './pages/medical-records-page'
 import AppointmentDetailPage from './pages/appointment-detail'
-import MedicalRecordsPage from './pages/medical-records-page'
 import ProfilePage from './pages/profile-page'
+
+import DoctorsAdminPage from './admin/pages/Doctors'
 
 export default function App() {
   return (
@@ -34,6 +36,11 @@ export default function App() {
           <Route path="/appointments/:id" element={<AppointmentDetailPage />} />
           <Route path="/medical-records" element={<MedicalRecordsPage />} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<DoctorsAdminPage />} />
+            <Route path="doctors" element={<DoctorsAdminPage />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </ThemeProvider>
