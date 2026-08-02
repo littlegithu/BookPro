@@ -32,3 +32,13 @@ class User(db.Model):
         if password and len(password) < 8:
             raise ValueError("Password must be at least 8 characters")
         return password
+
+
+class Patient(db.Model):
+    __tablename__ = "patients"
+
+    __table_args__ = (
+        CheckConstraint("length(first_name) >= 1", name="ck_patient_first_name_length"),
+        CheckConstraint("length(last_name) >= 1", name="ck_patient_last_name_length"),
+        CheckConstraint("email LIKE '%@%'", name="ck_patient_email_format"),
+    )
