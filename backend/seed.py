@@ -209,3 +209,17 @@ with app.app_context():
             address="5 Kisumu Avenue, Kisumu",
             phone="0745678901",
         ),
+        Patient(
+            user_id=users[4].id,
+            first_name="Eva",
+            last_name="Kipchoge",
+            email="eva.kipchoge@example.com",
+            dob=date(2000, 9, 10),
+            gender="Female",
+            address="31 Eldoret Road, Eldoret",
+            phone="0756789012",
+        ),
+    ]
+    db.session.add_all(patients)
+    db.session.commit()
+    print(f"Seeded {len(patients)} patients.")
