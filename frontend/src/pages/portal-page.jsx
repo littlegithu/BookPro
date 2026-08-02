@@ -4,11 +4,12 @@ import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
 import Navbar from '../components/layout/navbar'
 import { registerDoctor, registerHospital, registerStaff } from '../services/api'
+import { Stethoscope, Building2, Users } from 'lucide-react'
 
 const ROLES = [
-  { key: 'doctor', label: 'Doctor', icon: '🏥', description: 'Register as a medical practitioner' },
-  { key: 'hospital', label: 'Hospital', icon: '🏥', description: 'Register your hospital or clinic' },
-  { key: 'staff', label: 'Staff', icon: '👥', description: 'Register as hospital staff' },
+  { key: 'doctor', label: 'Doctor', icon: Stethoscope, description: 'Register as a medical practitioner' },
+  { key: 'hospital', label: 'Hospital', icon: Building2, description: 'Register your hospital or clinic' },
+  { key: 'staff', label: 'Staff', icon: Users, description: 'Register as hospital staff' },
 ]
 
 export default function PortalPage() {
@@ -71,7 +72,7 @@ export default function PortalPage() {
                 onClick={() => handleRoleSelect(r.key)}
                 className="bg-card rounded-2xl border border-border p-8 shadow-card hover:shadow-lg transition-shadow text-center cursor-pointer"
               >
-                <span className="text-4xl mb-4 block">{r.icon}</span>
+                <span className="text-4xl mb-4 block text-teal"><r.icon size={48} /></span>
                 <h3 className="font-display font-bold text-lg text-navy mb-2">{r.label}</h3>
                 <p className="text-sm text-slate-light">{r.description}</p>
               </button>
