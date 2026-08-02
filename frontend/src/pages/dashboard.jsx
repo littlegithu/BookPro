@@ -29,7 +29,7 @@ export default function DashboardPage() {
       }
     }
     load()
-  }, [])
+  }, [isAuthenticated])
 
   const upcoming = appointments.filter(a => a.status === 'confirmed' || a.status === 'pending' || a.status === 'Scheduled')
   const past = appointments.filter(a => a.status === 'completed' || a.status === 'cancelled')
