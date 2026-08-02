@@ -715,28 +715,163 @@ with app.app_context():
             patient_id=patients[2].id,
             doctor_id=doctors[2].id,
             hospital_id=hospitals[1].id,
-            appointment_date=datetime(2026, 7, 29, 14, 0, 0),
+            appointment_date=datetime(2026, 7, 31, 14, 0, 0),
             appointment_time=time(14, 0),
             status="Scheduled",
             notes="Skin rash consultation.",
         ),
         Appointment(
             patient_id=patients[3].id,
-            doctor_id=doctors[0].id,
+            doctor_id=doctors[3].id,
             hospital_id=hospitals[2].id,
-            appointment_date=datetime(2026, 7, 28, 11, 0, 0),
+            appointment_date=datetime(2026, 8, 1, 11, 0, 0),
             appointment_time=time(11, 0),
             status="Completed",
             notes="Routine cardiac screening.",
         ),
         Appointment(
             patient_id=patients[4].id,
-            doctor_id=doctors[1].id,
+            doctor_id=doctors[4].id,
             hospital_id=hospitals[1].id,
-            appointment_date=datetime(2026, 7, 31, 8, 30, 0),
+            appointment_date=datetime(2026, 8, 2, 8, 30, 0),
             appointment_time=time(8, 30),
             status="Cancelled",
-            notes="Annual pediatric check-up.",
+            notes="Annual orthopedic check-up.",
+        ),
+        Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[5].id,
+            hospital_id=hospitals[1].id,
+            appointment_date=datetime(2026, 8, 3, 9, 0, 0),
+            appointment_time=time(9, 0),
+            status="Scheduled",
+            notes="General health checkup.",
+        ),
+        Appointment(
+            patient_id=patients[1].id,
+            doctor_id=doctors[6].id,
+            hospital_id=hospitals[1].id,
+            appointment_date=datetime(2026, 8, 4, 10, 30, 0),
+            appointment_time=time(10, 30),
+            status="Completed",
+            notes="Child development assessment.",
+        ),
+        Appointment(
+            patient_id=patients[2].id,
+            doctor_id=doctors[7].id,
+            hospital_id=hospitals[2].id,
+            appointment_date=datetime(2026, 8, 5, 15, 0, 0),
+            appointment_time=time(15, 0),
+            status="Scheduled",
+            notes="Heart failure follow-up.",
+        ),
+        Appointment(
+            patient_id=patients[3].id,
+            doctor_id=doctors[8].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime(2026, 8, 6, 13, 0, 0),
+            appointment_time=time(13, 0),
+            status="Completed",
+            notes="Skin cancer screening.",
+        ),
+        Appointment(
+            patient_id=patients[4].id,
+            doctor_id=doctors[9].id,
+            hospital_id=hospitals[2].id,
+            appointment_date=datetime(2026, 8, 7, 8, 0, 0),
+            appointment_time=time(8, 0),
+            status="Scheduled",
+            notes="Sports injury consultation.",
+        ),
+        Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[10].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime(2026, 8, 8, 11, 30, 0),
+            appointment_time=time(11, 30),
+            status="Cancelled",
+            notes="Neurology follow-up.",
+        ),
+        Appointment(
+            patient_id=patients[1].id,
+            doctor_id=doctors[11].id,
+            hospital_id=hospitals[2].id,
+            appointment_date=datetime(2026, 8, 9, 9, 30, 0),
+            appointment_time=time(9, 30),
+            status="Completed",
+            notes="Newborn checkup.",
+        ),
+        Appointment(
+            patient_id=patients[2].id,
+            doctor_id=doctors[12].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime(2026, 8, 10, 14, 30, 0),
+            appointment_time=time(14, 30),
+            status="Scheduled",
+            notes="Preventive cardiology consultation.",
+        ),
+        Appointment(
+            patient_id=patients[3].id,
+            doctor_id=doctors[13].id,
+            hospital_id=hospitals[2].id,
+            appointment_date=datetime(2026, 8, 11, 10, 0, 0),
+            appointment_time=time(10, 0),
+            status="Completed",
+            notes="Dermatology cosmetic treatment.",
+        ),
+        Appointment(
+            patient_id=patients[4].id,
+            doctor_id=doctors[14].id,
+            hospital_id=hospitals[1].id,
+            appointment_date=datetime(2026, 8, 12, 16, 0, 0),
+            appointment_time=time(16, 0),
+            status="Scheduled",
+            notes="Chronic disease review.",
+        ),
+        Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[2].id,
+            appointment_date=datetime(2026, 8, 13, 8, 30, 0),
+            appointment_time=time(8, 30),
+            status="Completed",
+            notes="Post-surgery follow-up.",
+        ),
+        Appointment(
+            patient_id=patients[1].id,
+            doctor_id=doctors[1].id,
+            hospital_id=hospitals[1].id,
+            appointment_date=datetime(2026, 8, 14, 9, 0, 0),
+            appointment_time=time(9, 0),
+            status="Scheduled",
+            notes="Vaccination appointment.",
+        ),
+        Appointment(
+            patient_id=patients[2].id,
+            doctor_id=doctors[2].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime(2026, 8, 15, 11, 0, 0),
+            appointment_time=time(11, 0),
+            status="Cancelled",
+            notes="Acne treatment follow-up.",
+        ),
+        Appointment(
+            patient_id=patients[3].id,
+            doctor_id=doctors[3].id,
+            hospital_id=hospitals[1].id,
+            appointment_date=datetime(2026, 8, 16, 15, 30, 0),
+            appointment_time=time(15, 30),
+            status="Completed",
+            notes="Neurological exam.",
+        ),
+        Appointment(
+            patient_id=patients[4].id,
+            doctor_id=doctors[4].id,
+            hospital_id=hospitals[2].id,
+            appointment_date=datetime(2026, 8, 17, 13, 0, 0),
+            appointment_time=time(13, 0),
+            status="Scheduled",
+            notes="Joint replacement consultation.",
         ),
     ]
 
@@ -770,26 +905,6 @@ with app.app_context():
         time(15, 30), time(16, 0),
     ]
 
-    base_date = datetime(2026, 7, 1)
-    for i, doctor in enumerate(doctors):
-        hospital = hospitals[i % 3]
-        for j in range(7):
-            appt_date = base_date.replace(day=((base_date.day + j + i * 3) % 28) + 1)
-            appt_time = time_slots[(j + i) % len(time_slots)]
-            status = "Completed" if j < 4 else "Scheduled"
-            notes_text = f"Appointment for {doctor.specialty} consultation"
-            appointments.append(
-                Appointment(
-                    patient_id=patients[j % len(patients)].id,
-                    doctor_id=doctor.id,
-                    hospital_id=hospital.id,
-                    appointment_date=appt_date,
-                    appointment_time=appt_time,
-                    status=status,
-                    notes=notes_text,
-                )
-            )
-
     db.session.add_all(appointments)
     db.session.commit()
     print(f"Seeded {len(appointments)} appointments.")
@@ -797,8 +912,8 @@ with app.app_context():
     reviews = []
     for i, doctor in enumerate(doctors):
         used_appts = [a for a in appointments if a.doctor_id == doctor.id]
-        for j in range(5):
-            appt = used_appts[j % len(used_appts)]
+        for j in range(min(5, len(used_appts))):
+            appt = used_appts[j]
             patient_name = patient_review_pool[(i * 5 + j) % len(patient_review_pool)]
             comment = review_comments_pool[(i * 5 + j) % len(review_comments_pool)]
             rating = (4 + (j % 2)) if j < 4 else 5
