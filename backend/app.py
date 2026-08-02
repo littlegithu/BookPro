@@ -67,6 +67,14 @@ api.add_resource(AppointmentDetail, "/api/appointments/<int:id>")
 api.add_resource(HospitalList, "/api/hospitals")
 api.add_resource(HospitalDetail, "/api/hospitals/<int:id>")
 
+# admin resources
+from admin.dashboard import AdminDashboard
+from admin.resources import AdminDoctorList, AdminDoctorDetail
+
+api.add_resource(AdminDashboard, "/api/admin/dashboard")
+api.add_resource(AdminDoctorList, "/api/admin/doctors")
+api.add_resource(AdminDoctorDetail, "/api/admin/doctors/<int:id>")
+
 # initialize api
 api.init_app(app)
 

@@ -62,11 +62,8 @@ export default function DoctorProfilePage() {
     : [doctor.specialty]
 
   return (
-<<<<<<< HEAD:frontend/src/pages/doctor-profile-page.jsx
+
     <div className="bg-surface min-h-screen pt-16">
-=======
-    <div className="bg-surface min-h-screen">
->>>>>>> b695faaca6c5723bdcae25aa4168043308f8017f:src/pages/doctor-profile-page.jsx
       <Navbar showLogo={false} />
       <div className="max-w-7xl mx-auto px-15">
         <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Doctors', to: '/doctors' }, { label: doctor.name }]} />

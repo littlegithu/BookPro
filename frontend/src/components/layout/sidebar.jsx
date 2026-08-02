@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom'
-import { LayoutGrid, Calendar, Stethoscope, ClipboardList, User } from 'lucide-react'
+import { useAuth } from '../../context/auth-context'
 import { updateUser } from '../../services/api'
+import { LayoutGrid, Calendar, Stethoscope, ClipboardList, User } from 'lucide-react'
 
 const navItems = [
   { label: 'Dashboard', to: '/dashboard', icon: <LayoutGrid size={18} />, end: true },
@@ -13,7 +14,6 @@ const accountItems = [
 ]
 
 export default function Sidebar() {
-<<<<<<< HEAD:frontend/src/components/layout/sidebar.jsx
   const { user, updateProfileImage } = useAuth()
 
   const initials = user?.name
@@ -36,17 +36,15 @@ export default function Sidebar() {
     reader.readAsDataURL(file)
   }
 
-=======
->>>>>>> b695faaca6c5723bdcae25aa4168043308f8017f:src/components/layout/sidebar.jsx
   const cls = ({ isActive }) =>
     `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm w-full text-left ${
       isActive ? 'bg-teal text-white font-medium' : 'text-white/50'
     }`
 
   return (
-    <aside className="w-60 shrink-0 flex flex-col fixed top-0 left-0 h-screen overflow-y-auto z-[60]" style={{background:'#1a2332'}}>
+    <aside className="w-60 shrink-0 flex flex-col fixed top-0 left-0 h-screen overflow-y-auto z-[60]" style={{ background: '#1a2332' }}>
       <Link to="/" className="px-5 py-6 border-b border-white/10">
-        <span className="font-display font-bold text-[19px] text-white">Book<span style={{color:'#5CD6C4'}}>Pro</span></span>
+        <span className="font-display font-bold text-[19px] text-white">Book<span style={{ color: '#5CD6C4' }}>Pro</span></span>
       </Link>
       <div className="flex-1 px-3 py-4 flex flex-col">
         <p className="text-[10px] font-semibold text-white/30 uppercase tracking-widest px-2 pt-1 pb-2">Main</p>
@@ -62,11 +60,10 @@ export default function Sidebar() {
           </NavLink>
         ))}
         <div className="flex-1" />
-        <NavLink to="/doctors" className="flex items-center gap-2 px-3 py-2.5 mt-4 rounded-lg text-sm font-medium transition-colors" style={{background:'rgba(92,214,196,0.13)',border:'1px solid rgba(92,214,196,0.25)',color:'#5CD6C4'}}>
+        <NavLink to="/doctors" className="flex items-center gap-2 px-3 py-2.5 mt-4 rounded-lg text-sm font-medium transition-colors" style={{ background: 'rgba(92,214,196,0.13)', border: '1px solid rgba(92,214,196,0.25)', color: '#5CD6C4' }}>
           <span>+</span> Book appointment
         </NavLink>
-<<<<<<< HEAD:frontend/src/components/layout/sidebar.jsx
-        <div className="mt-3 px-3 py-3 rounded-lg flex items-center gap-2.5" style={{background:'rgba(255,255,255,0.05)'}}>
+        <div className="mt-3 px-3 py-3 rounded-lg flex items-center gap-2.5" style={{ background: 'rgba(255,255,255,0.05)' }}>
           <label htmlFor="sidebar-profile-upload" className="w-8 h-8 rounded-full bg-teal flex items-center justify-center text-white text-xs font-semibold shrink-0 cursor-pointer overflow-hidden relative">
             {user?.profile_image ? (
               <img src={user.profile_image} alt="Profile" className="w-full h-full object-cover" />
@@ -83,11 +80,9 @@ export default function Sidebar() {
           />
           <div>
             <p className="text-white text-[13px] font-medium leading-tight">{user?.name || 'Guest User'}</p>
-            <p className="text-[11px]" style={{color:'rgba(255,255,255,0.38)'}}>{user ? 'Patient' : 'Guest'}</p>
+            <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.38)' }}>{user ? 'Patient' : 'Guest'}</p>
           </div>
         </div>
-=======
->>>>>>> b695faaca6c5723bdcae25aa4168043308f8017f:src/components/layout/sidebar.jsx
       </div>
     </aside>
   )
