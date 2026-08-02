@@ -42,3 +42,12 @@ def update_user_password(user, data):
         setattr(user, key, value)
     db.session.commit()
     return user
+
+
+def login_user(data):
+    email = data.get("email")
+    password = data.get("password")
+    user = User.query.filter_by(email=email).first()
+    if not user or not check_password_hash(user.password, password):
+        return None
+    return user
