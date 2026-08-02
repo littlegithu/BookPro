@@ -3,7 +3,7 @@ from flask_restful import Resource
 from sqlalchemy.orm import joinedload
 
 from extensions import db
-from model import Appointment, Doctor, Hospital, Review, User, Patient
+from model import Appointment, Doctor, Hospital, Review, User, Patient, Staff
 from schema import (
     Appointment_schema,
     Appointments_schema,
@@ -15,6 +15,9 @@ from schema import (
     Patients_schema,
     Review_schema,
     Reviews_schema,
+    HospitalRegistration_schema,
+    DoctorRegistration_schema,
+    StaffRegistration_schema,
     user_schema,
     users_schema,
 )
@@ -339,3 +342,46 @@ class HospitalDetail(Resource):
         db.session.delete(hospital)
         db.session.commit()
         return {"message": "Hospital deleted successfully"}, 200
+
+
+# Portal Registration
+class HospitalRegistration(Resource):
+    def post(self):
+        from auth import register_hospital
+
+        data = get_json_data()
+        errors = HospitalRegistration_schema.validate(data)
+        if errors:
+            return errors, 400
+        hospital = register_hospital(data)
+        return Hospital_schema.dump(hospital), 201
+
+
+class DoctorRegistration(Resource):
+    def post(self):
+        from auth import register_doctor
+
+        data = get_json_data()
+        errors = DoctorRegistration_schema.validate(data)
+        if errors:
+            return errors, 400
+        result = register_doctor(data)
+        if isinstance(result, tuple):
+            user, doctor = result
+            return {"message": "Doctor registered successfully", "user": user_schema.dump(user), "doctor": Doctor_schema.dump(doctor)}, 201
+        return result, 400
+
+
+class StaffRegistration(Resource):
+    def post(self):
+        from auth import register_staff
+
+        data = get_json_data()
+        errors = StaffRegistration_schema.validate(data)
+        if errors:
+            return errors, 400
+        result = register_staff(data)
+        if isinstance(result, tuple):
+            user, staff = result
+            return {"message": "Staff registered successfully", "user": user_schema.dump(user), "staff": {"id": staff.id, "role": staff.role, "hospital_id": staff.hospital_id}}, 201
+        return result, 400
