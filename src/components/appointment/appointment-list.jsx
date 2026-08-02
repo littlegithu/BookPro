@@ -8,6 +8,7 @@ export default function AppointmentList({ appointments = [], onCancel }) {
       <EmptyState
         icon={<Calendar size={40} />}
         title="No upcoming appointments"
+        
         description="Book a checkup with one of our verified doctors."
         actionLabel="Find a doctor"
         actionTo="/doctors"

@@ -29,7 +29,7 @@ export default function AppointmentsPage() {
       }
     }
     load()
-  }, [])
+  }, [isAuthenticated])
 
   const filtered = tab === 'All' ? appts
     : tab === 'Upcoming' ? appts.filter(a => a.status === 'confirmed' || a.status === 'pending')
