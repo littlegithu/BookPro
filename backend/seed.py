@@ -163,3 +163,19 @@ with app.app_context():
             phone="0711000012",
             password=hash_password("password123"),
         ),
+    ]
+    db.session.add_all(users)
+    db.session.commit()
+    print(f"Seeded {len(users)} users.")
+
+    patients = [
+        Patient(
+            user_id=users[0].id,
+            first_name="Alice",
+            last_name="Johnson",
+            email="alice.johnson@example.com",
+            dob=date(1992, 4, 15),
+            gender="Female",
+            address="14 Kijabe Street, Nairobi",
+            phone="0712345678",
+        ),
