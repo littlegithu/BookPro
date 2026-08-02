@@ -28,3 +28,17 @@ def get_json_data():
 # Users
 class UserList(Resource):
     def get(self):
+        users = User.query.all()
+        return users_schema.dump(users)
+
+    def post(self):
+        from auth import register_user
+
+        data = get_json_data()
+        errors = user_schema.validate(data)
+        if errors:
+            return errors, 400
+        result = register_user(data)
+        if isinstance(result, tuple):
+            return result
+        return user_schema.dump(result), 201
