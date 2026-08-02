@@ -58,3 +58,15 @@ class Patient(db.Model):
     user = db.relationship('User', back_populates='patient', uselist=False)
     appointments = db.relationship('Appointment', back_populates='patient')
     reviews = db.relationship('Review', back_populates='patient')
+
+
+class Doctor(db.Model):
+    __tablename__ = "doctors"
+
+    __table_args__ = (
+        CheckConstraint("length(first_name) >= 1", name="ck_doctor_first_name_length"),
+        CheckConstraint("length(last_name) >= 1", name="ck_doctor_last_name_length"),
+        CheckConstraint("email LIKE '%@%'", name="ck_doctor_email_format"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
