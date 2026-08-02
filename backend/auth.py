@@ -18,3 +18,18 @@ def register_user(data):
     except IntegrityError:
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
+
+    new_patient = Patient(
+        user_id=user.id,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        email=user.email,
+        phone=user.phone,
+        dob=data.get("dob"),
+        gender=data.get("gender", ""),
+        address=data.get("address", ""),
+    )
+    db.session.add(new_patient)
+    db.session.commit()
+
+    return user
