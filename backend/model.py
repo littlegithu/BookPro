@@ -218,4 +218,5 @@ class Hospital(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     appointments = db.relationship('Appointment', back_populates='hospital')
+    doctors = db.relationship('Doctor', back_populates='hospital')
     staff = db.relationship('Staff', back_populates='hospital')
