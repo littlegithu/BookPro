@@ -55,4 +55,14 @@ api.add_resource(PatientDetail, "/api/patients/<int:id>")
 
 api.add_resource(DoctorList, "/api/doctors")
 api.add_resource(DoctorDetail, "/api/doctors/<int:id>")
+api.add_resource(DoctorReviews, "/api/doctors/<int:doctor_id>/reviews")
+api.add_resource(DoctorSearchSuggestions, "/api/doctors/search/suggestions")
+
+api.add_resource(ReviewList, "/api/reviews")
+api.add_resource(ReviewDetail, "/api/reviews/<int:id>")
+
+api.add_resource(AppointmentList, "/api/appointments")
+api.add_resource(AppointmentDetail, "/api/appointments/<int:id>")
+
+api.add_resource(HospitalList, "/api/hospitals")
 
