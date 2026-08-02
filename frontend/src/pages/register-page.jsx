@@ -62,7 +62,7 @@ export default function RegisterPage() {
         onSubmit={handleSubmit}
         error={error}
         loading={loading}
-        footer={<span>Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link></span>}
+        footer={<span>Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link><br /><Link to="/portal" className="text-teal hover:underline">Register as a doctor, hospital, or staff</Link></span>}
       />
     </div>
   )
