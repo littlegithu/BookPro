@@ -75,3 +75,16 @@ class UserLogin(Resource):
         if not user:
             return {"message": "Invalid credentials"}, 401
         return {"message": "Login successful", "user": user_schema.dump(user)}, 200
+
+# Patients
+class PatientList(Resource):
+    def get(self):
+        patients = Patient.query.all()
+        return Patients_schema.dump(patients)
+
+    def post(self):
+        data = get_json_data()
+        errors = Patient_schema.validate(data)
+        if errors:
+            return errors, 400
+        patient_instance = Patient(**data)
