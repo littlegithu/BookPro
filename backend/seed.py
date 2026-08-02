@@ -21,3 +21,33 @@ with app.app_context():
     db.session.execute(text("ALTER SEQUENCE appointments_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE reviews_id_seq RESTART WITH 1"))
     db.session.commit()
+
+    users = [
+        User(
+            first_name="Alice",
+            last_name="Johnson",
+            email="alice.johnson@example.com",
+            phone="0712345678",
+            password=hash_password("password123"),
+        ),
+        User(
+            first_name="Brian",
+            last_name="Mwangi",
+            email="brian.mwangi@example.com",
+            phone="0723456789",
+            password=hash_password("password123"),
+        ),
+        User(
+            first_name="Carol",
+            last_name="Ndegwa",
+            email="carol.ndegwa@example.com",
+            phone="0734567890",
+            password=hash_password("password123"),
+        ),
+        User(
+            first_name="David",
+            last_name="Otieno",
+            email="david.otieno@example.com",
+            phone="0745678901",
+            password=hash_password("password123"),
+        ),
