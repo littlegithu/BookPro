@@ -37,6 +37,7 @@ export function AuthProvider({ children }) {
   )
 }
 
+/* eslint-disable react-refresh/only-export-components */
 export function useAuth() {
   return useContext(AuthContext)
 }

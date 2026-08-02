@@ -10,9 +10,8 @@ def admin_required(f):
             return jsonify({"error": "Authorization token required"}), 401
         token = auth_header.split(' ')[1]
         try:
-            from auth import login_user
-            from model import User
-            user = User.query.filter_by(token=token).first()
+            from auth import login_user_token
+            user = login_user_token(token)
             if not user or user.role != 'admin':
                 return jsonify({"error": "Admin access required"}), 403
             request.admin_user = user

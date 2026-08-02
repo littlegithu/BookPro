@@ -1,6 +1,9 @@
+import secrets
+
 from flask import jsonify, request
 from flask_bcrypt import check_password_hash, generate_password_hash
-from model import Patient, User, db
+from model import Patient, User
+from extensions import db
 from sqlalchemy.exc import IntegrityError
 
 
@@ -8,10 +11,16 @@ def hash_password(password):
     return generate_password_hash(password).decode("utf-8")
 
 
+def generate_token():
+    return secrets.token_hex(32)
+
+
 def register_user(data):
     if "password" in data:
         data["password"] = hash_password(data["password"])
     user = User(**data)
+    if not user.token:
+        user.token = generate_token()
     db.session.add(user)
     try:
         db.session.commit()
@@ -50,4 +59,11 @@ def login_user(data):
     user = User.query.filter_by(email=email).first()
     if not user or not check_password_hash(user.password, password):
         return None
+    return user
+
+
+def login_user_token(token):
+    if not token:
+        return None
+    user = User.query.filter_by(token=token).first()
     return user

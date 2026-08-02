@@ -1,10 +1,10 @@
 from flask import request
 from flask_restful import Resource
 
-from extensions import api, db
-from model import Doctor, User
-from schema import DoctorSchema, Doctors_schema
-from permissions import admin_required
+from extensions import db
+from model import Doctor
+from schema import Doctor_schema, Doctors_schema
+from .permissions import admin_required
 
 
 class AdminDoctorList(Resource):
@@ -21,14 +21,14 @@ class AdminDoctorList(Resource):
         doctor = Doctor(**data)
         db.session.add(doctor)
         db.session.commit()
-        return DoctorSchema().dump(doctor), 201
+        return Doctor_schema.dump(doctor), 201
 
 
 class AdminDoctorDetail(Resource):
     @admin_required
     def get(self, id):
         doctor = Doctor.query.get_or_404(id)
-        return DoctorSchema().dump(doctor)
+        return Doctor_schema.dump(doctor)
 
     @admin_required
     def put(self, id):
@@ -39,7 +39,7 @@ class AdminDoctorDetail(Resource):
         for key, value in data.items():
             setattr(doctor, key, value)
         db.session.commit()
-        return DoctorSchema().dump(doctor)
+        return Doctor_schema.dump(doctor)
 
     @admin_required
     def delete(self, id):

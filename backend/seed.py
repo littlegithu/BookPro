@@ -1,12 +1,13 @@
 from datetime import date, datetime, time
 
 from app import app
-from auth import hash_password
-from model import Appointment, Doctor, Hospital, Patient, Review, User, db
+from auth import generate_token, hash_password
+from model import Appointment, Doctor, Hospital, MedicalRecord, Patient, Review, User, db
 from sqlalchemy import text
 
 with app.app_context():
     db.session.query(Review).delete()
+    db.session.query(MedicalRecord).delete()
     db.session.query(Appointment).delete()
     db.session.query(Doctor).delete()
     db.session.query(Patient).delete()
@@ -21,6 +22,19 @@ with app.app_context():
     db.session.execute(text("ALTER SEQUENCE appointments_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE reviews_id_seq RESTART WITH 1"))
     db.session.commit()
+
+    admin_user = User(
+        first_name="Admin",
+        last_name="User",
+        email="admin@example.com",
+        phone="0700000001",
+        password=hash_password("admin123"),
+        role="admin",
+        token=generate_token(),
+    )
+    db.session.add(admin_user)
+    db.session.commit()
+    print(f"Created admin user with id: {admin_user.id}, token: {admin_user.token}")
 
     users = [
         User(

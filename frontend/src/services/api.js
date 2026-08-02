@@ -1,10 +1,12 @@
 export const API_BASE = '/api';
 
 async function request(path, options = {}) {
+  const token = localStorage.getItem('bookpro_token')
   const url = `${API_BASE}${path}`;
   const config = {
     headers: {
       'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` }),
       ...options.headers,
     },
     ...options,
