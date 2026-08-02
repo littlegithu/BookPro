@@ -223,3 +223,30 @@ with app.app_context():
     db.session.add_all(patients)
     db.session.commit()
     print(f"Seeded {len(patients)} patients.")
+
+    hospitals = [
+        Hospital(
+            name="Nairobi General Hospital",
+            address="001 Hospital Hill, Nairobi",
+            phone="0201234567",
+            email="info@nairobigenhospital.co.ke",
+            website="https://nairobigenhospital.co.ke",
+        ),
+        Hospital(
+            name="Mombasa Medical Centre",
+            address="78 Nyali Bridge Road, Mombasa",
+            phone="0412345678",
+            email="info@mombasamedical.co.ke",
+            website="https://mombasamedical.co.ke",
+        ),
+        Hospital(
+            name="Kisumu County Referral",
+            address="12 Lake Basin Road, Kisumu",
+            phone="0571234567",
+            email="info@kisumuhospital.co.ke",
+            website="https://kisumuhospital.co.ke",
+        ),
+    ]
+    db.session.add_all(hospitals)
+    db.session.commit()
+    print(f"Seeded {len(hospitals)} hospitals.")
