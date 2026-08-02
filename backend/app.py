@@ -3,7 +3,8 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
-from extensions import api, bcrypt, db, migrate
+from flask_restful import Api
+from extensions import bcrypt, db, migrate
 from resources import (
     AppointmentDetail,
     AppointmentList,
@@ -40,7 +41,7 @@ migrate.init_app(app=app, db=db)
 db.init_app(app=app)
 bcrypt.init_app(app)
 
-api.init_app(app)
+api = Api(app)
 
 api.add_resource(UserList, "/api/users")
 api.add_resource(UserDetail, "/api/users/<int:id>")
