@@ -88,3 +88,12 @@ class PatientList(Resource):
         if errors:
             return errors, 400
         patient_instance = Patient(**data)
+        db.session.add(patient_instance)
+        db.session.commit()
+        return Patient_schema.dump(patient_instance), 201
+
+
+class PatientDetail(Resource):
+    def get(self, id):
+        patient_instance = Patient.query.get_or_404(id)
+        return Patients_schema.dump(patient_instance)
