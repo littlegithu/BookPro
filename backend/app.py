@@ -42,4 +42,17 @@ CORS(app, supports_credentials=True, origins=[origin.strip() for origin in CORS_
 
 # initialize extensions
 migrate.init_app(app=app, db=db)
+db.init_app(app=app)
+bcrypt.init_app(app)
+
+# register resources
+api.add_resource(UserList, "/api/users")
+api.add_resource(UserDetail, "/api/users/<int:id>")
+api.add_resource(UserLogin, "/api/users/login")
+
+api.add_resource(PatientList, "/api/patients")
+api.add_resource(PatientDetail, "/api/patients/<int:id>")
+
+api.add_resource(DoctorList, "/api/doctors")
+api.add_resource(DoctorDetail, "/api/doctors/<int:id>")
 
