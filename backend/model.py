@@ -180,3 +180,12 @@ class Hospital(db.Model):
     )
 
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(200), nullable=False)
+    phone = db.Column(db.String, nullable=False, unique=True)
+    email = db.Column(db.String(100), nullable=False, unique=True)
+    website = db.Column(db.String(200), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    appointments = db.relationship('Appointment', back_populates='hospital')
