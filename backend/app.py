@@ -10,14 +10,17 @@ from resources import (
     AppointmentList,
     DoctorDetail,
     DoctorList,
+    DoctorRegistration,
     DoctorReviews,
     DoctorSearchSuggestions,
     HospitalDetail,
     HospitalList,
+    HospitalRegistration,
     PatientDetail,
     PatientList,
     ReviewDetail,
     ReviewList,
+    StaffRegistration,
     UserDetail,
     UserList,
     UserLogin,
@@ -63,6 +66,10 @@ api.add_resource(AppointmentDetail, "/api/appointments/<int:id>")
 
 api.add_resource(HospitalList, "/api/hospitals")
 api.add_resource(HospitalDetail, "/api/hospitals/<int:id>")
+
+api.add_resource(HospitalRegistration, "/api/hospitals/register")
+api.add_resource(DoctorRegistration, "/api/doctors/register")
+api.add_resource(StaffRegistration, "/api/staff/register")
 
 from admin.dashboard import AdminDashboard
 from admin.resources import AdminDoctorList, AdminDoctorDetail

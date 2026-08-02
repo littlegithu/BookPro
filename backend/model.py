@@ -1,9 +1,8 @@
 from datetime import datetime
 
+from extensions import db
 from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import validates
-
-from extensions import db
 
 
 class User(db.Model):
@@ -29,6 +28,7 @@ class User(db.Model):
 
     doctor = db.relationship('Doctor', uselist=False, back_populates='user')
     patient = db.relationship('Patient', back_populates='user', uselist=False)
+    staff = db.relationship('Staff', back_populates='user', uselist=False)
 
     @validates("password")
     def validate_password(self, key, password):
@@ -90,6 +90,7 @@ class Doctor(db.Model):
     hospital_name = db.Column(db.String(100), nullable=True)
     hospital_location = db.Column(db.String(200), nullable=True)
     hospital_phone = db.Column(db.String(20), nullable=True)
+    hospital_id = db.Column(db.Integer, db.ForeignKey('hospitals.id'), nullable=True)
     specialties = db.Column(db.String(250), nullable=True)
     profile_image = db.Column(db.String(250), nullable=True)
     languages = db.Column(db.String(200), nullable=True)
@@ -103,8 +104,33 @@ class Doctor(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     user = db.relationship('User', back_populates='doctor')
+    hospital = db.relationship('Hospital', back_populates='doctors')
     appointments = db.relationship('Appointment', back_populates='doctor', lazy=True)
     review_objects = db.relationship('Review', back_populates='doctor', lazy=True)
+
+
+class Staff(db.Model):
+    __tablename__ = "staff"
+
+    __table_args__ = (
+        CheckConstraint("length(first_name) >= 1", name="ck_staff_first_name_length"),
+        CheckConstraint("length(last_name) >= 1", name="ck_staff_last_name_length"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    hospital_id = db.Column(db.Integer, db.ForeignKey('hospitals.id'), nullable=False)
+    first_name = db.Column(db.String(20), nullable=False)
+    last_name = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
+    phone = db.Column(db.String, nullable=True, unique=True)
+    role = db.Column(db.String(50), nullable=False, default='Receptionist')
+    profile_image = db.Column(db.String(250), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    user = db.relationship('User', back_populates='staff')
+    hospital = db.relationship('Hospital', back_populates='staff')
 
 
 class Review(db.Model):
@@ -192,3 +218,4 @@ class Hospital(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     appointments = db.relationship('Appointment', back_populates='hospital')
+    staff = db.relationship('Staff', back_populates='hospital')

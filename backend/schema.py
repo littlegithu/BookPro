@@ -42,7 +42,7 @@ class DoctorSchema(BaseSchema):
     working_days = fields.Str(required=False, dump_only=True)
     consultation_type = fields.Str(required=False, dump_only=True)
     verification_status = fields.Str(required=False, dump_only=True)
-    hospital_ids = fields.Str(required=False, dump_only=True)
+    hospital_id = fields.Int(required=False)
     hospital_name = fields.Str(required=False, dump_only=True)
     hospital_location = fields.Str(required=False, dump_only=True)
     hospital_phone = fields.Str(required=False, dump_only=True)
@@ -53,6 +53,36 @@ class DoctorSchema(BaseSchema):
     available = fields.Boolean(required=False, dump_only=True)
     rating = fields.Float(required=False, dump_only=True)
     reviews = fields.Int(required=False, dump_only=True)
+
+
+class HospitalRegistrationSchema(Schema):
+    name = fields.Str(required=True)
+    address = fields.Str(required=True)
+    phone = fields.Str(required=True)
+    email = fields.Email(required=True)
+    website = fields.Str(required=False, allow_none=True)
+    city = fields.Str(required=False)
+
+
+class DoctorRegistrationSchema(BaseSchema):
+    specialty = fields.Str(required=True)
+    hospital_id = fields.Int(required=False, allow_none=True)
+    years_practice = fields.Int(required=False, load_default=0)
+    working_hours = fields.Str(required=False, allow_none=True)
+    fee = fields.Int(required=False, allow_none=True)
+    duration = fields.Int(required=False, allow_none=True)
+    consultation_type = fields.Str(required=False, allow_none=True)
+    languages = fields.Str(required=False, allow_none=True)
+    education = fields.Str(required=False, allow_none=True)
+    certifications = fields.Str(required=False, allow_none=True)
+    working_days = fields.Str(required=False, allow_none=True)
+    profile_image = fields.Str(required=False, allow_none=True)
+
+
+class StaffRegistrationSchema(BaseSchema):
+    hospital_id = fields.Int(required=True)
+    role = fields.Str(required=False, load_default='Receptionist')
+    profile_image = fields.Str(required=False, allow_none=True)
 
 
 class ReviewSchema(Schema):
@@ -125,3 +155,7 @@ MedicalRecords_schema = MedicalRecordSchema(many=True)
 
 Hospital_schema = HospitalSchema()
 Hospitals_schema = HospitalSchema(many=True)
+
+HospitalRegistration_schema = HospitalRegistrationSchema()
+DoctorRegistration_schema = DoctorRegistrationSchema()
+StaffRegistration_schema = StaffRegistrationSchema()

@@ -2,7 +2,7 @@ import secrets
 
 from flask import jsonify, request
 from flask_bcrypt import check_password_hash, generate_password_hash
-from model import Patient, User
+from model import Patient, User, Doctor, Hospital, Staff
 from extensions import db
 from sqlalchemy.exc import IntegrityError
 
@@ -42,6 +42,84 @@ def register_user(data):
     db.session.commit()
 
     return user
+
+
+def register_hospital(data):
+    hospital = Hospital(**data)
+    db.session.add(hospital)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return {"error": "Hospital email or phone already exists"}, 409
+    return hospital
+
+
+def register_doctor(data):
+    if "password" in data:
+        data["password"] = hash_password(data["password"])
+    user = User(**data)
+    user.role = "doctor"
+    if not user.token:
+        user.token = generate_token()
+    db.session.add(user)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return {"error": "Phone or email already exists"}, 409
+
+    doctor = Doctor(
+        user_id=user.id,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        email=user.email,
+        phone=user.phone,
+        specialty=data.get("specialty", ""),
+        hospital_id=data.get("hospital_id"),
+        years_practice=data.get("years_practice", 0),
+        working_hours=data.get("working_hours"),
+        fee=data.get("fee"),
+        duration=data.get("duration"),
+        consultation_type=data.get("consultation_type"),
+        languages=data.get("languages"),
+        education=data.get("education"),
+        certifications=data.get("certifications"),
+        working_days=data.get("working_days"),
+        profile_image=data.get("profile_image"),
+    )
+    db.session.add(doctor)
+    db.session.commit()
+    return user, doctor
+
+
+def register_staff(data):
+    if "password" in data:
+        data["password"] = hash_password(data["password"])
+    user = User(**data)
+    user.role = "staff"
+    if not user.token:
+        user.token = generate_token()
+    db.session.add(user)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return {"error": "Phone or email already exists"}, 409
+
+    staff = Staff(
+        user_id=user.id,
+        hospital_id=data.get("hospital_id"),
+        first_name=user.first_name,
+        last_name=user.last_name,
+        email=user.email,
+        phone=user.phone,
+        role=data.get("role", "Receptionist"),
+        profile_image=data.get("profile_image"),
+    )
+    db.session.add(staff)
+    db.session.commit()
+    return user, staff
 
 
 def update_user_password(user, data):
