@@ -42,3 +42,19 @@ class Patient(db.Model):
         CheckConstraint("length(last_name) >= 1", name="ck_patient_last_name_length"),
         CheckConstraint("email LIKE '%@%'", name="ck_patient_email_format"),
     )
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    first_name = db.Column(db.String(20), nullable=False)
+    last_name = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
+    dob = db.Column(db.Date, nullable=True)
+    gender = db.Column(db.String(20), nullable=True)
+    address = db.Column(db.String(200), nullable=True)
+    phone = db.Column(db.String, nullable=True, unique=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    user = db.relationship('User', back_populates='patient', uselist=False)
+    appointments = db.relationship('Appointment', back_populates='patient')
+    reviews = db.relationship('Review', back_populates='patient')
