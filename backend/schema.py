@@ -48,3 +48,13 @@ class DoctorSchema(BaseSchema):
     fee = fields.Int(required=False, dump_only=True)
     duration = fields.Int(required=False, dump_only=True)
     years_practice = fields.Int(required=False, dump_only=True)
+    available = fields.Boolean(required=False, dump_only=True)
+    rating = fields.Float(required=False, dump_only=True)
+    reviews = fields.Int(required=False, dump_only=True)
+
+
+class ReviewSchema(Schema):
+    id = fields.Int(dump_only=True)
+    rating = fields.Int(required=True, validate=validate.Range(min=1, max=5))
+    comment = fields.Str(required=False)
+    patient_id = fields.Int(required=True, load_only=True)
