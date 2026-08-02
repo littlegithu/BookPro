@@ -58,3 +58,69 @@ class ReviewSchema(Schema):
     rating = fields.Int(required=True, validate=validate.Range(min=1, max=5))
     comment = fields.Str(required=False)
     patient_id = fields.Int(required=True, load_only=True)
+    doctor_id = fields.Int(required=True, load_only=True)
+    appointment_id = fields.Int(required=False, load_only=True)
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    patient_name = fields.Str(dump_only=True)
+
+
+class AppointmentSchema(Schema):
+    id = fields.Int(dump_only=True)
+    appointment_date = fields.DateTime(required=True)
+    appointment_time = fields.Str(required=True)
+    status = fields.Str(required=False, validate=validate.OneOf(['Scheduled', 'Completed', 'Cancelled']))
+    patient_id = fields.Int(required=True)
+    doctor_id = fields.Int(required=True)
+    hospital_id = fields.Int(required=False)
+    notes = fields.Str(required=False)
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    doctor = fields.Nested("DoctorSchema", dump_only=True)
+    record = fields.Nested("MedicalRecordSchema", dump_only=True, attribute='medical_record')
+
+
+class MedicalRecordSchema(Schema):
+    id = fields.Int(dump_only=True)
+    appointment_id = fields.Int(dump_only=True)
+    diagnosis = fields.Str(required=False)
+    prescription = fields.Str(required=False)
+    follow_up_date = fields.DateTime(dump_only=True)
+    additional_notes = fields.Str(required=False)
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+
+
+class HospitalSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str(required=True)
+    address = fields.Str(required=False)
+    city = fields.Str(required=False)
+    website = fields.Str(required=False)
+    email = fields.Email(required=True)
+    phone = fields.Str(required=True)
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+Patient_schema = PatientSchema()
+Patients_schema = PatientSchema(many=True)
+
+Doctor_schema = DoctorSchema()
+Doctors_schema = DoctorSchema(many=True)
+
+Review_schema = ReviewSchema()
+Reviews_schema = ReviewSchema(many=True)
+
+Appointment_schema = AppointmentSchema()
+Appointments_schema = AppointmentSchema(many=True)
+
+MedicalRecord_schema = MedicalRecordSchema()
+MedicalRecords_schema = MedicalRecordSchema(many=True)
+
+Hospital_schema = HospitalSchema()
+Hospitals_schema = HospitalSchema(many=True)
+Hospitals_schema = HospitalSchema(many=True)
