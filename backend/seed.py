@@ -107,3 +107,17 @@ with app.app_context():
             phone="0711000004",
             password=hash_password("password123"),
         ),
+        User(
+            first_name="Peter",
+            last_name="Ochieng",
+            email="peter.ochieng@example.com",
+            phone="0711000005",
+            password=hash_password("password123"),
+        ),
+        User(
+            first_name="Susan",
+            last_name="Wairimu",
+            email="susan.wairimu@example.com",
+            phone="0711000006",
+            password=hash_password("password123"),
+        ),
