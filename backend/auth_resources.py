@@ -1,11 +1,14 @@
+from auth import (
+    create_magic_link,
+    generate_email_verification_token,
+    generate_token,
+    send_verification_email,
+    verify_magic_link,
+)
+from extensions import db
 from flask import request
 from flask_restful import Resource
 from model import User
-from extensions import db
-from auth import (
-    generate_token, generate_email_verification_token,
-    send_verification_email, create_magic_link, verify_magic_link
-)
 
 
 class EmailVerification(Resource):

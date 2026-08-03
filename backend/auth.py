@@ -1,9 +1,9 @@
 import secrets
 
-from flask import jsonify, request, current_app
-from flask_bcrypt import check_password_hash, generate_password_hash
-from model import Patient, User, Doctor, Hospital, Staff
 from extensions import db
+from flask import current_app, request
+from flask_bcrypt import check_password_hash, generate_password_hash
+from model import Doctor, Hospital, Patient, Staff, User
 from sqlalchemy.exc import IntegrityError
 
 
@@ -40,7 +40,7 @@ BookPro Team
             body=body
         )
         return result.get("success", False)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         current_app.logger.error(f"Failed to send verification email: {e}")
         return False
 

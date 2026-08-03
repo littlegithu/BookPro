@@ -1,3 +1,10 @@
+from extensions import db
+from flask import request
+from flask_bcrypt import check_password_hash, hash_password
+from model import Patient, User
+from sqlalchemy.exc import IntegrityError
+
+
 def register_user(data):
     if "password" in data:
         data["password"] = hash_password(data["password"])

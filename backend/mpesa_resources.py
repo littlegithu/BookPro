@@ -1,6 +1,6 @@
 import uuid
 
-from flask import jsonify, request
+from flask import request
 from flask_restful import Resource
 from mpesa_service import mpesa_service
 
