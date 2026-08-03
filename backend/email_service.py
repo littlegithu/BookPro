@@ -1,10 +1,5 @@
 import os
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
-from flask import current_app
+import requests
 
 
 class EmailService:
@@ -26,39 +21,44 @@ class EmailService:
         self.smtp_username = os.environ.get('SMTP_USERNAME', '')
         self.smtp_password = os.environ.get('SMTP_PASSWORD', '')
         self.default_sender = os.environ.get('EMAIL_SENDER', 'noreply@bookpro.com')
+        self.api_key = os.environ.get('EMAIL_API_KEY')
 
     def send_email(self, to_email, subject, body, html_body=None, attachments=None):
-        if not self.smtp_username or not self.smtp_password:
-            return {"success": False, "error": "Email configuration not set"}
+        if not self.api_key:
+            return {"success": False, "error": "Email API key not configured. Set EMAIL_API_KEY environment variable."}
 
         try:
-            msg = MIMEMultipart()
-            msg['From'] = self.default_sender
-            msg['To'] = to_email
-            msg['Subject'] = subject
+            html_content = html_body if html_body else body
+            data = {
+                "sender": {"email": self.default_sender, "name": "BookPro"},
+                "to": [{"email": to_email}],
+                "subject": subject,
+                "text": body,
+                "html": html_content
+            }
 
-            if html_body:
-                msg.attach(MIMEText(html_body, 'html'))
-            msg.attach(MIMEText(body, 'plain'))
+            response = requests.post(
+                "https://api.brevo.com/v3/smtp/email",
+                headers={
+                    "api-key": self.api_key,
+                    "content-type": "application/json"
+                },
+                json=data
+            )
 
-            if attachments:
-                for attachment in attachments:
-                    part = MIMEBase('application', 'octet-stream')
-                    with open(attachment['path'], 'rb') as file:
-                        part.set_payload(file.read())
-                    encoders.encode_base64(part)
-                    part.add_header(
-                        'Content-Disposition',
-                        f'attachment; filename= {attachment["filename"]}'
-                    )
-                    msg.attach(part)
+            if response.status_code < 200 or response.status_code >= 300:
+                try:
+                    error_data = response.json()
+                    return {
+                        "success": False,
+                        "error": error_data.get("message", response.text),
+                        "code": error_data.get("code", "unknown_error"),
+                        "status_code": response.status_code
+                    }
+                except:
+                    return {"success": False, "error": response.text, "status_code": response.status_code}
 
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()
-                server.login(self.smtp_username, self.smtp_password)
-                server.send_message(msg)
-
-            return {"success": True}
+            return {"success": True, "message": response.json()}
         except Exception as e:
             return {"success": False, "error": str(e)}
 
