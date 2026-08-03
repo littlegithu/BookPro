@@ -278,12 +278,20 @@ class HospitalSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str(required=True)
     address = fields.Str(required=False)
+    location = fields.Method("get_location", dump_only=True)
     city = fields.Str(required=False)
     website = fields.Str(required=False)
     email = fields.Email(required=True)
     phone = fields.Str(required=True)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
+
+    def get_location(self, obj):
+        if obj.address:
+            return obj.address
+        if obj.city:
+            return obj.city
+        return ''
 
 
 user_schema = UserSchema()

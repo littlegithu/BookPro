@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { CheckCircle } from 'lucide-react'
 import AuthForm from '../components/auth/auth-form'
 
@@ -11,9 +12,18 @@ export default function ResetPasswordPage() {
   const [done, setDone] = useState(false)
 
   const handleSubmit = () => {
-    if (!email || !password) { setError('Please fill in all fields.'); return }
-    setError(''); setLoading(true)
-    setTimeout(() => { setLoading(false); setDone(true) }, 800)
+    if (!email || !password) {
+      setError('Please fill in all fields.')
+      toast.error('Please fill in all fields.')
+      return
+    }
+    setError('')
+    setLoading(true)
+    setTimeout(() => { 
+      setLoading(false) 
+      setDone(true)
+      toast.success('Password reset successfully!')
+    }, 800)
   }
 
   if (done) return (

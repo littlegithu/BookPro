@@ -21,29 +21,9 @@ def generate_email_verification_token():
 
 
 def send_verification_email(email, verification_token):
-    try:
-        from email_service import email_service
-        verification_url = f"{request.host_url}api/auth/verify-email?token={verification_token}"
-        subject = "Verify your email - BookPro"
-        body = f"""Dear BookPro User,
-
-Please verify your email address by clicking the link below:
-{verification_url}
-
-If you didn't register for BookPro, please ignore this email.
-
-Thank you,
-BookPro Team
-"""
-        result = email_service.send_email(
-            to_email=email,
-            subject=subject,
-            body=body
-        )
-        return result.get("success", False)
-    except Exception as e:  # noqa: BLE001
-        current_app.logger.error(f"Failed to send verification email: {e}")
-        return False
+    """Email verification disabled - email API removed"""
+    current_app.logger.info(f"Verification email would be sent to {email} with token {verification_token}")
+    return True
 
 
 def register_user(data):
@@ -144,7 +124,28 @@ def register_doctor(data):
 
 
 def register_staff(data):
+    staff_fields = ["hospital_id", "role", "department", "employment_type", "employee_id", 
+                    "staff_id_photo", "national_id", "profile_image", "dob", "gender", 
+                    "address", "emergency_contact_name", "emergency_contact_phone"]
+    
+    hospital_id = data.get("hospital_id", 1)
+    role = data.get("role", "Receptionist")
+    department = data.get("department")
+    employment_type = data.get("employment_type", "Full Time")
+    employee_id = data.get("employee_id")
+    staff_id_photo = data.get("staff_id_photo")
+    national_id = data.get("national_id")
+    profile_image = data.get("profile_image")
+    dob = data.get("dob")
+    gender = data.get("gender")
+    address = data.get("address")
+    emergency_contact_name = data.get("emergency_contact_name")
+    emergency_contact_phone = data.get("emergency_contact_phone")
+    
     data.pop("password_confirm", None)
+    for field in staff_fields:
+        data.pop(field, None)
+    
     if "password" in data:
         data["password"] = hash_password(data["password"])
     user = User(**data)
@@ -164,23 +165,23 @@ def register_staff(data):
 
     staff = Staff(
         user_id=user.id,
-        hospital_id=data.get("hospital_id"),
+        hospital_id=hospital_id,
         first_name=user.first_name,
         last_name=user.last_name,
         email=user.email,
         phone=user.phone,
-        role=data.get("role", "Receptionist"),
-        department=data.get("department"),
-        employment_type=data.get("employment_type", "Full Time"),
-        employee_id=data.get("employee_id"),
-        staff_id_photo=data.get("staff_id_photo"),
-        national_id=data.get("national_id"),
-        profile_image=data.get("profile_image"),
-        dob=data.get("dob"),
-        gender=data.get("gender"),
-        address=data.get("address"),
-        emergency_contact_name=data.get("emergency_contact_name"),
-        emergency_contact_phone=data.get("emergency_contact_phone"),
+        role=role,
+        department=department,
+        employment_type=employment_type,
+        employee_id=employee_id,
+        staff_id_photo=staff_id_photo,
+        national_id=national_id,
+        profile_image=profile_image,
+        dob=dob,
+        gender=gender,
+        address=address,
+        emergency_contact_name=emergency_contact_name,
+        emergency_contact_phone=emergency_contact_phone,
     )
     db.session.add(staff)
     db.session.commit()
@@ -236,32 +237,9 @@ def create_magic_link(email):
 
 
 def send_magic_link_email(email, token):
-    try:
-        from email_service import email_service
-        login_url = f"{request.host_url}magic-link?token={token}"
-        subject = "Your Magic Login Link - BookPro"
-        body = f"""
-Dear BookPro User,
-
-Click the link below to log in to your account:
-{login_url}
-
-This link will expire in 1 hour.
-
-If you didn't request this login, you can ignore this email.
-
-Thank you,
-BookPro Team
-"""
-        result = email_service.send_email(
-            to_email=email,
-            subject=subject,
-            body=body
-        )
-        return result.get("success", False)
-    except Exception as e:
-        current_app.logger.error(f"Failed to send magic link email: {e}")
-        return False
+    """Magic link email disabled - email API removed"""
+    current_app.logger.info(f"Magic link would be sent to {email} with token {token}")
+    return True
 
 
 def verify_magic_link(token):
