@@ -6,11 +6,11 @@ from sqlalchemy.orm import joinedload
 
 from extensions import db
 from admin.permissions import doctor_required
-from model import (
+from models import (
     Appointment, Doctor, MedicalRecord, Patient, Prescription,
     Review, Hospital, Notification, DoctorSchedule, DoctorDocument,
 )
-from schema import (
+from schemas import (
     Appointment_schema, Appointments_schema,
     MedicalRecord_schema, MedicalRecords_schema,
     Prescription_schema, Prescriptions_schema,

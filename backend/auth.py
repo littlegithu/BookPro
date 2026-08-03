@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from extensions import db
 from flask import current_app, request
 from flask_bcrypt import check_password_hash, generate_password_hash
-from model import Doctor, Hospital, MagicLink, Patient, Staff, User
+from models import Doctor, Hospital, MagicLink, Patient, Staff, User
 from sqlalchemy.exc import IntegrityError
 
 

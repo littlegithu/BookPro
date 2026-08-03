@@ -8,7 +8,7 @@ from auth import (
 from extensions import db
 from flask import request
 from flask_restful import Resource
-from model import User
+from models import User
 
 
 class EmailVerification(Resource):

@@ -2,8 +2,8 @@ from flask import request
 from flask_restful import Resource
 
 from extensions import db
-from model import Doctor
-from schema import Doctor_schema, Doctors_schema
+from models import Doctor
+from schemas import Doctor_schema, Doctors_schema
 from .permissions import admin_required
 
 

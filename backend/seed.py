@@ -1,7 +1,7 @@
 from datetime import date, datetime, time
 from app import app
 from auth import generate_token, hash_password
-from model import (
+from models import (
     Appointment, Doctor, Hospital, MedicalRecord, Patient, Prescription,
     Review, User, db, DoctorSchedule, Notification, DoctorDocument,
 )

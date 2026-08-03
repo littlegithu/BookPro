@@ -3,7 +3,7 @@ from flask_restful import Resource
 from sqlalchemy import func
 
 from extensions import db
-from model import User, Doctor, Patient, Hospital, Appointment, Review
+from models import User, Doctor, Patient, Hospital, Appointment, Review
 from .permissions import admin_required
 
 

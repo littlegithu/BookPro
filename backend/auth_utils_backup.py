@@ -1,7 +1,7 @@
 from extensions import db
 from flask import request
 from flask_bcrypt import check_password_hash, hash_password
-from model import Patient, User
+from models import Patient, User
 from sqlalchemy.exc import IntegrityError
 
 

@@ -6,10 +6,10 @@ from sqlalchemy.orm import joinedload
 
 from extensions import db
 from admin.permissions import staff_required, admin_or_hospital_admin_required
-from model import (
+from models import (
     Appointment, Doctor, Hospital, Patient, Staff, Notification, User
 )
-from schema import (
+from schemas import (
     Appointment_schema, Appointments_schema,
     Patient_schema, Patients_schema,
     Staff_schema, StaffDashboard_schema,

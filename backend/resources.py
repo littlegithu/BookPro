@@ -3,8 +3,8 @@ from flask_restful import Resource
 from sqlalchemy.orm import joinedload
 
 from extensions import db
-from model import Appointment, Doctor, Hospital, Review, User, Patient, Staff
-from schema import (
+from models import Appointment, Doctor, Hospital, Review, User, Patient, Staff
+from schemas import (
     Appointment_schema,
     Appointments_schema,
     Doctor_schema,
