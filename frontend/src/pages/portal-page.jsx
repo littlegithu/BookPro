@@ -15,6 +15,7 @@ const ROLES = [
 
 const STAFF_ROLES = ['Receptionist', 'Nurse', 'Lab Technician', 'Pharmacist', 'Cashier', 'Records Officer']
 const EMPLOYMENT_TYPES = ['Full Time', 'Part Time', 'Contract']
+const DEPARTMENTS = ['Front Office', 'Nursing', 'Laboratory', 'Pharmacy', 'Billing', 'Records', 'Administration', 'Radiology', 'ICU', 'Outpatient']
 
 export default function PortalPage() {
   const { login } = useAuth()
@@ -68,7 +69,7 @@ export default function PortalPage() {
           ...baseFieldConfigs,
           { name: 'role', label: 'Role', type: 'select', options: STAFF_ROLES },
           { name: 'hospital_id', label: 'Hospital ID', type: 'number', placeholder: 'e.g. 1' },
-          { name: 'department', label: 'Department', type: 'text', placeholder: 'e.g. Front Office' },
+          { name: 'department', label: 'Department', type: 'select', options: DEPARTMENTS },
           { name: 'employment_type', label: 'Employment Type', type: 'select', options: EMPLOYMENT_TYPES },
         ]
       : baseFieldConfigs
