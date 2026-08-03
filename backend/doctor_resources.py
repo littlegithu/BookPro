@@ -36,8 +36,8 @@ from sqlalchemy.orm import joinedload
 
 
 def get_today_date_filter():
-    today_start = datetime.combine(date.today(), datetime.min.time())
-    today_end = datetime.combine(date.today(), datetime.max.time())
+    today_start = datetime.combine(date.today, datetime.min.time())
+    today_end = datetime.combine(date.today, datetime.max.time())
     return today_start, today_end
 
 
@@ -256,14 +256,14 @@ class DoctorPatientList(Resource):
             upcoming = Appointment.query.filter(
                 Appointment.doctor_id == doctor.id,
                 Appointment.patient_id == patient.id,
-                Appointment.appointment_date > datetime.now(),
+                Appointment.appointment_date > datetime.now,
                 Appointment.status.in_(['Scheduled', 'Pending']),
             ).order_by(Appointment.appointment_date.asc()).first()
 
             dob = patient.dob
             age = None
             if dob:
-                age = (date.today() - dob).days // 365
+                age = (date.today - dob).days // 365
 
             result.append({
                 'id': patient.id,
@@ -305,7 +305,7 @@ class DoctorPatientDetail(Resource):
         ).order_by(Prescription.created_at.desc()).all()
 
         dob = patient.dob
-        age = (date.today() - dob).days // 365 if dob else None
+        age = (date.today - dob).days // 365 if dob else None
 
         appointment_history = []
         for appt in appointments:
@@ -814,7 +814,7 @@ class DoctorAnalytics(Resource):
         doctor = request.doctor
         from collections import defaultdict
 
-        today = date.today()
+        today = date.today
         seven_months_ago = today - __import__('datetime').timedelta(days=210)
 
         appts_q = Appointment.query.filter(

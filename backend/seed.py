@@ -597,7 +597,7 @@ with app.app_context():
     db.session.commit()
     print(f"Seeded {len(patients)} patients.")
 
-    now = datetime.now()
+    now = datetime.now
     today = now.date()
     appointments = [
         Appointment(

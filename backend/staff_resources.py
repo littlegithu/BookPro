@@ -167,7 +167,7 @@ class PatientCheckIn(Resource):
 
         appointment = Appointment.query.get_or_404(appointment_id)
 
-        if appointment.appointment_date.date() != date.today():
+        if appointment.appointment_date.date() != date.today:
             return {"error": "Can only check in patients with today's appointments"}, 400
 
         old_status = appointment.status

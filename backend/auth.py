@@ -222,7 +222,7 @@ def create_magic_link(email):
         return None, "If an account exists with that email, a magic link has been sent"
 
     token = secrets.token_urlsafe(32)
-    expires_at = datetime.now() + timedelta(hours=1)
+    expires_at = datetime.now + timedelta(hours=1)
 
     MagicLink.query.filter_by(used=False).filter(MagicLink.expires_at < expires_at).delete()
 
@@ -272,7 +272,7 @@ def verify_magic_link(token):
     if not magic_link:
         return None
 
-    if magic_link.expires_at < datetime.now():
+    if magic_link.expires_at < datetime.now:
         db.session.delete(magic_link)
         db.session.commit()
         return None
