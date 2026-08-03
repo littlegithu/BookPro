@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from extensions import db
 from sqlalchemy import CheckConstraint

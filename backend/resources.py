@@ -1,26 +1,25 @@
+from extensions import db
 from flask import abort, request
 from flask_restful import Resource
-from sqlalchemy.orm import joinedload
-
-from extensions import db
-from models import Appointment, Doctor, Hospital, Review, User, Patient, Staff
+from models import Appointment, Doctor, Hospital, Patient, Review, User
 from schemas import (
     Appointment_schema,
     Appointments_schema,
     Doctor_schema,
+    DoctorRegistration_schema,
     Doctors_schema,
     Hospital_schema,
+    HospitalRegistration_schema,
     Hospitals_schema,
     Patient_schema,
     Patients_schema,
     Review_schema,
     Reviews_schema,
-    HospitalRegistration_schema,
-    DoctorRegistration_schema,
     StaffRegistration_schema,
     user_schema,
     users_schema,
 )
+from sqlalchemy.orm import joinedload
 
 
 def get_json_data():

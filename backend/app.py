@@ -1,14 +1,10 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify
-from flask_bcrypt import Bcrypt
-from flask_cors import CORS
-from flask_migrate import Migrate
-from flask_restful import Api
-from werkzeug.exceptions import HTTPException
-
 from extensions import bcrypt, db, migrate
+from flask import Flask, jsonify
+from flask_cors import CORS
+from flask_restful import Api
 from resources import (
     AppointmentDetail,
     AppointmentList,
@@ -29,6 +25,7 @@ from resources import (
     UserList,
     UserLogin,
 )
+from werkzeug.exceptions import HTTPException
 
 load_dotenv()
 

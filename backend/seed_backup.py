@@ -1,4 +1,19 @@
+from datetime import date, datetime, time
 
+from app import app
+from auth import hash_password
+from models import (
+    Appointment,
+    Doctor,
+    Hospital,
+    Patient,
+    Review,
+    User,
+    db,
+)
+from sqlalchemy import text
+
+with app.app_context():
     db.session.execute(text("ALTER SEQUENCE users_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE patients_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE doctors_id_seq RESTART WITH 1"))

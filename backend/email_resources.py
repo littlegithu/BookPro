@@ -1,6 +1,6 @@
+from email_service import email_service
 from flask import request
 from flask_restful import Resource
-from email_service import email_service
 
 
 class EmailNotification(Resource):

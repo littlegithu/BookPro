@@ -1,24 +1,38 @@
-from datetime import datetime, date
+from datetime import date, datetime
+
+from admin.permissions import doctor_required
+from extensions import db
 from flask import request
 from flask_restful import Resource
-from sqlalchemy import func
-from sqlalchemy.orm import joinedload
-
-from extensions import db
-from admin.permissions import doctor_required
 from models import (
-    Appointment, Doctor, MedicalRecord, Patient, Prescription,
-    Review, Hospital, Notification, DoctorSchedule, DoctorDocument,
+    Appointment,
+    Doctor,
+    DoctorDocument,
+    DoctorSchedule,
+    Hospital,
+    MedicalRecord,
+    Notification,
+    Patient,
+    Prescription,
+    Review,
 )
 from schemas import (
-    Appointment_schema, Appointments_schema,
-    MedicalRecord_schema, MedicalRecords_schema,
-    Prescription_schema, Prescriptions_schema,
+    Appointment_schema,
+    Appointments_schema,
+    DoctorDocument_schema,
+    DoctorDocuments_schema,
+    DoctorSchedule_schema,
+    DoctorSchedules_schema,
+    MedicalRecord_schema,
+    MedicalRecords_schema,
+    Notification_schema,
+    Notifications_schema,
+    Prescription_schema,
+    Prescriptions_schema,
     Reviews_schema,
-    DoctorSchedule_schema, DoctorSchedules_schema,
-    Notification_schema, Notifications_schema,
-    DoctorDocument_schema, DoctorDocuments_schema,
 )
+from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 
 
 def get_today_date_filter():

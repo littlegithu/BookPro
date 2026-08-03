@@ -1,9 +1,20 @@
 from datetime import date, datetime, time
+
 from app import app
 from auth import generate_token, hash_password
 from models import (
-    Appointment, Doctor, Hospital, MedicalRecord, Patient, Prescription,
-    Review, User, db, DoctorSchedule, Notification, DoctorDocument,
+    Appointment,
+    Doctor,
+    DoctorDocument,
+    DoctorSchedule,
+    Hospital,
+    MedicalRecord,
+    Notification,
+    Patient,
+    Prescription,
+    Review,
+    User,
+    db,
 )
 from sqlalchemy import text
 
