@@ -1,11 +1,17 @@
 from datetime import date, datetime, time
-
 from app import app
 from auth import generate_token, hash_password
-from model import Appointment, Doctor, Hospital, MedicalRecord, Patient, Review, User, db
+from model import (
+    Appointment, Doctor, Hospital, MedicalRecord, Patient, Prescription,
+    Review, User, db, DoctorSchedule, Notification, DoctorDocument,
+)
 from sqlalchemy import text
 
 with app.app_context():
+    db.session.query(Notification).delete()
+    db.session.query(DoctorDocument).delete()
+    db.session.query(DoctorSchedule).delete()
+    db.session.query(Prescription).delete()
     db.session.query(Review).delete()
     db.session.query(MedicalRecord).delete()
     db.session.query(Appointment).delete()
@@ -15,13 +21,29 @@ with app.app_context():
     db.session.query(User).delete()
     db.session.commit()
 
+<<<<<<< HEAD
+    if db.engine.dialect.name == "postgresql":
+        db.session.execute(text("ALTER SEQUENCE users_id_seq RESTART WITH 1"))
+        db.session.execute(text("ALTER SEQUENCE patients_id_seq RESTART WITH 1"))
+        db.session.execute(text("ALTER SEQUENCE doctors_id_seq RESTART WITH 1"))
+        db.session.execute(text("ALTER SEQUENCE hospitals_id_seq RESTART WITH 1"))
+        db.session.execute(text("ALTER SEQUENCE appointments_id_seq RESTART WITH 1"))
+        db.session.execute(text("ALTER SEQUENCE reviews_id_seq RESTART WITH 1"))
+        db.session.commit()
+=======
     db.session.execute(text("ALTER SEQUENCE users_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE patients_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE doctors_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE hospitals_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE appointments_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE reviews_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE medical_records_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE prescriptions_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE doctor_schedules_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE notifications_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE doctor_documents_id_seq RESTART WITH 1"))
     db.session.commit()
+>>>>>>> 9633b1e01d4b86ab1fc8777a3420e98662f8dc57
 
     admin_user = User(
         first_name="Admin",
@@ -31,6 +53,8 @@ with app.app_context():
         password=hash_password("admin123"),
         role="admin",
         token=generate_token(),
+        email_verified=True,
+        email_verification_token=None,
     )
     db.session.add(admin_user)
     db.session.commit()
@@ -516,5 +540,337 @@ with app.app_context():
     db.session.add_all(doctors)
     db.session.commit()
     print(f"Seeded {len(doctors)} doctors.")
+
+    patients = [
+        Patient(
+            user_id=admin_user.id,
+            first_name="John",
+            last_name="Mwangi",
+            email="john.mwangi@example.com",
+            phone="0723456789",
+            dob=date(1985, 3, 15),
+            gender="Male",
+            address="301 Nairobi, Kenya",
+        ),
+        Patient(
+            user_id=admin_user.id,
+            first_name="Sarah",
+            last_name="Ochieng",
+            email="sarah.ochieng@example.com",
+            phone="0734567890",
+            dob=date(1990, 7, 22),
+            gender="Female",
+            address="00200 Nairobi, Kenya",
+        ),
+        Patient(
+            user_id=admin_user.id,
+            first_name="David",
+            last_name="Mutiso",
+            email="david.mutiso@example.com",
+            phone="0745678901",
+            dob=date(1978, 11, 5),
+            gender="Male",
+            address="501 Mombasa, Kenya",
+        ),
+        Patient(
+            user_id=admin_user.id,
+            first_name="Grace",
+            last_name="Kariuki",
+            email="grace.kariuki@example.com",
+            phone="0756789012",
+            dob=date(1995, 4, 18),
+            gender="Female",
+            address="201 Kisumu, Kenya",
+        ),
+        Patient(
+            user_id=admin_user.id,
+            first_name="Michael",
+            last_name="Omondi",
+            email="michael.omondi@example.com",
+            phone="0767890123",
+            dob=date(1982, 9, 30),
+            gender="Male",
+            address="101 Nakuru, Kenya",
+        ),
+    ]
+    db.session.add_all(patients)
+    db.session.commit()
+    print(f"Seeded {len(patients)} patients.")
+
+    now = datetime.now()
+    today = now.date()
+    appointments = [
+        Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(9, 0),
+            status='Scheduled',
+            notes='Routine checkup',
+        ),
+        Appointment(
+            patient_id=patients[1].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(10, 30),
+            status='Scheduled',
+            notes='Follow-up for hypertension',
+        ),
+        Appointment(
+            patient_id=patients[2].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(11, 30),
+            status='Completed',
+            notes='Annual physical examination',
+        ),
+        Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[1].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(14, 0),
+            status='Pending',
+            notes='Cardiac screening',
+        ),
+        Appointment(
+            patient_id=patients[3].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(15, 30),
+            status='Cancelled',
+            notes='Patient cancelled due to illness',
+        ),
+        Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today - __import__('datetime').timedelta(days=2), datetime.min.time()),
+            appointment_time=time(10, 0),
+            status='Completed',
+            notes='Routine checkup',
+        ),
+        Appointment(
+            patient_id=patients[1].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today + __import__('datetime').timedelta(days=1), datetime.min.time()),
+            appointment_time=time(9, 30),
+            status='Scheduled',
+            notes='Follow-up appointment',
+        ),
+        Appointment(
+            patient_id=patients[2].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today + __import__('datetime').timedelta(days=2), datetime.min.time()),
+            appointment_time=time(14, 0),
+            status='Scheduled',
+            notes='Blood pressure check',
+        ),
+        Appointment(
+            patient_id=patients[4].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today + __import__('datetime').timedelta(days=3), datetime.min.time()),
+            appointment_time=time(11, 0),
+            status='Pending',
+            notes='New patient consultation',
+        ),
+        Appointment(
+            patient_id=patients[3].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today + __import__('datetime').timedelta(days=5), datetime.min.time()),
+            appointment_time=time(10, 0),
+            status='Scheduled',
+            notes='Medication review',
+        ),
+    ]
+    db.session.add_all(appointments)
+    db.session.commit()
+    print(f"Seeded {len(appointments)} appointments.")
+
+    medical_records = [
+        MedicalRecord(
+            appointment_id=appointments[2].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            diagnosis='Malaria',
+            symptoms='Fever, headache, body aches, fatigue',
+            prescription='Artemether Lumefantrine (Coartem) - 4 tablets initial dose, then 2 tablets twice daily for 3 days',
+            treatment_plan='Complete full course of antimalarial treatment, increase water intake, rest',
+            lab_requests='Complete Blood Count (CBC), Malaria RDT',
+            follow_up_date=datetime.combine(today + __import__('datetime').timedelta(days=7), datetime.min.time()),
+            additional_notes='Increase water intake. Take medication with food. Return if symptoms worsen.',
+        ),
+        MedicalRecord(
+            appointment_id=appointments[5].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            diagnosis='Hypertension',
+            symptoms='Occasional headaches, no chest pain',
+            prescription='Lisinopril 10mg daily, take in the morning',
+            treatment_plan='Monitor blood pressure weekly, follow DASH diet, limit sodium intake',
+            lab_requests='Comprehensive metabolic panel, lipid profile',
+            follow_up_date=datetime.combine(today + __import__('datetime').timedelta(days=14), datetime.min.time()),
+            additional_notes='Blood pressure was 145/92. Lifestyle modifications recommended.',
+        ),
+        MedicalRecord(
+            appointment_id=appointments[0].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            diagnosis='General health checkup - Normal',
+            symptoms='No active complaints',
+            prescription='Multivitamin daily, Omega-3 supplements',
+            treatment_plan='Maintain current health regimen, annual checkup recommended',
+            lab_requests='None at this time',
+            follow_up_date=None,
+            additional_notes='All vitals normal. Patient is in good health.',
+        ),
+    ]
+    db.session.add_all(medical_records)
+    db.session.commit()
+    print(f"Seeded {len(medical_records)} medical records.")
+
+    prescriptions = [
+        Prescription(
+            medical_record_id=medical_records[0].id,
+            appointment_id=appointments[2].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            medicine='Artemether Lumefantrine',
+            dosage='500mg',
+            frequency='Twice Daily',
+            duration='3 Days',
+            instructions='Take with food. Complete the full course.',
+        ),
+        Prescription(
+            medical_record_id=medical_records[1].id,
+            appointment_id=appointments[5].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            medicine='Lisinopril',
+            dosage='10mg',
+            frequency='Once Daily',
+            duration='30 Days',
+            instructions='Take in the morning. Monitor blood pressure.',
+        ),
+        Prescription(
+            medical_record_id=medical_records[2].id,
+            appointment_id=appointments[0].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            medicine='Multivitamin',
+            dosage='1 tablet',
+            frequency='Once Daily',
+            duration='90 Days',
+            instructions='Take with breakfast.',
+        ),
+    ]
+    db.session.add_all(prescriptions)
+    db.session.commit()
+    print(f"Seeded {len(prescriptions)} prescriptions.")
+
+    days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    schedules = [
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=0, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=1, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=2, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=3, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=4, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=2, start_time=time(13, 0), end_time=time(14, 0), is_break=True),
+    ]
+    db.session.add_all(schedules)
+    db.session.commit()
+    print(f"Seeded {len(schedules)} schedule entries.")
+
+    reviews = [
+        Review(
+            appointment_id=appointments[2].id,
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            rating=5,
+            comment='Excellent doctor. Very thorough and caring.',
+        ),
+        Review(
+            appointment_id=appointments[5].id,
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            rating=4,
+            comment='Dr. User was very professional and explained everything clearly.',
+        ),
+    ]
+    db.session.add_all(reviews)
+    db.session.commit()
+    print(f"Seeded {len(reviews)} reviews.")
+
+    doctors[0].rating = 4.5
+    doctors[0].reviews = 2
+    db.session.commit()
+
+    notifications = [
+        Notification(
+            doctor_id=doctors[0].id,
+            type='appointment_booked',
+            title='New appointment booked',
+            message='John Mwangi has booked a new appointment for today at 9:00 AM.',
+            related_appointment_id=appointments[0].id,
+            related_patient_id=patients[0].id,
+        ),
+        Notification(
+            doctor_id=doctors[0].id,
+            type='appointment_cancelled',
+            title='Appointment cancelled',
+            message='Sarah Ochieng cancelled their appointment scheduled for today at 15:30.',
+            related_appointment_id=appointments[4].id,
+            related_patient_id=patients[3].id,
+        ),
+        Notification(
+            doctor_id=doctors[0].id,
+            type='followup_reminder',
+            title='Follow-up reminder',
+            message='John Mwangi has a follow-up appointment in 3 days.',
+            related_appointment_id=appointments[7].id,
+            related_patient_id=patients[2].id,
+        ),
+    ]
+    db.session.add_all(notifications)
+    db.session.commit()
+    print(f"Seeded {len(notifications)} notifications.")
+
+    documents = [
+        DoctorDocument(
+            doctor_id=doctors[0].id,
+            doc_type='medical_license',
+            title='Medical License - Kenya Medical Practitioners Board',
+            file_url='https://example.com/license.pdf',
+            file_name='medical_license.pdf',
+            verified=True,
+        ),
+        DoctorDocument(
+            doctor_id=doctors[0].id,
+            doc_type='certificate',
+            title='Advanced Cardiac Life Support (ACLS) Certification',
+            file_url='https://example.com/acls.pdf',
+            file_name='acls_certificate.pdf',
+            verified=True,
+        ),
+        DoctorDocument(
+            doctor_id=doctors[0].id,
+            doc_type='cv',
+            title='Curriculum Vitae',
+            file_url='https://example.com/cv.pdf',
+            file_name='dr_user_cv.pdf',
+            verified=True,
+        ),
+    ]
+    db.session.add_all(documents)
+    db.session.commit()
+    print(f"Seeded {len(documents)} documents.")
 
     print("Done seeding!")
