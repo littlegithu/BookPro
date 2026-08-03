@@ -13,6 +13,9 @@ const ROLES = [
   { key: 'staff', label: 'Staff', icon: Users, description: 'Register as hospital staff' },
 ]
 
+const STAFF_ROLES = ['Receptionist', 'Nurse', 'Lab Technician', 'Pharmacist', 'Cashier', 'Records Officer']
+const EMPLOYMENT_TYPES = ['Full Time', 'Part Time', 'Contract']
+
 export default function PortalPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -63,14 +66,16 @@ export default function PortalPage() {
       : role === 'staff'
       ? [
           ...baseFieldConfigs,
-          { name: 'role', label: 'Role', type: 'text', placeholder: 'Receptionist', value: 'Receptionist' },
+          { name: 'role', label: 'Role', type: 'select', options: STAFF_ROLES },
           { name: 'hospital_id', label: 'Hospital ID', type: 'number', placeholder: 'e.g. 1' },
+          { name: 'department', label: 'Department', type: 'text', placeholder: 'e.g. Front Office' },
+          { name: 'employment_type', label: 'Employment Type', type: 'select', options: EMPLOYMENT_TYPES },
         ]
       : baseFieldConfigs
 
     return fieldConfigs.map(config => ({
       ...config,
-      value: formData[config.name] || config.value || '',
+      value: formData[config.name] || '',
       onChange: (value) => handleFieldChange(config.name, value),
     }))
   }
