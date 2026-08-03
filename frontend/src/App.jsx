@@ -8,6 +8,7 @@ import AdminLayout from './admin/components/AdminLayout'
 
 import LandingPage from './pages/landing-page'
 import LoginPage from './pages/login-page'
+import StaffLoginPage from './pages/staff-login'
 import RegisterPage from './pages/register-page'
 import PortalPage from './pages/portal-page'
 import ResetPasswordPage from './pages/reset-password'
@@ -20,6 +21,12 @@ import ProfilePage from './pages/profile-page'
 
 import DoctorsAdminPage from './admin/pages/Doctors'
 
+import StaffDashboardPage from './pages/staff-dashboard' // eslint-disable-line no-unused-vars
+import StaffCheckInPage from './pages/staff-check-in'
+import StaffQueuePage from './pages/staff-queue'
+import StaffAppointmentsPage from './pages/staff-appointments'
+import StaffRegistrationPage from './pages/staff-registration'
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -27,6 +34,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/staff/login" element={<StaffLoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/portal" element={<PortalPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -34,6 +42,13 @@ export default function App() {
           <Route path="/doctors/:id" element={<DashboardLayout><DoctorProfilePage /></DashboardLayout>} />
 
           <Route path="/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
+          <Route path="/staff/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
+          <Route path="/staff/login" element={<StaffLoginPage />} />
+          <Route path="/staff/check-in" element={<ProtectedRoute><StaffCheckInPage /></ProtectedRoute>} />
+          <Route path="/staff/queue" element={<ProtectedRoute><StaffQueuePage /></ProtectedRoute>} />
+          <Route path="/staff/appointments" element={<ProtectedRoute><StaffAppointmentsPage /></ProtectedRoute>} />
+          <Route path="/staff/register" element={<ProtectedRoute><StaffRegistrationPage /></ProtectedRoute>} />
+
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/appointments/:id" element={<AppointmentDetailPage />} />
           <Route path="/medical-records" element={<MedicalRecordsPage />} />
