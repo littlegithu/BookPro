@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { ShieldCheck } from 'lucide-react'
 import TimeSlotGrid from './time-slot-grid'
 import TrustIndicator from './trust-indicator'
@@ -64,9 +65,21 @@ export default function BookingForm({ doctorId, hospitalIds, fee }) {
   const minDate = today.toISOString().split('T')[0]
 
   const handleSubmit = async () => {
-    if (!date || !time) { setError('Please select a date and time.'); return }
-    if (!hospitalId) { setError('Please select a hospital.'); return }
-    if (!reason) { setError('Please select a reason for your visit.'); return }
+    if (!date || !time) {
+      setError('Please select a date and time.')
+      toast.error('Please select a date and time.')
+      return
+    }
+    if (!hospitalId) {
+      setError('Please select a hospital.')
+      toast.error('Please select a hospital.')
+      return
+    }
+    if (!reason) {
+      setError('Please select a reason for your visit.')
+      toast.error('Please select a reason for your visit.')
+      return
+    }
     setError('')
     setLoading(true)
     try {
@@ -85,9 +98,12 @@ export default function BookingForm({ doctorId, hospitalIds, fee }) {
         hospital_id: Number(hospitalId),
         notes: reason,
       })
+      toast.success('Appointment booked successfully!')
       navigate('/dashboard')
     } catch (err) {
-      setError(err.message || 'Failed to book appointment')
+      const errorMsg = err.message || 'Failed to book appointment'
+      setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setLoading(false)
     }

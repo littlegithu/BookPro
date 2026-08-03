@@ -1,6 +1,7 @@
 
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
 import Navbar from '../components/layout/navbar'
@@ -18,13 +19,19 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
-    if (!email || !password) { setError('Please fill in all fields.'); return }
-    setError(''); setLoading(true)
+    if (!email || !password) {
+      setError('Please fill in all fields.')
+      toast.error('Please fill in all fields.')
+      return
+    }
+    setError('')
+    setLoading(true)
     try {
       const result = await apiLoginUser({ email, password })
       const token = result.token
       const user = result.user
       if (!token) {
+        toast.error('No token received from server')
         setError('No token received from server')
         return
       }
@@ -39,9 +46,12 @@ export default function LoginPage() {
         profile_image: user.profile_image || null,
       }
       login(userData, token)
+      toast.success('Login successful!')
       navigate(from, { replace: true })
     } catch (err) {
-      setError(err.message || 'Invalid credentials')
+      const errorMsg = err.message || 'Invalid credentials'
+      setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setLoading(false)
     }

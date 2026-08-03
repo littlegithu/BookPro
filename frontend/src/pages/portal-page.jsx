@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
 import Navbar from '../components/layout/navbar'
@@ -118,10 +119,13 @@ export default function PortalPage() {
           profile_image: user.profile_image || null,
         }
         login(userData, 'mock-jwt-token')
+        toast.success(`${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully!`)
         navigate('/dashboard', { replace: true })
       }
     } catch (err) {
-      setError(err.message || "Please check your information and try again")
+      const errorMsg = err.message || "Please check your information and try again"
+      setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setLoading(false)
     }
