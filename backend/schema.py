@@ -168,7 +168,7 @@ class AppointmentSchema(Schema):
     id = fields.Int(dump_only=True)
     appointment_date = fields.DateTime(required=True)
     appointment_time = fields.Str(required=True)
-    status = fields.Str(required=False, validate=validate.OneOf(['Pending', 'Scheduled', 'Completed', 'Cancelled', 'Checked In']))
+    status = fields.Str(required=False, validate=validate.OneOf(['Pending', 'Scheduled', 'Completed', 'Cancelled', 'Checked In', 'Called']))
     patient_id = fields.Int(required=True)
     doctor_id = fields.Int(required=True)
     hospital_id = fields.Int(required=False)

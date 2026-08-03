@@ -207,7 +207,7 @@ class Appointment(db.Model):
     __tablename__ = "appointments"
 
     __table_args__ = (
-        CheckConstraint("status IN ('Pending', 'Scheduled', 'Completed', 'Cancelled')", name="ck_appointment_status"),
+        CheckConstraint("status IN ('Pending', 'Scheduled', 'Completed', 'Cancelled', 'Checked In', 'Called')", name="ck_appointment_status"),
     )
 
     id = db.Column(db.Integer, primary_key=True)

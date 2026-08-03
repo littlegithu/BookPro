@@ -1,9 +1,10 @@
 import secrets
+from datetime import datetime, timedelta
 
 from extensions import db
 from flask import current_app, request
 from flask_bcrypt import check_password_hash, generate_password_hash
-from model import Doctor, Hospital, Patient, Staff, User
+from model import Doctor, Hospital, MagicLink, Patient, Staff, User
 from sqlalchemy.exc import IntegrityError
 
 
@@ -216,8 +217,6 @@ def login_user_token(token):
 
 
 def create_magic_link(email):
-    from model import MagicLink
-
     user = User.query.filter_by(email=email).first()
     if not user:
         return None, "If an account exists with that email, a magic link has been sent"
