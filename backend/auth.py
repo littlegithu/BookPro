@@ -21,8 +21,13 @@ def generate_email_verification_token():
 
 
 def send_verification_email(email, verification_token):
-    """Email verification disabled - email API removed"""
-    current_app.logger.info(f"Verification email would be sent to {email} with token {verification_token}")
+    try:
+        base_url = request.host_url.rstrip('/') if request else current_app.config.get('APP_URL', 'http://localhost:5000')
+    except RuntimeError:
+        base_url = current_app.config.get('APP_URL', 'http://localhost:5000')
+    
+    verification_url = f"{base_url}/verify-email?token={verification_token}"
+    current_app.logger.info(f"Verification link generated for {email}: {verification_url}")
     return True
 
 
@@ -31,10 +36,11 @@ def register_user(data):
     if "password" in data:
         data["password"] = hash_password(data["password"])
     user = User(**data)
+    user.role = "user"
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = generate_email_verification_token()
-    user.email_verified = False
+    user.email_verification_token = None  # Not needed since verification is optional
+    user.email_verified = True  # Set as verified by default
     db.session.add(user)
     try:
         db.session.commit()
@@ -88,8 +94,8 @@ def register_doctor(data):
     user.role = "doctor"
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = generate_email_verification_token()
-    user.email_verified = False
+    user.email_verification_token = None  # Not needed since verification is optional
+    user.email_verified = True  # Set as verified by default
     db.session.add(user)
     try:
         db.session.commit()
@@ -97,7 +103,8 @@ def register_doctor(data):
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
 
-    send_verification_email(user.email, user.email_verification_token)
+    # Skip sending verification email since verification is optional
+    # send_verification_email(user.email, user.email_verification_token)
 
     doctor = Doctor(
         user_id=user.id,
@@ -152,8 +159,8 @@ def register_staff(data):
     user.role = "staff"
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = generate_email_verification_token()
-    user.email_verified = False
+    user.email_verification_token = None  # Not needed since verification is optional
+    user.email_verified = True  # Set as verified by default
     db.session.add(user)
     try:
         db.session.commit()
@@ -161,7 +168,8 @@ def register_staff(data):
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
 
-    send_verification_email(user.email, user.email_verification_token)
+    # Skip sending verification email since verification is optional
+    # send_verification_email(user.email, user.email_verification_token)
 
     staff = Staff(
         user_id=user.id,
@@ -204,8 +212,10 @@ def login_user(data):
     if not user or not check_password_hash(user.password, password):
         return None, False
 
-    if user.email_verified is False:
-        return user, False
+    # Email verification is now optional - allow all verified/unverified users to login
+    # If verification is required, uncomment the following lines:
+    # if user.email_verified is False:
+    #     return user, False
 
     return user, True
 
