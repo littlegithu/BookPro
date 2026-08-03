@@ -5,6 +5,7 @@ from extensions import bcrypt, db, migrate
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restful import Api
+<<<<<<< Updated upstream
 from resources import (
     AppointmentDetail,
     AppointmentList,
@@ -26,6 +27,8 @@ from resources import (
     UserLogin,
 )
 from werkzeug.exceptions import HTTPException
+=======
+>>>>>>> Stashed changes
 
 load_dotenv()
 

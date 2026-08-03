@@ -1,8 +1,13 @@
 from extensions import db
 from flask import abort, request
 from flask_restful import Resource
+<<<<<<< Updated upstream
 from models import Appointment, Doctor, Hospital, Patient, Review, User
 from schemas import (
+=======
+from model import Appointment, Doctor, Hospital, Patient, Review, User, db
+from schema import (
+>>>>>>> Stashed changes
     Appointment_schema,
     Appointments_schema,
     Doctor_schema,
