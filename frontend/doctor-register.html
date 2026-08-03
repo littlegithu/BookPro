@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Registration - BookPro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .form-card {
+      background: #ffffff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .form-card h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.25rem;
+    }
+
+    .form-card .subtitle {
+      font-size: 0.875rem;
+      color: #64748b;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #1e293b;
+      margin-bottom: 0.375rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 0.8125rem;
+      color: #1e293b;
+      background-color: #f8fafc;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #14b8a6;
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+      background-color: #ffffff;
+    }
+
+    .form-group input::placeholder {
+      color: #94a3b8;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      background-color: #14b8a6;
+      color: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .submit-btn:hover {
+      background-color: #0d9488;
+    }
+
+    @media (max-width: 640px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-card">
+    <h1>Register as a Doctor</h1>
+    <p class="subtitle">Fill in the details below to get started</p>
+
+    <form class="form-grid" onsubmit="event.preventDefault(); alert('Registration submitted!');">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="first_name" placeholder="Your first name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="last_name" placeholder="Your last name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="you@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="0712345678" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Create a password" required minlength="8">
+      </div>
+
+      <div class="form-group">
+        <label for="passwordConfirm">Confirm Password</label>
+        <input type="password" id="passwordConfirm" name="password_confirm" placeholder="Confirm your password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="specialty">Specialty</label>
+        <select id="specialty" name="specialty" required>
+          <option value="">Select a specialty</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Dermatology">Dermatology</option>
+          <option value="Dentistry">Dentistry</option>
+          <option value="Emergency Medicine">Emergency Medicine</option>
+          <option value="Endocrinology">Endocrinology</option>
+          <option value="Gastroenterology">Gastroenterology</option>
+          <option value="Gynecology">Gynecology</option>
+          <option value="Hematology">Hematology</option>
+          <option value="Infectious Disease">Infectious Disease</option>
+          <option value="Neurology">Neurology</option>
+          <option value="Oncology">Oncology</option>
+          <option value="Ophthalmology">Ophthalmology</option>
+          <option value="Orthopedics">Orthopedics</option>
+          <option value="Otolaryngology">Otolaryngology</option>
+          <option value="Pediatrics">Pediatrics</option>
+          <option value="Psychiatry">Psychiatry</option>
+          <option value="Radiology">Radiology</option>
+          <option value="Rheumatology">Rheumatology</option>
+          <option value="Surgery">Surgery</option>
+          <option value="Urology">Urology</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="yearsExperience">Years of Experience</label>
+        <input type="number" id="yearsExperience" name="years_practice" placeholder="5" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="workingHours">Working Hours</label>
+        <input type="text" id="workingHours" name="working_hours" placeholder="9:00 AM - 5:00 PM">
+      </div>
+
+      <div class="form-group">
+        <label for="consultationFee">Consultation Fee (KSh)</label>
+        <input type="number" id="consultationFee" name="fee" placeholder="2000" min="0">
+      </div>
+
+      <div class="form-group full-width">
+        <label for="hospitalId">Hospital ID</label>
+        <input type="text" id="hospitalId" name="hospital_id" placeholder="e.g. 1">
+      </div>
+
+      <button type="submit" class="submit-btn">Create account</button>
+    </form>
+  </div>
+</body>
+</html>

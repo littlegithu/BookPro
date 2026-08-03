@@ -32,8 +32,9 @@ export default function Navbar({ showLogo = true }) {
       </div>
       {!isDoctorsPage && (
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1">
-          <Link to="/doctors" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-teal">Browse doctors</Link>
-          <Link to="/dashboard" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-teal">Dashboard</Link>
+<Link to="/doctors" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-teal">Browse doctors</Link>
+                          <Link to="/portal" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-teal">Portal</Link>
+                          <Link to="/dashboard" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-teal">Dashboard</Link>
           <a href="#how-it-works" className="text-sm text-slate px-4 py-2 rounded-md hover:bg-teal-light hover:text-teal transition-colors dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-teal">How it works</a>
         </div>
       )}

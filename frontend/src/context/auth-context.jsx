@@ -30,8 +30,20 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('bookpro_token')
   }
 
+  const isStaff = () => {
+    if (!user) return false
+    return user.role === 'staff' || (user.staff && user.staff.role)
+  }
+
+  const staffRole = () => {
+    if (!user) return null
+    if (user.staff && user.staff.role) return user.staff.role
+    if (user.role === 'staff') return 'Receptionist'
+    return null
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, updateProfileImage, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ user, token, login, logout, updateProfileImage, isAuthenticated: !!token, isStaff, staffRole }}>
       {children}
     </AuthContext.Provider>
   )
