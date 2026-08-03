@@ -114,6 +114,8 @@ from staff_resources import (
     StaffPatientDetail,
 )
 
+from mpesa_resources import STKPushResource
+
 api.add_resource(AdminDashboard, "/api/admin/dashboard")
 api.add_resource(AdminDoctorList, "/api/admin/doctors")
 api.add_resource(AdminDoctorDetail, "/api/admin/doctors/<int:id>")
@@ -153,6 +155,8 @@ api.add_resource(StaffReports, "/api/staff/reports")
 api.add_resource(StaffProfile, "/api/staff/profile")
 api.add_resource(PatientRegistration, "/api/staff/patients/register")
 api.add_resource(StaffPatientDetail, "/api/staff/patients/<int:id>")
+
+api.add_resource(STKPushResource, "/api/payments/mpesa/stkpush")
 
 
 @app.errorhandler(HTTPException)
