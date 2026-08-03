@@ -120,13 +120,14 @@ export default function PortalPage() {
           email: user.email,
           first_name: user.first_name,
           last_name: user.last_name,
-          role: 'doctor',
+          role: user.role,
+          staff: result.staff || user.staff,
           patientId: user.patient?.id || null,
           profile_image: user.profile_image || null,
         }
         login(userData, 'mock-jwt-token')
         toast.success(`${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully!`)
-        navigate('/dashboard', { replace: true })
+        navigate(role === 'staff' ? '/staff/dashboard' : role === 'hospital' ? '/staff/dashboard' : '/dashboard', { replace: true })
       }
     } catch (err) {
       const errorMsg = err.message || "Please check your information and try again"
