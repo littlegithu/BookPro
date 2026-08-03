@@ -27,6 +27,7 @@ export default function RegisterPage() {
         last_name: lastName || name,
         email: email,
         password,
+        password_confirm: password,
       })
       const userData = {
         id: user.id,
