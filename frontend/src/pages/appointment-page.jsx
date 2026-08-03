@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import AppointmentList from '../components/appointment/appointment-list'
@@ -47,9 +48,11 @@ export default function AppointmentsPage() {
     try {
       await cancelAppointment(id)
       setAppts(prev => prev.filter(a => a.id !== id))
+      toast.success('Appointment cancelled successfully')
     } catch (err) {
       console.error('Failed to cancel appointment:', err)
       setCancelError(err.message || 'Failed to cancel appointment. Please try again.')
+      toast.error(err.message || 'Failed to cancel appointment. Please try again.')
     } finally {
       setCancellingId(null)
     }

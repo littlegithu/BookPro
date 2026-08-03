@@ -1,5 +1,6 @@
 
 import { useParams, Link } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import StatusBadge from '../components/shared/status-badge'
@@ -33,8 +34,10 @@ export default function AppointmentDetailPage() {
     try {
       await cancelAppointment(appt.id)
       setAppt(prev => ({ ...prev, status: 'cancelled' }))
+      toast.success('Appointment cancelled successfully')
     } catch (err) {
       console.error('Failed to cancel appointment:', err)
+      toast.error(err.message || 'Failed to cancel appointment')
     }
   }
 

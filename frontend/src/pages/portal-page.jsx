@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
 import Navbar from '../components/layout/navbar'
@@ -11,6 +12,9 @@ const ROLES = [
   { key: 'hospital', label: 'Hospital', icon: Building2, description: 'Register your hospital or clinic' },
   { key: 'staff', label: 'Staff', icon: Users, description: 'Register as hospital staff' },
 ]
+
+const STAFF_ROLES = ['Receptionist', 'Nurse', 'Lab Technician', 'Pharmacist', 'Cashier', 'Records Officer']
+const EMPLOYMENT_TYPES = ['Full Time', 'Part Time', 'Contract']
 
 export default function PortalPage() {
   const { login } = useAuth()
@@ -62,14 +66,16 @@ export default function PortalPage() {
       : role === 'staff'
       ? [
           ...baseFieldConfigs,
-          { name: 'role', label: 'Role', type: 'text', placeholder: 'Receptionist', value: 'Receptionist' },
+          { name: 'role', label: 'Role', type: 'select', options: STAFF_ROLES },
           { name: 'hospital_id', label: 'Hospital ID', type: 'number', placeholder: 'e.g. 1' },
+          { name: 'department', label: 'Department', type: 'text', placeholder: 'e.g. Front Office' },
+          { name: 'employment_type', label: 'Employment Type', type: 'select', options: EMPLOYMENT_TYPES },
         ]
       : baseFieldConfigs
 
     return fieldConfigs.map(config => ({
       ...config,
-      value: formData[config.name] || config.value || '',
+      value: formData[config.name] || '',
       onChange: (value) => handleFieldChange(config.name, value),
     }))
   }
@@ -118,10 +124,13 @@ export default function PortalPage() {
           profile_image: user.profile_image || null,
         }
         login(userData, 'mock-jwt-token')
+        toast.success(`${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully!`)
         navigate('/dashboard', { replace: true })
       }
     } catch (err) {
-      setError(err.message || "Please check your information and try again")
+      const errorMsg = err.message || "Please check your information and try again"
+      setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setLoading(false)
     }

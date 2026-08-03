@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { toast } from 'react-hot-toast'
 import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import { useAuth } from '../context/auth-context'
@@ -26,9 +27,18 @@ export default function ProfilePage() {
   }
 
   const handleSave = async () => {
-    if (!name || !email) { setError('Name and email are required.'); return }
-    if (!user?.id) { setError('User not loaded yet. Please refresh.'); return }
-    setError(''); setLoading(true)
+    if (!name || !email) {
+      setError('Name and email are required.')
+      toast.error('Name and email are required.')
+      return
+    }
+    if (!user?.id) {
+      setError('User not loaded yet. Please refresh.')
+      toast.error('User not loaded yet. Please refresh.')
+      return
+    }
+    setError('')
+    setLoading(true)
     try {
       const [firstName, lastName] = name.split(' ')
       const updated = await updateUser(user.id, {
@@ -46,9 +56,12 @@ export default function ProfilePage() {
         profile_image: updated.profile_image || null,
       }, localStorage.getItem('bookpro_token'))
       setSaved(true)
+      toast.success('Profile updated successfully!')
       setTimeout(() => setSaved(false), 2000)
     } catch (err) {
-      setError(err.message || 'Failed to update profile')
+      const errorMsg = err.message || 'Failed to update profile'
+      setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setLoading(false)
     }
