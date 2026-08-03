@@ -2,7 +2,8 @@ from flask import abort, request
 from flask_restful import Resource
 from sqlalchemy.orm import joinedload
 
-from model import Appointment, Doctor, Hospital, Review, User, db, Patient
+from extensions import db
+from model import Appointment, Doctor, Hospital, Review, User, Patient, Staff
 from schema import (
     Appointment_schema,
     Appointments_schema,
@@ -14,6 +15,9 @@ from schema import (
     Patients_schema,
     Review_schema,
     Reviews_schema,
+    HospitalRegistration_schema,
+    DoctorRegistration_schema,
+    StaffRegistration_schema,
     user_schema,
     users_schema,
 )
@@ -24,6 +28,17 @@ def get_json_data():
     if not data:
         abort(400, description="Invalid JSON body")
     return data
+
+
+def format_errors(errors):
+    for field, msgs in errors.items():
+        if 'password' in field:
+            return "Please ensure password and confirm password match"
+        if 'email' in field:
+            return "Please check your email address is valid"
+        if 'phone' in field:
+            return "Please check your phone number is valid"
+    return "Please fill in all required fields correctly"
 
 # Users
 class UserList(Resource):
@@ -37,12 +52,11 @@ class UserList(Resource):
         data = get_json_data()
         errors = user_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         result = register_user(data)
         if isinstance(result, tuple):
             return result
         return user_schema.dump(result), 201
-
 
 class UserDetail(Resource):
     def get(self, id):
@@ -56,7 +70,7 @@ class UserDetail(Resource):
         data = get_json_data()
         errors = user_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         user = update_user_password(user, data)
         return user_schema.dump(user)
 
@@ -69,14 +83,16 @@ class UserDetail(Resource):
 
 class UserLogin(Resource):
     def post(self):
-        from auth import login_user
+        from auth import generate_token, login_user
 
         data = get_json_data()
         user = login_user(data)
         if not user:
             return {"message": "Invalid credentials"}, 401
-        return {"message": "Login successful", "user": user_schema.dump(user)}, 200
-
+        if not user.token:
+            user.token = generate_token()
+            db.session.commit()
+        return {"message": "Login successful", "token": user.token, "user": user_schema.dump(user)}, 200
 
 # Patients
 class PatientList(Resource):
@@ -88,7 +104,7 @@ class PatientList(Resource):
         data = get_json_data()
         errors = Patient_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         patient_instance = Patient(**data)
         db.session.add(patient_instance)
         db.session.commit()
@@ -105,7 +121,7 @@ class PatientDetail(Resource):
         data = get_json_data()
         errors = Patient_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         for key, value in data.items():
             setattr(patient_instance, key, value)
         db.session.commit()
@@ -174,7 +190,7 @@ class DoctorSearchSuggestions(Resource):
         data = get_json_data()
         errors = Doctor_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         doctor = Doctor(**data)
         db.session.add(doctor)
         db.session.commit()
@@ -191,7 +207,7 @@ class DoctorDetail(Resource):
         data = get_json_data()
         errors = Doctor_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         for key, value in data.items():
             setattr(doctor, key, value)
         db.session.commit()
@@ -214,7 +230,7 @@ class ReviewList(Resource):
         data = get_json_data()
         errors = Review_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         review = Review(**data)
         db.session.add(review)
         db.session.commit()
@@ -231,7 +247,7 @@ class ReviewDetail(Resource):
         data = get_json_data()
         errors = Review_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         for key, value in data.items():
             setattr(review, key, value)
         db.session.commit()
@@ -254,7 +270,7 @@ class DoctorReviews(Resource):
 # Appointments
 class AppointmentList(Resource):
     def get(self):
-        appointments = Appointment.query.options(db.joinedload(Appointment.medical_record)).all()
+        appointments = Appointment.query.options(joinedload(Appointment.medical_record)).all()
         return Appointments_schema.dump(appointments)
 
     def post(self):
@@ -263,7 +279,7 @@ class AppointmentList(Resource):
         data = get_json_data()
         errors = Appointment_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         if 'appointment_date' in data and isinstance(data['appointment_date'], str):
             data['appointment_date'] = datetime.fromisoformat(data['appointment_date'])
         appointment = Appointment(**data)
@@ -274,7 +290,7 @@ class AppointmentList(Resource):
 
 class AppointmentDetail(Resource):
     def get(self, id):
-        appointment = Appointment.query.options(db.joinedload(Appointment.medical_record)).get_or_404(id)
+        appointment = Appointment.query.options(joinedload(Appointment.medical_record)).get_or_404(id)
         return Appointments_schema.dump(appointment)
 
     def put(self, id):
@@ -284,7 +300,7 @@ class AppointmentDetail(Resource):
         data = get_json_data()
         errors = Appointment_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         if 'appointment_date' in data and isinstance(data['appointment_date'], str):
             data['appointment_date'] = datetime.fromisoformat(data['appointment_date'])
         for key, value in data.items():
@@ -309,7 +325,7 @@ class HospitalList(Resource):
         data = get_json_data()
         errors = Hospital_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         hospital = Hospital(**data)
         db.session.add(hospital)
         db.session.commit()
@@ -326,7 +342,7 @@ class HospitalDetail(Resource):
         data = get_json_data()
         errors = Hospital_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         for key, value in data.items():
             setattr(hospital, key, value)
         db.session.commit()
@@ -337,3 +353,50 @@ class HospitalDetail(Resource):
         db.session.delete(hospital)
         db.session.commit()
         return {"message": "Hospital deleted successfully"}, 200
+
+
+# Portal Registration
+class HospitalRegistration(Resource):
+    def post(self):
+        from auth import register_hospital
+
+        data = get_json_data()
+        errors = HospitalRegistration_schema.validate(data)
+        if errors:
+            return {"error": format_errors(errors)}, 400
+        hospital = register_hospital(data)
+        return Hospital_schema.dump(hospital), 201
+
+
+class DoctorRegistration(Resource):
+    def post(self):
+        from auth import register_doctor
+
+        data = get_json_data()
+        errors = DoctorRegistration_schema.validate(data)
+        if errors:
+            return {"error": format_errors(errors)}, 400
+        result = register_doctor(data)
+        if isinstance(result, tuple):
+            if isinstance(result[0], dict) and "error" in result[0]:
+                return result
+            user, doctor = result
+            return {"message": "Doctor registered successfully", "user": user_schema.dump(user), "doctor": Doctor_schema.dump(doctor)}, 201
+        return result, 400
+
+
+class StaffRegistration(Resource):
+    def post(self):
+        from auth import register_staff
+
+        data = get_json_data()
+        errors = StaffRegistration_schema.validate(data)
+        if errors:
+            return {"error": format_errors(errors)}, 400
+        result = register_staff(data)
+        if isinstance(result, tuple):
+            if isinstance(result[0], dict) and "error" in result[0]:
+                return result
+            user, staff = result
+            return {"message": "Staff registered successfully", "user": user_schema.dump(user), "staff": {"id": staff.id, "role": staff.role, "hospital_id": staff.hospital_id}}, 201
+        return result, 400

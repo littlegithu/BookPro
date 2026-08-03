@@ -1,13 +1,19 @@
 from datetime import date, datetime, time
-
+from app import app
+from auth import generate_token, hash_password
+from model import (
+    Appointment, Doctor, Hospital, MedicalRecord, Patient, Prescription,
+    Review, User, db, DoctorSchedule, Notification, DoctorDocument,
+)
 from sqlalchemy import text
 
-from app import app
-from auth import hash_password
-from model import Appointment, Doctor, Hospital, Patient, Review, User, db
-
 with app.app_context():
+    db.session.query(Notification).delete()
+    db.session.query(DoctorDocument).delete()
+    db.session.query(DoctorSchedule).delete()
+    db.session.query(Prescription).delete()
     db.session.query(Review).delete()
+    db.session.query(MedicalRecord).delete()
     db.session.query(Appointment).delete()
     db.session.query(Doctor).delete()
     db.session.query(Patient).delete()
@@ -21,223 +27,25 @@ with app.app_context():
     db.session.execute(text("ALTER SEQUENCE hospitals_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE appointments_id_seq RESTART WITH 1"))
     db.session.execute(text("ALTER SEQUENCE reviews_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE medical_records_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE prescriptions_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE doctor_schedules_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE notifications_id_seq RESTART WITH 1"))
+    db.session.execute(text("ALTER SEQUENCE doctor_documents_id_seq RESTART WITH 1"))
     db.session.commit()
 
-    users = [
-        User(
-            first_name="Alice",
-            last_name="Johnson",
-            email="alice.johnson@example.com",
-            phone="0712345678",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Brian",
-            last_name="Mwangi",
-            email="brian.mwangi@example.com",
-            phone="0723456789",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Carol",
-            last_name="Ndegwa",
-            email="carol.ndegwa@example.com",
-            phone="0734567890",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="David",
-            last_name="Otieno",
-            email="david.otieno@example.com",
-            phone="0745678901",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Eva",
-            last_name="Kipchoge",
-            email="eva.kipchoge@example.com",
-            phone="0756789012",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Faith",
-            last_name="Wanjiku",
-            email="faith.wanjiku@example.com",
-            phone="0767890123",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="George",
-            last_name="Kamau",
-            email="george.kamau@example.com",
-            phone="0778901234",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Hannah",
-            last_name="Chebet",
-            email="hannah.chebet@example.com",
-            phone="0789012345",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Ian",
-            last_name="Mutua",
-            email="ian.mutua@example.com",
-            phone="0790123456",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Jane",
-            last_name="Achieng",
-            email="jane.achieng@example.com",
-            phone="0701234567",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Paul",
-            last_name="Ndirangu",
-            email="paul.ndirangu@example.com",
-            phone="0711000001",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Mary",
-            last_name="Atieno",
-            email="mary.atieno@example.com",
-            phone="0711000002",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="James",
-            last_name="Kariuki",
-            email="james.kariuki@example.com",
-            phone="0711000003",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Grace",
-            last_name="Muthoni",
-            email="grace.muthoni@example.com",
-            phone="0711000004",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Peter",
-            last_name="Ochieng",
-            email="peter.ochieng@example.com",
-            phone="0711000005",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Susan",
-            last_name="Wairimu",
-            email="susan.wairimu@example.com",
-            phone="0711000006",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="John",
-            last_name="Kipkoech",
-            email="john.kipkoech@example.com",
-            phone="0711000007",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Lucy",
-            last_name="Cherotich",
-            email="lucy.cherotich@example.com",
-            phone="0711000008",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Mark",
-            last_name="Sang",
-            email="mark.sang@example.com",
-            phone="0711000009",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Nancy",
-            last_name="Jeptoo",
-            email="nancy.jeptoo@example.com",
-            phone="0711000010",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Daniel",
-            last_name="Kemboi",
-            email="daniel.kemboi@example.com",
-            phone="0711000011",
-            password=hash_password("password123"),
-        ),
-        User(
-            first_name="Sarah",
-            last_name="Jepchirchir",
-            email="sarah.jepchirchir@example.com",
-            phone="0711000012",
-            password=hash_password("password123"),
-        ),
-    ]
-    db.session.add_all(users)
+    admin_user = User(
+        first_name="Admin",
+        last_name="User",
+        email="admin@example.com",
+        phone="0700000001",
+        password=hash_password("admin123"),
+        role="admin",
+        token=generate_token(),
+    )
+    db.session.add(admin_user)
     db.session.commit()
-    print(f"Seeded {len(users)} users.")
-
-    patients = [
-        Patient(
-            user_id=users[0].id,
-            first_name="Alice",
-            last_name="Johnson",
-            email="alice.johnson@example.com",
-            dob=date(1992, 4, 15),
-            gender="Female",
-            address="14 Kijabe Street, Nairobi",
-            phone="0712345678",
-        ),
-        Patient(
-            user_id=users[1].id,
-            first_name="Brian",
-            last_name="Mwangi",
-            email="brian.mwangi@example.com",
-            dob=date(1988, 11, 2),
-            gender="Male",
-            address="22 Mombasa Road, Nairobi",
-            phone="0723456789",
-        ),
-        Patient(
-            user_id=users[2].id,
-            first_name="Carol",
-            last_name="Ndegwa",
-            email="carol.ndegwa@example.com",
-            dob=date(1995, 7, 21),
-            gender="Female",
-            address="9 Kiambu Lane, Kiambu",
-            phone="0734567890",
-        ),
-        Patient(
-            user_id=users[3].id,
-            first_name="David",
-            last_name="Otieno",
-            email="david.otieno@example.com",
-            dob=date(1985, 1, 30),
-            gender="Male",
-            address="5 Kisumu Avenue, Kisumu",
-            phone="0745678901",
-        ),
-        Patient(
-            user_id=users[4].id,
-            first_name="Eva",
-            last_name="Kipchoge",
-            email="eva.kipchoge@example.com",
-            dob=date(2000, 9, 10),
-            gender="Female",
-            address="31 Eldoret Road, Eldoret",
-            phone="0756789012",
-        ),
-    ]
-    db.session.add_all(patients)
-    db.session.commit()
-    print(f"Seeded {len(patients)} patients.")
+    print(f"Created admin user with id: {admin_user.id}, token: {admin_user.token}")
 
     hospitals = [
         Hospital(
@@ -268,7 +76,35 @@ with app.app_context():
 
     doctors = [
         Doctor(
-            user_id=users[5].id,
+            user_id=admin_user.id,
+            first_name="Admin",
+            last_name="User",
+            email="admin@example.com",
+            specialty="General Practice",
+            specialties="Family Medicine,Preventive Care,Health Screenings",
+            profile_image="https://placehold.co/150x150/0F7B6C/FFFFFF?text=AU",
+            languages="English, Swahili",
+            education="MBChB from University of Nairobi; Master of Medicine in Family Medicine.",
+            certifications="Kenya Medical Practitioners Board Certified; Advanced Cardiac Life Support (ACLS).",
+            working_days="Mon-Fri",
+            consultation_type="Both",
+            verification_status="Verified",
+            hospital_ids="1,2,3",
+            bio="Dr. User is a dedicated general practitioner with extensive experience in family medicine and preventive care.",
+            available=True,
+            rating=4.5,
+            reviews=0,
+            phone="0700000001",
+            years_practice=10,
+            working_hours="Mon-Fri 8AM-5PM",
+            fee=1500,
+            duration=20,
+            hospital_name=hospitals[0].name,
+            hospital_location=hospitals[0].address,
+            hospital_phone=hospitals[0].phone,
+        ),
+        Doctor(
+            user_id=admin_user.id,
             first_name="Faith",
             last_name="Wanjiku",
             email="faith.wanjiku@example.com",
@@ -282,10 +118,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="1,2",
-            bio="Dr. Wanjiku is a highly experienced cardiologist with over 12 years of clinical practice. She specializes in preventive cardiology, heart failure management, and cardiac rehabilitation. Her patient-centered approach combines advanced medical expertise with compassionate care, ensuring each patient receives personalized treatment plans. She has performed over 500 successful cardiac procedures and is committed to advancing cardiovascular health in the community through education and early intervention strategies.",
+            bio="Dr. Wanjiku is a highly experienced cardiologist with over 12 years of clinical practice.",
             available=True,
             rating=4.8,
-            reviews=127,
+            reviews=0,
             phone="0767890123",
             years_practice=12,
             working_hours="Mon-Fri 8AM-4PM",
@@ -296,7 +132,7 @@ with app.app_context():
             hospital_phone=hospitals[0].phone,
         ),
         Doctor(
-            user_id=users[6].id,
+            user_id=admin_user.id,
             first_name="George",
             last_name="Kamau",
             email="george.kamau@example.com",
@@ -310,10 +146,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="1,3",
-            bio="Dr. Kamau is a dedicated pediatrician with 8 years of experience in child wellness and development. He believes in building lasting relationships with his young patients and their families, providing comprehensive care from newborns to adolescents. His gentle approach and extensive knowledge in childhood immunizations, growth monitoring, and behavioral health make him a trusted choice for parents. He actively promotes child health awareness through community outreach programs and school health initiatives.",
+            bio="Dr. Kamau is a dedicated pediatrician with 8 years of experience in child wellness and development.",
             available=True,
             rating=4.5,
-            reviews=89,
+            reviews=0,
             phone="0778901234",
             years_practice=8,
             working_hours="Mon-Fri 9AM-5PM",
@@ -324,7 +160,7 @@ with app.app_context():
             hospital_phone=hospitals[0].phone,
         ),
         Doctor(
-            user_id=users[7].id,
+            user_id=admin_user.id,
             first_name="Hannah",
             last_name="Chebet",
             email="hannah.chebet@example.com",
@@ -338,10 +174,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="1,2",
-            bio="Dr. Chebet is a board-certified dermatologist with 6 years of specialized experience in medical and cosmetic dermatology. She is skilled in diagnosing and treating a wide range of skin conditions, from acne and eczema to skin cancer screenings. Her modern clinic offers advanced treatments including laser therapy, chemical peels, and Botox. Dr. Chebet is passionate about patient education and believes in empowering individuals to maintain healthy skin through proper skincare routines and sun protection.",
+            bio="Dr. Chebet is a board-certified dermatologist with 6 years of specialized experience.",
             available=False,
             rating=4.6,
-            reviews=64,
+            reviews=0,
             phone="0789012345",
             years_practice=6,
             working_hours="Tue-Sat 10AM-4PM",
@@ -352,7 +188,7 @@ with app.app_context():
             hospital_phone=hospitals[0].phone,
         ),
         Doctor(
-            user_id=users[10].id,
+            user_id=admin_user.id,
             first_name="Paul",
             last_name="Ndirangu",
             email="paul.ndirangu@example.com",
@@ -366,10 +202,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="1,2",
-            bio="Dr. Ndirangu is a renowned neurologist with 10 years of expertise in diagnosing and treating complex brain and nerve disorders. He specializes in stroke management, epilepsy, multiple sclerosis, and neurodegenerative diseases. Using cutting-edge diagnostic technology and evidence-based treatment protocols, he provides comprehensive care for patients with neurological conditions. Dr. Ndirangu is also involved in clinical research and regularly contributes to medical journals, advancing the field of neurology in Kenya.",
+            bio="Dr. Ndirangu is a renowned neurologist with 10 years of expertise.",
             available=True,
             rating=4.7,
-            reviews=103,
+            reviews=0,
             phone="0711000001",
             years_practice=10,
             working_hours="Mon-Wed-Fri 8AM-3PM",
@@ -380,7 +216,7 @@ with app.app_context():
             hospital_phone=hospitals[0].phone,
         ),
         Doctor(
-            user_id=users[11].id,
+            user_id=admin_user.id,
             first_name="Mary",
             last_name="Atieno",
             email="mary.atieno@example.com",
@@ -394,10 +230,10 @@ with app.app_context():
             consultation_type="Physical",
             verification_status="Verified",
             hospital_ids="1,2",
-            bio="Dr. Atieno is a leading orthopedic surgeon with 15 years of experience in bone and joint care. She specializes in joint replacement surgeries, sports medicine, and trauma surgery. Her surgical precision and innovative techniques have helped hundreds of patients regain mobility and return to active lifestyles. Dr. Atieno is particularly passionate about minimally invasive procedures and has trained surgeons across East Africa. She believes in a holistic approach to orthopedic care, combining surgery with rehabilitation for optimal outcomes.",
+            bio="Dr. Atieno is a leading orthopedic surgeon with 15 years of experience.",
             available=True,
             rating=4.9,
-            reviews=156,
+            reviews=0,
             phone="0711000002",
             years_practice=15,
             working_hours="Mon-Thu 7AM-3PM",
@@ -408,7 +244,7 @@ with app.app_context():
             hospital_phone=hospitals[0].phone,
         ),
         Doctor(
-            user_id=users[12].id,
+            user_id=admin_user.id,
             first_name="James",
             last_name="Kariuki",
             email="james.kariuki@example.com",
@@ -422,10 +258,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="2",
-            bio="Dr. Kariuki is a compassionate general practitioner with 5 years of experience in preventive medicine and family healthcare. He provides comprehensive medical care for patients of all ages, focusing on disease prevention, health promotion, and chronic disease management. His practice emphasizes building long-term doctor-patient relationships and he is known for his thorough approach to diagnostics. Dr. Kariuki is a strong advocate for community health and regularly conducts free medical camps in underserved areas.",
+            bio="Dr. Kariuki is a compassionate general practitioner with 5 years of experience.",
             available=True,
             rating=4.4,
-            reviews=72,
+            reviews=0,
             phone="0711000003",
             years_practice=5,
             working_hours="Mon-Fri 8AM-5PM",
@@ -436,7 +272,7 @@ with app.app_context():
             hospital_phone=hospitals[1].phone,
         ),
         Doctor(
-            user_id=users[13].id,
+            user_id=admin_user.id,
             first_name="Grace",
             last_name="Muthoni",
             email="grace.muthoni@example.com",
@@ -450,10 +286,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="2,3",
-            bio="Dr. Muthoni is a caring pediatrician with 7 years of focused experience in child development and wellness. She has a special interest in developmental pediatrics and early childhood intervention. Her warm and playful approach helps children feel comfortable during consultations, making healthcare visits a positive experience. Dr. Muthoni works closely with parents to monitor growth milestones, address behavioral concerns, and ensure optimal health outcomes for every child under her care.",
+            bio="Dr. Muthoni is a caring pediatrician with 7 years of focused experience.",
             available=True,
             rating=4.6,
-            reviews=91,
+            reviews=0,
             phone="0711000004",
             years_practice=7,
             working_hours="Mon-Fri 9AM-4PM",
@@ -464,7 +300,7 @@ with app.app_context():
             hospital_phone=hospitals[1].phone,
         ),
         Doctor(
-            user_id=users[14].id,
+            user_id=admin_user.id,
             first_name="Peter",
             last_name="Ochieng",
             email="peter.ochieng@example.com",
@@ -478,10 +314,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="2",
-            bio="Dr. Ochieng is an experienced cardiologist with 11 years of specialized practice in heart failure management and interventional cardiology. He has pioneered several cardiac catheterization procedures in the region and is recognized for his expertise in managing complex cardiovascular conditions. His patient-centric philosophy ensures that each individual receives a tailored treatment plan. Dr. Ochieng is actively involved in teaching and mentoring the next generation of cardiologists.",
+            bio="Dr. Ochieng is an experienced cardiologist with 11 years of specialized practice.",
             available=False,
             rating=4.8,
-            reviews=118,
+            reviews=0,
             phone="0711000005",
             years_practice=11,
             working_hours="Mon-Tue-Thu 8AM-4PM",
@@ -492,7 +328,7 @@ with app.app_context():
             hospital_phone=hospitals[1].phone,
         ),
         Doctor(
-            user_id=users[15].id,
+            user_id=admin_user.id,
             first_name="Susan",
             last_name="Wairimu",
             email="susan.wairimu@example.com",
@@ -506,10 +342,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="2,3",
-            bio="Dr. Wairimu is a skilled dermatologist with 9 years of experience in skin cancer screening and medical dermatology. She is dedicated to early detection and treatment of skin cancers, utilizing dermoscopy and advanced biopsy techniques. Her expertise also includes treating chronic skin conditions like psoriasis, vitiligo, and severe acne. Dr. Wairimu conducts regular skin health workshops and believes in the importance of regular skin check-ups for early detection of abnormalities.",
+            bio="Dr. Wairimu is a skilled dermatologist with 9 years of experience.",
             available=True,
             rating=4.7,
-            reviews=85,
+            reviews=0,
             phone="0711000006",
             years_practice=9,
             working_hours="Wed-Sat 10AM-5PM",
@@ -520,7 +356,7 @@ with app.app_context():
             hospital_phone=hospitals[1].phone,
         ),
         Doctor(
-            user_id=users[16].id,
+            user_id=admin_user.id,
             first_name="John",
             last_name="Kipkoech",
             email="john.kipkoech@example.com",
@@ -534,10 +370,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="2,3",
-            bio="Dr. Kipkoech is a dedicated GP with 6 years of strong focus on family medicine. He provides comprehensive primary care services including acute illness management, chronic disease monitoring, and preventive health screenings. His approachable demeanor and commitment to patient education help individuals take control of their health. Dr. Kipkoech is particularly skilled in managing lifestyle-related conditions such as diabetes, hypertension, and obesity through personalized care plans.",
+            bio="Dr. Kipkoech is a dedicated GP with 6 years of strong focus on family medicine.",
             available=True,
             rating=4.5,
-            reviews=78,
+            reviews=0,
             phone="0711000007",
             years_practice=6,
             working_hours="Mon-Fri 8AM-4PM",
@@ -548,7 +384,7 @@ with app.app_context():
             hospital_phone=hospitals[1].phone,
         ),
         Doctor(
-            user_id=users[17].id,
+            user_id=admin_user.id,
             first_name="Lucy",
             last_name="Cherotich",
             email="lucy.cherotich@example.com",
@@ -562,10 +398,10 @@ with app.app_context():
             consultation_type="Physical",
             verification_status="Verified",
             hospital_ids="3",
-            bio="Dr. Cherotich is an accomplished orthopedic specialist with 12 years of experience in sports injuries and musculoskeletal disorders. She has worked with professional athletes and sports teams, providing expert care for ligament tears, fractures, and joint dislocations. Her clinic is equipped with state-of-the-art imaging and rehabilitation facilities. Dr. Cherotich believes in a multidisciplinary approach, collaborating with physiotherapists and sports scientists to ensure complete recovery and optimal performance for her patients.",
+            bio="Dr. Cherotich is an accomplished orthopedic specialist with 12 years of experience.",
             available=True,
             rating=4.9,
-            reviews=142,
+            reviews=0,
             phone="0711000008",
             years_practice=12,
             working_hours="Mon-Fri 7AM-2PM",
@@ -576,7 +412,7 @@ with app.app_context():
             hospital_phone=hospitals[2].phone,
         ),
         Doctor(
-            user_id=users[18].id,
+            user_id=admin_user.id,
             first_name="Mark",
             last_name="Sang",
             email="mark.sang@example.com",
@@ -590,10 +426,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="3",
-            bio="Dr. Sang is a skilled neurologist with 8 years of experience in stroke care and neurocritical care. He is part of a rapid response team that provides life-saving interventions for stroke patients. His expertise includes managing epilepsy, Parkinson's disease, and neuropathic pain. Dr. Sang is committed to providing compassionate care and clear communication to patients and their families during challenging neurological conditions. He actively participates in stroke awareness campaigns.",
+            bio="Dr. Sang is a skilled neurologist with 8 years of experience in stroke care.",
             available=True,
             rating=4.6,
-            reviews=97,
+            reviews=0,
             phone="0711000009",
             years_practice=8,
             working_hours="Tue-Thu 9AM-4PM",
@@ -604,7 +440,7 @@ with app.app_context():
             hospital_phone=hospitals[2].phone,
         ),
         Doctor(
-            user_id=users[19].id,
+            user_id=admin_user.id,
             first_name="Nancy",
             last_name="Jeptoo",
             email="nancy.jeptoo@example.com",
@@ -618,10 +454,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="3",
-            bio="Dr. Jeptoo is a board-certified pediatrician with 10 years of specialized experience in newborn care and neonatal medicine. She has extensive experience managing premature births, congenital conditions, and neonatal intensive care. Her gentle and nurturing approach provides comfort to both infants and their parents. Dr. Jeptoo is committed to ensuring every child receives the best possible start in life through comprehensive neonatal care and parental guidance.",
+            bio="Dr. Jeptoo is a board-certified pediatrician with 10 years of specialized experience.",
             available=True,
             rating=4.8,
-            reviews=134,
+            reviews=0,
             phone="0711000010",
             years_practice=10,
             working_hours="Mon-Fri 8AM-3PM",
@@ -632,7 +468,7 @@ with app.app_context():
             hospital_phone=hospitals[2].phone,
         ),
         Doctor(
-            user_id=users[20].id,
+            user_id=admin_user.id,
             first_name="Daniel",
             last_name="Kemboi",
             email="daniel.kemboi@example.com",
@@ -646,10 +482,10 @@ with app.app_context():
             consultation_type="Both",
             verification_status="Verified",
             hospital_ids="3,1",
-            bio="Dr. Kemboi is a prevention-focused cardiologist with 9 years of experience in promoting heart health and preventing cardiovascular diseases. He specializes in risk assessment, lifestyle modification programs, and non-invasive cardiac testing. His proactive approach helps patients identify and manage risk factors before they develop serious heart conditions. Dr. Kemboi conducts regular heart health seminars and has developed a community-based cardiac wellness program that has benefited thousands of patients.",
+            bio="Dr. Kemboi is a prevention-focused cardiologist with 9 years of experience.",
             available=True,
             rating=4.7,
-            reviews=109,
+            reviews=0,
             phone="0711000011",
             years_practice=9,
             working_hours="Mon-Wed-Fri 8AM-4PM",
@@ -660,7 +496,7 @@ with app.app_context():
             hospital_phone=hospitals[2].phone,
         ),
         Doctor(
-            user_id=users[21].id,
+            user_id=admin_user.id,
             first_name="Sarah",
             last_name="Jepchirchir",
             email="sarah.jepchirchir@example.com",
@@ -674,10 +510,10 @@ with app.app_context():
             consultation_type="Online",
             verification_status="Verified",
             hospital_ids="3,1",
-            bio="Dr. Jepchirchir is an expert dermatologist with 13 years of experience in cosmetic and medical skin care. She combines her artistic eye with medical expertise to deliver natural-looking aesthetic results. Her services range from anti-aging treatments and skin rejuvenation to complex reconstructive procedures. Dr. Jepchirir is known for her meticulous attention to detail and believes in enhancing each patient's natural beauty. She stays at the forefront of dermatological advances through continuous education.",
+            bio="Dr. Jepchirchir is an expert dermatologist with 13 years of experience.",
             available=False,
             rating=4.9,
-            reviews=168,
+            reviews=0,
             phone="0711000012",
             years_practice=13,
             working_hours="Tue-Sat 11AM-5PM",
@@ -692,128 +528,336 @@ with app.app_context():
     db.session.commit()
     print(f"Seeded {len(doctors)} doctors.")
 
+    patients = [
+        Patient(
+            user_id=admin_user.id,
+            first_name="John",
+            last_name="Mwangi",
+            email="john.mwangi@example.com",
+            phone="0723456789",
+            dob=date(1985, 3, 15),
+            gender="Male",
+            address="301 Nairobi, Kenya",
+        ),
+        Patient(
+            user_id=admin_user.id,
+            first_name="Sarah",
+            last_name="Ochieng",
+            email="sarah.ochieng@example.com",
+            phone="0734567890",
+            dob=date(1990, 7, 22),
+            gender="Female",
+            address="00200 Nairobi, Kenya",
+        ),
+        Patient(
+            user_id=admin_user.id,
+            first_name="David",
+            last_name="Mutiso",
+            email="david.mutiso@example.com",
+            phone="0745678901",
+            dob=date(1978, 11, 5),
+            gender="Male",
+            address="501 Mombasa, Kenya",
+        ),
+        Patient(
+            user_id=admin_user.id,
+            first_name="Grace",
+            last_name="Kariuki",
+            email="grace.kariuki@example.com",
+            phone="0756789012",
+            dob=date(1995, 4, 18),
+            gender="Female",
+            address="201 Kisumu, Kenya",
+        ),
+        Patient(
+            user_id=admin_user.id,
+            first_name="Michael",
+            last_name="Omondi",
+            email="michael.omondi@example.com",
+            phone="0767890123",
+            dob=date(1982, 9, 30),
+            gender="Male",
+            address="101 Nakuru, Kenya",
+        ),
+    ]
+    db.session.add_all(patients)
+    db.session.commit()
+    print(f"Seeded {len(patients)} patients.")
+
+    now = datetime.now()
+    today = now.date()
     appointments = [
         Appointment(
             patient_id=patients[0].id,
             doctor_id=doctors[0].id,
             hospital_id=hospitals[0].id,
-            appointment_date=datetime(2026, 7, 29, 10, 0, 0),
-            appointment_time=time(10, 0),
-            status="Scheduled",
-            notes="Follow-up visit for hypertension check.",
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(9, 0),
+            status='Scheduled',
+            notes='Routine checkup',
         ),
         Appointment(
             patient_id=patients[1].id,
-            doctor_id=doctors[1].id,
+            doctor_id=doctors[0].id,
             hospital_id=hospitals[0].id,
-            appointment_date=datetime(2026, 7, 30, 9, 0, 0),
-            appointment_time=time(9, 0),
-            status="Scheduled",
-            notes="Child vaccination appointment.",
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(10, 30),
+            status='Scheduled',
+            notes='Follow-up for hypertension',
         ),
         Appointment(
             patient_id=patients[2].id,
-            doctor_id=doctors[2].id,
-            hospital_id=hospitals[1].id,
-            appointment_date=datetime(2026, 7, 29, 14, 0, 0),
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(11, 30),
+            status='Completed',
+            notes='Annual physical examination',
+        ),
+        Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[1].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today, datetime.min.time()),
             appointment_time=time(14, 0),
-            status="Scheduled",
-            notes="Skin rash consultation.",
+            status='Pending',
+            notes='Cardiac screening',
         ),
         Appointment(
             patient_id=patients[3].id,
             doctor_id=doctors[0].id,
-            hospital_id=hospitals[2].id,
-            appointment_date=datetime(2026, 7, 28, 11, 0, 0),
-            appointment_time=time(11, 0),
-            status="Completed",
-            notes="Routine cardiac screening.",
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today, datetime.min.time()),
+            appointment_time=time(15, 30),
+            status='Cancelled',
+            notes='Patient cancelled due to illness',
+        ),
+        Appointment(
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today - __import__('datetime').timedelta(days=2), datetime.min.time()),
+            appointment_time=time(10, 0),
+            status='Completed',
+            notes='Routine checkup',
+        ),
+        Appointment(
+            patient_id=patients[1].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today + __import__('datetime').timedelta(days=1), datetime.min.time()),
+            appointment_time=time(9, 30),
+            status='Scheduled',
+            notes='Follow-up appointment',
+        ),
+        Appointment(
+            patient_id=patients[2].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today + __import__('datetime').timedelta(days=2), datetime.min.time()),
+            appointment_time=time(14, 0),
+            status='Scheduled',
+            notes='Blood pressure check',
         ),
         Appointment(
             patient_id=patients[4].id,
-            doctor_id=doctors[1].id,
-            hospital_id=hospitals[1].id,
-            appointment_date=datetime(2026, 7, 31, 8, 30, 0),
-            appointment_time=time(8, 30),
-            status="Cancelled",
-            notes="Annual pediatric check-up.",
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today + __import__('datetime').timedelta(days=3), datetime.min.time()),
+            appointment_time=time(11, 0),
+            status='Pending',
+            notes='New patient consultation',
+        ),
+        Appointment(
+            patient_id=patients[3].id,
+            doctor_id=doctors[0].id,
+            hospital_id=hospitals[0].id,
+            appointment_date=datetime.combine(today + __import__('datetime').timedelta(days=5), datetime.min.time()),
+            appointment_time=time(10, 0),
+            status='Scheduled',
+            notes='Medication review',
         ),
     ]
-
-    patient_review_pool = [
-        "Alice Johnson", "Brian Mwangi", "Carol Ndegwa", "David Otieno", "Eva Kipchoge",
-        "Samuel Kipruto", "Mercy Wanjiru", "Patrick Muriithi", "Agnes Chepkemoi", "Elijah Omondi",
-        "Beatrice Njeri", "Victor Kibet", "Lydia Achieng", "Geoffrey Kipchumba", "Priscilla Jelimo"
-    ]
-
-    review_comments_pool = [
-        "Excellent care and very professional. Highly recommended!",
-        "Very knowledgeable and took time to explain everything.",
-        "Great experience overall. The staff was friendly and helpful.",
-        "Dr. was thorough and attentive. Would definitely come back.",
-        "Good service but slightly long wait time.",
-        "Outstanding bedside manner and clear explanations.",
-        "Felt very comfortable and well taken care of.",
-        "Exceeded my expectations. Truly a great doctor.",
-        "Very patient with all my questions and concerns.",
-        "A wonderful experience from start to finish.",
-        "Highly skilled and compassionate. Thank you!",
-        "The best doctor I have ever consulted. Very professional.",
-        "Prompt service and very detailed diagnosis.",
-        "A truly caring doctor who puts patients first.",
-        "Amazing care and follow-up. Very satisfied.",
-    ]
-
-    time_slots = [
-        time(8, 0), time(8, 30), time(9, 0), time(9, 30), time(10, 0),
-        time(10, 30), time(11, 0), time(14, 0), time(14, 30), time(15, 0),
-        time(15, 30), time(16, 0),
-    ]
-
-    base_date = datetime(2026, 7, 1)
-    for i, doctor in enumerate(doctors):
-        hospital = hospitals[i % 3]
-        for j in range(7):
-            appt_date = base_date.replace(day=((base_date.day + j + i * 3) % 28) + 1)
-            appt_time = time_slots[(j + i) % len(time_slots)]
-            status = "Completed" if j < 4 else "Scheduled"
-            notes_text = f"Appointment for {doctor.specialty} consultation"
-            appointments.append(
-                Appointment(
-                    patient_id=patients[j % len(patients)].id,
-                    doctor_id=doctor.id,
-                    hospital_id=hospital.id,
-                    appointment_date=appt_date,
-                    appointment_time=appt_time,
-                    status=status,
-                    notes=notes_text,
-                )
-            )
-
     db.session.add_all(appointments)
     db.session.commit()
     print(f"Seeded {len(appointments)} appointments.")
 
-    reviews = []
-    for i, doctor in enumerate(doctors):
-        used_appts = [a for a in appointments if a.doctor_id == doctor.id]
-        for j in range(5):
-            appt = used_appts[j % len(used_appts)]
-            patient_name = patient_review_pool[(i * 5 + j) % len(patient_review_pool)]
-            comment = review_comments_pool[(i * 5 + j) % len(review_comments_pool)]
-            rating = (4 + (j % 2)) if j < 4 else 5
-            reviews.append(
-                Review(
-                    appointment_id=appt.id,
-                    patient_id=appt.patient_id,
-                    doctor_id=doctor.id,
-                    rating=rating,
-                    comment=comment,
-                )
-            )
+    medical_records = [
+        MedicalRecord(
+            appointment_id=appointments[2].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            diagnosis='Malaria',
+            symptoms='Fever, headache, body aches, fatigue',
+            prescription='Artemether Lumefantrine (Coartem) - 4 tablets initial dose, then 2 tablets twice daily for 3 days',
+            treatment_plan='Complete full course of antimalarial treatment, increase water intake, rest',
+            lab_requests='Complete Blood Count (CBC), Malaria RDT',
+            follow_up_date=datetime.combine(today + __import__('datetime').timedelta(days=7), datetime.min.time()),
+            additional_notes='Increase water intake. Take medication with food. Return if symptoms worsen.',
+        ),
+        MedicalRecord(
+            appointment_id=appointments[5].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            diagnosis='Hypertension',
+            symptoms='Occasional headaches, no chest pain',
+            prescription='Lisinopril 10mg daily, take in the morning',
+            treatment_plan='Monitor blood pressure weekly, follow DASH diet, limit sodium intake',
+            lab_requests='Comprehensive metabolic panel, lipid profile',
+            follow_up_date=datetime.combine(today + __import__('datetime').timedelta(days=14), datetime.min.time()),
+            additional_notes='Blood pressure was 145/92. Lifestyle modifications recommended.',
+        ),
+        MedicalRecord(
+            appointment_id=appointments[0].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            diagnosis='General health checkup - Normal',
+            symptoms='No active complaints',
+            prescription='Multivitamin daily, Omega-3 supplements',
+            treatment_plan='Maintain current health regimen, annual checkup recommended',
+            lab_requests='None at this time',
+            follow_up_date=None,
+            additional_notes='All vitals normal. Patient is in good health.',
+        ),
+    ]
+    db.session.add_all(medical_records)
+    db.session.commit()
+    print(f"Seeded {len(medical_records)} medical records.")
 
+    prescriptions = [
+        Prescription(
+            medical_record_id=medical_records[0].id,
+            appointment_id=appointments[2].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            medicine='Artemether Lumefantrine',
+            dosage='500mg',
+            frequency='Twice Daily',
+            duration='3 Days',
+            instructions='Take with food. Complete the full course.',
+        ),
+        Prescription(
+            medical_record_id=medical_records[1].id,
+            appointment_id=appointments[5].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            medicine='Lisinopril',
+            dosage='10mg',
+            frequency='Once Daily',
+            duration='30 Days',
+            instructions='Take in the morning. Monitor blood pressure.',
+        ),
+        Prescription(
+            medical_record_id=medical_records[2].id,
+            appointment_id=appointments[0].id,
+            doctor_id=doctors[0].id,
+            patient_id=patients[0].id,
+            medicine='Multivitamin',
+            dosage='1 tablet',
+            frequency='Once Daily',
+            duration='90 Days',
+            instructions='Take with breakfast.',
+        ),
+    ]
+    db.session.add_all(prescriptions)
+    db.session.commit()
+    print(f"Seeded {len(prescriptions)} prescriptions.")
+
+    days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    schedules = [
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=0, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=1, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=2, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=3, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=4, start_time=time(8, 0), end_time=time(17, 0)),
+        DoctorSchedule(doctor_id=doctors[0].id, day_of_week=2, start_time=time(13, 0), end_time=time(14, 0), is_break=True),
+    ]
+    db.session.add_all(schedules)
+    db.session.commit()
+    print(f"Seeded {len(schedules)} schedule entries.")
+
+    reviews = [
+        Review(
+            appointment_id=appointments[2].id,
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            rating=5,
+            comment='Excellent doctor. Very thorough and caring.',
+        ),
+        Review(
+            appointment_id=appointments[5].id,
+            patient_id=patients[0].id,
+            doctor_id=doctors[0].id,
+            rating=4,
+            comment='Dr. User was very professional and explained everything clearly.',
+        ),
+    ]
     db.session.add_all(reviews)
     db.session.commit()
     print(f"Seeded {len(reviews)} reviews.")
+
+    doctors[0].rating = 4.5
+    doctors[0].reviews = 2
+    db.session.commit()
+
+    notifications = [
+        Notification(
+            doctor_id=doctors[0].id,
+            type='appointment_booked',
+            title='New appointment booked',
+            message='John Mwangi has booked a new appointment for today at 9:00 AM.',
+            related_appointment_id=appointments[0].id,
+            related_patient_id=patients[0].id,
+        ),
+        Notification(
+            doctor_id=doctors[0].id,
+            type='appointment_cancelled',
+            title='Appointment cancelled',
+            message='Sarah Ochieng cancelled their appointment scheduled for today at 15:30.',
+            related_appointment_id=appointments[4].id,
+            related_patient_id=patients[3].id,
+        ),
+        Notification(
+            doctor_id=doctors[0].id,
+            type='followup_reminder',
+            title='Follow-up reminder',
+            message='John Mwangi has a follow-up appointment in 3 days.',
+            related_appointment_id=appointments[7].id,
+            related_patient_id=patients[2].id,
+        ),
+    ]
+    db.session.add_all(notifications)
+    db.session.commit()
+    print(f"Seeded {len(notifications)} notifications.")
+
+    documents = [
+        DoctorDocument(
+            doctor_id=doctors[0].id,
+            doc_type='medical_license',
+            title='Medical License - Kenya Medical Practitioners Board',
+            file_url='https://example.com/license.pdf',
+            file_name='medical_license.pdf',
+            verified=True,
+        ),
+        DoctorDocument(
+            doctor_id=doctors[0].id,
+            doc_type='certificate',
+            title='Advanced Cardiac Life Support (ACLS) Certification',
+            file_url='https://example.com/acls.pdf',
+            file_name='acls_certificate.pdf',
+            verified=True,
+        ),
+        DoctorDocument(
+            doctor_id=doctors[0].id,
+            doc_type='cv',
+            title='Curriculum Vitae',
+            file_url='https://example.com/cv.pdf',
+            file_name='dr_user_cv.pdf',
+            verified=True,
+        ),
+    ]
+    db.session.add_all(documents)
+    db.session.commit()
+    print(f"Seeded {len(documents)} documents.")
 
     print("Done seeding!")
