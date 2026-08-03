@@ -29,6 +29,17 @@ def get_json_data():
         abort(400, description="Invalid JSON body")
     return data
 
+
+def format_errors(errors):
+    for field, msgs in errors.items():
+        if 'password' in field:
+            return "Please ensure password and confirm password match"
+        if 'email' in field:
+            return "Please check your email address is valid"
+        if 'phone' in field:
+            return "Please check your phone number is valid"
+    return "Please fill in all required fields correctly"
+
 # Users
 class UserList(Resource):
     def get(self):
@@ -41,7 +52,7 @@ class UserList(Resource):
         data = get_json_data()
         errors = user_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         result = register_user(data)
         if isinstance(result, tuple):
             return result
@@ -59,7 +70,7 @@ class UserDetail(Resource):
         data = get_json_data()
         errors = user_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         user = update_user_password(user, data)
         return user_schema.dump(user)
 
@@ -93,7 +104,7 @@ class PatientList(Resource):
         data = get_json_data()
         errors = Patient_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         patient_instance = Patient(**data)
         db.session.add(patient_instance)
         db.session.commit()
@@ -110,7 +121,7 @@ class PatientDetail(Resource):
         data = get_json_data()
         errors = Patient_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         for key, value in data.items():
             setattr(patient_instance, key, value)
         db.session.commit()
@@ -179,7 +190,7 @@ class DoctorSearchSuggestions(Resource):
         data = get_json_data()
         errors = Doctor_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         doctor = Doctor(**data)
         db.session.add(doctor)
         db.session.commit()
@@ -196,7 +207,7 @@ class DoctorDetail(Resource):
         data = get_json_data()
         errors = Doctor_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         for key, value in data.items():
             setattr(doctor, key, value)
         db.session.commit()
@@ -219,7 +230,7 @@ class ReviewList(Resource):
         data = get_json_data()
         errors = Review_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         review = Review(**data)
         db.session.add(review)
         db.session.commit()
@@ -236,7 +247,7 @@ class ReviewDetail(Resource):
         data = get_json_data()
         errors = Review_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         for key, value in data.items():
             setattr(review, key, value)
         db.session.commit()
@@ -268,7 +279,7 @@ class AppointmentList(Resource):
         data = get_json_data()
         errors = Appointment_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         if 'appointment_date' in data and isinstance(data['appointment_date'], str):
             data['appointment_date'] = datetime.fromisoformat(data['appointment_date'])
         appointment = Appointment(**data)
@@ -289,7 +300,7 @@ class AppointmentDetail(Resource):
         data = get_json_data()
         errors = Appointment_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         if 'appointment_date' in data and isinstance(data['appointment_date'], str):
             data['appointment_date'] = datetime.fromisoformat(data['appointment_date'])
         for key, value in data.items():
@@ -314,7 +325,7 @@ class HospitalList(Resource):
         data = get_json_data()
         errors = Hospital_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         hospital = Hospital(**data)
         db.session.add(hospital)
         db.session.commit()
@@ -331,7 +342,7 @@ class HospitalDetail(Resource):
         data = get_json_data()
         errors = Hospital_schema.validate(data, partial=True)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         for key, value in data.items():
             setattr(hospital, key, value)
         db.session.commit()
@@ -352,7 +363,7 @@ class HospitalRegistration(Resource):
         data = get_json_data()
         errors = HospitalRegistration_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         hospital = register_hospital(data)
         return Hospital_schema.dump(hospital), 201
 
@@ -364,9 +375,11 @@ class DoctorRegistration(Resource):
         data = get_json_data()
         errors = DoctorRegistration_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         result = register_doctor(data)
         if isinstance(result, tuple):
+            if isinstance(result[0], dict) and "error" in result[0]:
+                return result
             user, doctor = result
             return {"message": "Doctor registered successfully", "user": user_schema.dump(user), "doctor": Doctor_schema.dump(doctor)}, 201
         return result, 400
@@ -379,9 +392,11 @@ class StaffRegistration(Resource):
         data = get_json_data()
         errors = StaffRegistration_schema.validate(data)
         if errors:
-            return errors, 400
+            return {"error": format_errors(errors)}, 400
         result = register_staff(data)
         if isinstance(result, tuple):
+            if isinstance(result[0], dict) and "error" in result[0]:
+                return result
             user, staff = result
             return {"message": "Staff registered successfully", "user": user_schema.dump(user), "staff": {"id": staff.id, "role": staff.role, "hospital_id": staff.hospital_id}}, 201
         return result, 400

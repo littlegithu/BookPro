@@ -18,23 +18,92 @@ export default function PortalPage() {
   const [role, setRole] = useState(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [formData, setFormData] = useState({})
 
   const handleRoleSelect = (r) => {
     setRole(r)
     setError('')
+    setFormData({})
   }
 
-  const handleSubmit = async (formData) => {
+  const handleFieldChange = (name, value) => {
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const getFields = (role) => {
+    const baseFieldConfigs = [
+      { name: 'first_name', label: 'First name', type: 'text', placeholder: 'Your first name' },
+      { name: 'last_name', label: 'Last name', type: 'text', placeholder: 'Your last name' },
+      { name: 'email', label: 'Email address', type: 'email', placeholder: 'you@email.com' },
+      { name: 'phone', label: 'Phone number', type: 'tel', placeholder: '0712345678' },
+      { name: 'password', label: 'Password', type: 'password', placeholder: 'Create a password' },
+      { name: 'password_confirm', label: 'Confirm Password', type: 'password', placeholder: 'Confirm your password' },
+    ]
+
+    const fieldConfigs = role === 'doctor'
+      ? [
+          ...baseFieldConfigs,
+          { name: 'specialty', label: 'Specialty', type: 'select', options: ['Cardiology', 'Dermatology', 'Dentistry', 'Emergency Medicine', 'Endocrinology', 'Gastroenterology', 'Gynecology', 'Hematology', 'Infectious Disease', 'Neurology', 'Oncology', 'Ophthalmology', 'Orthopedics', 'Otolaryngology', 'Pediatrics', 'Psychiatry', 'Radiology', 'Rheumatology', 'Surgery', 'Urology'] },
+          { name: 'years_practice', label: 'Years of practice', type: 'number', placeholder: '5' },
+          { name: 'working_date', label: 'Working date', type: 'date', fullWidth: true },
+          { name: 'working_time_from', label: 'Working time from', type: 'time', fullWidth: true },
+          { name: 'working_time_to', label: 'Working time to', type: 'time', fullWidth: true },
+          { name: 'fee', label: 'Consultation fee (KSh)', type: 'number', placeholder: '2000' },
+          { name: 'hospital_id', label: 'Hospital ID (optional)', type: 'number', placeholder: 'e.g. 1', fullWidth: true },
+        ]
+      : role === 'hospital'
+      ? [
+          ...baseFieldConfigs,
+          { name: 'name', label: 'Hospital name', type: 'text', placeholder: 'e.g. Nairobi General Hospital' },
+          { name: 'address', label: 'Address', type: 'text', placeholder: 'Hospital address' },
+          { name: 'city', label: 'City', type: 'text', placeholder: 'Nairobi' },
+          { name: 'website', label: 'Website', type: 'text', placeholder: 'https://example.com' },
+        ]
+      : role === 'staff'
+      ? [
+          ...baseFieldConfigs,
+          { name: 'role', label: 'Role', type: 'text', placeholder: 'Receptionist', value: 'Receptionist' },
+          { name: 'hospital_id', label: 'Hospital ID', type: 'number', placeholder: 'e.g. 1' },
+        ]
+      : baseFieldConfigs
+
+    return fieldConfigs.map(config => ({
+      ...config,
+      value: formData[config.name] || config.value || '',
+      onChange: (value) => handleFieldChange(config.name, value),
+    }))
+  }
+
+  const handleSubmit = async () => {
     setError('')
     setLoading(true)
     try {
       let result
       if (role === 'doctor') {
-        result = await registerDoctor(formData)
+        const doctorData = { ...formData }
+         if (doctorData.working_date && doctorData.working_time_from && doctorData.working_time_to) {
+          doctorData.working_hours = `${doctorData.working_date} ${doctorData.working_time_from}-${doctorData.working_time_to}`
+        }
+        delete doctorData.working_date
+        delete doctorData.working_time_from
+        delete doctorData.working_time_to
+        if (doctorData.hospital_id) {
+          const parsedId = parseInt(doctorData.hospital_id, 10)
+          if (!isNaN(parsedId)) {
+            doctorData.hospital_id = parsedId
+          } else {
+            delete doctorData.hospital_id
+          }
+        }
+        result = await registerDoctor(doctorData)
       } else if (role === 'hospital') {
         result = await registerHospital(formData)
       } else if (role === 'staff') {
-        result = await registerStaff(formData)
+        const staffData = { ...formData }
+        if (staffData.hospital_id) {
+          staffData.hospital_id = parseInt(staffData.hospital_id, 10)
+        }
+        result = await registerStaff(staffData)
       }
       const user = result.user || result.data?.user
       if (user) {
@@ -44,6 +113,7 @@ export default function PortalPage() {
           email: user.email,
           first_name: user.first_name,
           last_name: user.last_name,
+          role: 'doctor',
           patientId: user.patient?.id || null,
           profile_image: user.profile_image || null,
         }
@@ -51,7 +121,7 @@ export default function PortalPage() {
         navigate('/dashboard', { replace: true })
       }
     } catch (err) {
-      setError(err.message || 'Registration failed')
+      setError(err.message || "Please check your information and try again")
     } finally {
       setLoading(false)
     }
@@ -70,80 +140,50 @@ export default function PortalPage() {
               <button
                 key={r.key}
                 onClick={() => handleRoleSelect(r.key)}
-                className="bg-card rounded-2xl border border-border p-8 shadow-card hover:shadow-lg transition-shadow text-center cursor-pointer"
+                className="bg-card rounded-2xl border border-border p-8 shadow-card hover:shadow-lg transition-shadow text-center cursor-pointer flex flex-col items-center justify-center min-h-[240px]"
               >
-                <span className="text-4xl mb-4 block text-teal"><r.icon size={48} /></span>
+                <div className="flex-1 flex items-center justify-center w-full">
+                  <div className="w-24 h-24 rounded-full bg-teal/10 flex items-center justify-center">
+                    <r.icon size={48} className="text-teal" />
+                  </div>
+                </div>
                 <h3 className="font-display font-bold text-lg text-navy mb-2">{r.label}</h3>
                 <p className="text-sm text-slate-light">{r.description}</p>
               </button>
             ))}
           </div>
         ) : (
-          <div className="max-w-md mx-auto">
-            <button
-              onClick={() => setRole(null)}
-              className="text-teal text-sm mb-4 hover:underline"
-            >
-              ← Back to role selection
-            </button>
-            <AuthForm
-              title={`Register as ${role === 'doctor' ? 'a Doctor' : role === 'hospital' ? 'a Hospital' : 'Staff'}`}
-              subtitle="Fill in the details below to get started"
-              fields={getFields(role)}
-              submitLabel="Create account"
-              onSubmit={handleSubmit}
-              error={error}
-              loading={loading}
-              footer={
-                <span>
-                  Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link>
-                </span>
-              }
-            />
+          <div>
+            <div className="w-full mb-4 fixed top-20 left-[3.75rem] z-50 flex justify-start">
+              <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg">
+                <button
+                  onClick={() => setRole(null)}
+                  className="text-teal text-xl hover:text-teal-mid transition-colors"
+                >
+                  ←
+                </button>
+              </div>
+            </div>
+            <div className="max-w-xl mx-auto">
+              <AuthForm
+                title={`Register as ${role === 'doctor' ? 'a Doctor' : role === 'hospital' ? 'a Hospital' : 'Staff'}`}
+                subtitle="Fill in the details below to get started"
+                fields={getFields(role)}
+                submitLabel="Create account"
+                onSubmit={handleSubmit}
+                error={error}
+                loading={loading}
+                twoColumn={role === 'doctor'}
+                footer={
+                  <span>
+                    Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link>
+                  </span>
+                }
+              />
+            </div>
           </div>
         )}
       </div>
     </div>
   )
-}
-
-function getFields(role) {
-  const baseFields = [
-    { name: 'first_name', label: 'First name', type: 'text', placeholder: 'Your first name' },
-    { name: 'last_name', label: 'Last name', type: 'text', placeholder: 'Your last name' },
-    { name: 'email', label: 'Email address', type: 'email', placeholder: 'you@email.com' },
-    { name: 'phone', label: 'Phone number', type: 'tel', placeholder: '0712345678' },
-    { name: 'password', label: 'Password', type: 'password', placeholder: 'Create a password' },
-  ]
-
-  if (role === 'doctor') {
-    return [
-      ...baseFields,
-      { name: 'specialty', label: 'Specialty', type: 'text', placeholder: 'e.g. Cardiology' },
-      { name: 'years_practice', label: 'Years of practice', type: 'number', placeholder: '5' },
-      { name: 'working_hours', label: 'Working hours', type: 'text', placeholder: 'Mon-Fri 8AM-5PM' },
-      { name: 'fee', label: 'Consultation fee (KSh)', type: 'number', placeholder: '2000' },
-      { name: 'hospital_id', label: 'Hospital ID (optional)', type: 'number', placeholder: '1' },
-    ]
-  }
-
-  if (role === 'hospital') {
-    return [
-      ...baseFields,
-      { name: 'name', label: 'Hospital name', type: 'text', placeholder: 'e.g. Nairobi General Hospital' },
-      { name: 'address', label: 'Address', type: 'text', placeholder: 'Hospital address' },
-      { name: 'city', label: 'City', type: 'text', placeholder: 'Nairobi' },
-      { name: 'website', label: 'Website', type: 'text', placeholder: 'https://example.com' },
-    ]
-  }
-
-  if (role === 'staff') {
-    return [
-      ...baseFields,
-      { name: 'role', label: 'Role', type: 'text', placeholder: 'Receptionist', value: 'Receptionist' },
-      { name: 'hospital_id', label: 'Hospital ID', type: 'number', placeholder: '1' },
-    ]
-  }
-
-  return baseFields
 }
