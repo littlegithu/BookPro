@@ -559,3 +559,10 @@ export async function fetchDoctorAnalytics() {
 export async function fetchDoctorHospitals() {
   return request('/api/doctor/hospitals');
 }
+
+export async function initiateMpesaStkPush(data) {
+  return request('/api/payments/mpesa/stkpush', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
