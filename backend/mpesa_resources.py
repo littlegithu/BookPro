@@ -1,7 +1,8 @@
-from flask import request, jsonify
+import uuid
+
+from flask import jsonify, request
 from flask_restful import Resource
 from mpesa_service import mpesa_service
-import uuid
 
 
 class STKPushResource(Resource):
