@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from extensions import db
 from sqlalchemy import CheckConstraint
@@ -23,12 +23,34 @@ class User(db.Model):
     profile_image = db.Column(db.Text, nullable=True)
     role = db.Column(db.String(20), nullable=True, default='user')
     token = db.Column(db.String(100), nullable=True, unique=True)
+    email_verified = db.Column(db.Boolean, default=False, nullable=False)
+    email_verification_token = db.Column(db.String(100), nullable=True, unique=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     doctor = db.relationship('Doctor', uselist=False, back_populates='user')
     patient = db.relationship('Patient', back_populates='user', uselist=False)
     staff = db.relationship('Staff', back_populates='user', uselist=False)
+    magic_links = db.relationship('MagicLink', back_populates='user', cascade='all, delete-orphan')
+
+    @validates("password")
+    def validate_password(self, key, password):
+        if password and len(password) < 8:
+            raise ValueError("Password must be at least 8 characters")
+        return password
+
+
+class MagicLink(db.Model):
+    __tablename__ = "magic_links"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    token = db.Column(db.String(100), nullable=False, unique=True)
+    expires_at = db.Column(db.DateTime, nullable=False)
+    used = db.Column(db.Boolean, default=False, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user = db.relationship('User', back_populates='magic_links')
 
     @validates("password")
     def validate_password(self, key, password):

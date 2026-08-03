@@ -42,6 +42,8 @@ with app.app_context():
         password=hash_password("admin123"),
         role="admin",
         token=generate_token(),
+        email_verified=True,
+        email_verification_token=None,
     )
     db.session.add(admin_user)
     db.session.commit()

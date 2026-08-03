@@ -114,6 +114,10 @@ from staff_resources import (
     StaffPatientDetail,
 )
 
+from mpesa_resources import STKPushResource
+from email_resources import EmailNotification, AppointmentEmailNotification, PrescriptionEmailNotification
+from auth_resources import EmailVerification, ResendVerification, MagicLinkLogin, MagicLinkVerify
+
 api.add_resource(AdminDashboard, "/api/admin/dashboard")
 api.add_resource(AdminDoctorList, "/api/admin/doctors")
 api.add_resource(AdminDoctorDetail, "/api/admin/doctors/<int:id>")
@@ -153,6 +157,16 @@ api.add_resource(StaffReports, "/api/staff/reports")
 api.add_resource(StaffProfile, "/api/staff/profile")
 api.add_resource(PatientRegistration, "/api/staff/patients/register")
 api.add_resource(StaffPatientDetail, "/api/staff/patients/<int:id>")
+
+api.add_resource(STKPushResource, "/api/payments/mpesa/stkpush")
+
+api.add_resource(EmailNotification, "/api/notifications/email")
+api.add_resource(AppointmentEmailNotification, "/api/notifications/appointment")
+api.add_resource(PrescriptionEmailNotification, "/api/notifications/prescription")
+api.add_resource(EmailVerification, "/api/auth/verify-email")
+api.add_resource(ResendVerification, "/api/auth/resend-verification")
+api.add_resource(MagicLinkLogin, "/api/auth/magic-login")
+api.add_resource(MagicLinkVerify, "/api/auth/magic-verify")
 
 
 @app.errorhandler(HTTPException)
