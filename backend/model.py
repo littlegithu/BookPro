@@ -61,6 +61,8 @@ class Patient(db.Model):
     user = db.relationship('User', back_populates='patient', uselist=False)
     appointments = db.relationship('Appointment', back_populates='patient')
     reviews = db.relationship('Review', back_populates='patient')
+    medical_records = db.relationship('MedicalRecord', back_populates='patient')
+    prescriptions = db.relationship('Prescription', back_populates='patient')
 
 
 class Doctor(db.Model):
@@ -100,6 +102,9 @@ class Doctor(db.Model):
     consultation_type = db.Column(db.String(50), nullable=True)
     verification_status = db.Column(db.String(50), default='Verified', nullable=False)
     hospital_ids = db.Column(db.String(200), nullable=True)
+    accepting_patients = db.Column(db.Boolean, default=True, nullable=False)
+    appointment_duration = db.Column(db.Integer, nullable=True, default=30)
+    consultation_fee = db.Column(db.Integer, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
@@ -107,6 +112,11 @@ class Doctor(db.Model):
     hospital = db.relationship('Hospital', back_populates='doctors')
     appointments = db.relationship('Appointment', back_populates='doctor', lazy=True)
     review_objects = db.relationship('Review', back_populates='doctor', lazy=True)
+    prescriptions = db.relationship('Prescription', back_populates='doctor', lazy=True)
+    medical_records = db.relationship('MedicalRecord', back_populates='doctor', lazy=True)
+    schedules = db.relationship('DoctorSchedule', back_populates='doctor', lazy=True, cascade='all, delete-orphan')
+    notifications = db.relationship('Notification', back_populates='doctor', lazy=True, cascade='all, delete-orphan')
+    documents = db.relationship('DoctorDocument', back_populates='doctor', lazy=True, cascade='all, delete-orphan')
 
 
 class Staff(db.Model):
@@ -115,6 +125,7 @@ class Staff(db.Model):
     __table_args__ = (
         CheckConstraint("length(first_name) >= 1", name="ck_staff_first_name_length"),
         CheckConstraint("length(last_name) >= 1", name="ck_staff_last_name_length"),
+        CheckConstraint("email LIKE '%@%'", name="ck_staff_email_format"),
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -124,8 +135,18 @@ class Staff(db.Model):
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     phone = db.Column(db.String, nullable=True, unique=True)
+    dob = db.Column(db.Date, nullable=True)
+    gender = db.Column(db.String(20), nullable=True)
+    address = db.Column(db.String(300), nullable=True)
+    employee_id = db.Column(db.String(50), nullable=True, unique=True)
     role = db.Column(db.String(50), nullable=False, default='Receptionist')
+    department = db.Column(db.String(100), nullable=True)
+    employment_type = db.Column(db.String(20), nullable=True, default='Full Time')
+    staff_id_photo = db.Column(db.String(500), nullable=True)
+    national_id = db.Column(db.String(500), nullable=True)
     profile_image = db.Column(db.String(250), nullable=True)
+    emergency_contact_name = db.Column(db.String(100), nullable=True)
+    emergency_contact_phone = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
@@ -164,7 +185,7 @@ class Appointment(db.Model):
     __tablename__ = "appointments"
 
     __table_args__ = (
-        CheckConstraint("status IN ('Scheduled', 'Completed', 'Cancelled')", name="ck_appointment_status"),
+        CheckConstraint("status IN ('Pending', 'Scheduled', 'Completed', 'Cancelled')", name="ck_appointment_status"),
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -175,6 +196,7 @@ class Appointment(db.Model):
     appointment_time = db.Column(db.Time, nullable=False)
     status = db.Column(db.String(20), nullable=False, default='Scheduled')
     notes = db.Column(db.String(500), nullable=True)
+    room = db.Column(db.String(50), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
@@ -183,6 +205,7 @@ class Appointment(db.Model):
     hospital = db.relationship('Hospital', back_populates='appointments')
     reviews = db.relationship('Review', back_populates='appointment', cascade='all, delete-orphan')
     medical_record = db.relationship('MedicalRecord', back_populates='appointment', uselist=False, cascade='all, delete-orphan')
+    notifications = db.relationship('Notification', back_populates='related_appointment', cascade='all, delete-orphan')
 
 
 class MedicalRecord(db.Model):
@@ -190,14 +213,101 @@ class MedicalRecord(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False, unique=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
     diagnosis = db.Column(db.Text, nullable=True)
+    symptoms = db.Column(db.Text, nullable=True)
     prescription = db.Column(db.Text, nullable=True)
+    treatment_plan = db.Column(db.Text, nullable=True)
+    lab_requests = db.Column(db.Text, nullable=True)
     follow_up_date = db.Column(db.DateTime, nullable=True)
     additional_notes = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     appointment = db.relationship('Appointment', back_populates='medical_record')
+    doctor = db.relationship('Doctor', back_populates='medical_records')
+    patient = db.relationship('Patient', back_populates='medical_records')
+    prescription_objects = db.relationship('Prescription', back_populates='medical_record', lazy=True, cascade='all, delete-orphan')
+
+
+class Prescription(db.Model):
+    __tablename__ = "prescriptions"
+
+    id = db.Column(db.Integer, primary_key=True)
+    medical_record_id = db.Column(db.Integer, db.ForeignKey('medical_records.id'), nullable=True)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
+    medicine = db.Column(db.String(200), nullable=False)
+    dosage = db.Column(db.String(100), nullable=False)
+    frequency = db.Column(db.String(100), nullable=False)
+    duration = db.Column(db.String(100), nullable=False)
+    instructions = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    medical_record = db.relationship('MedicalRecord', back_populates='prescription_objects')
+    doctor = db.relationship('Doctor', back_populates='prescriptions')
+    patient = db.relationship('Patient', back_populates='prescriptions')
+
+
+class DoctorSchedule(db.Model):
+    __tablename__ = "doctor_schedules"
+
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'), nullable=False)
+    day_of_week = db.Column(db.Integer, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    is_break = db.Column(db.Boolean, default=False, nullable=False)
+    is_vacation = db.Column(db.Boolean, default=False, nullable=False)
+    is_emergency_available = db.Column(db.Boolean, default=False, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    doctor = db.relationship('Doctor', back_populates='schedules')
+
+
+class Notification(db.Model):
+    __tablename__ = "notifications"
+
+    __table_args__ = (
+        CheckConstraint("type IN ('appointment_booked', 'appointment_cancelled', 'documents_uploaded', 'followup_reminder', 'admin_announcement')", name="ck_notification_type"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'), nullable=False)
+    type = db.Column(db.String(50), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.Text, nullable=True)
+    is_read = db.Column(db.Boolean, default=False, nullable=False)
+    related_appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=True)
+    related_patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    doctor = db.relationship('Doctor', back_populates='notifications')
+    related_appointment = db.relationship('Appointment')
+    related_patient = db.relationship('Patient')
+
+
+class DoctorDocument(db.Model):
+    __tablename__ = "doctor_documents"
+
+    __table_args__ = (
+        CheckConstraint("doc_type IN ('medical_license', 'certificate', 'cv', 'insurance', 'verification', 'other')", name="ck_document_type"),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'), nullable=False)
+    doc_type = db.Column(db.String(50), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    file_url = db.Column(db.String(500), nullable=False)
+    file_name = db.Column(db.String(200), nullable=True)
+    verified = db.Column(db.Boolean, default=False, nullable=False)
+    uploaded_at = db.Column(db.DateTime, default=datetime.now)
+
+    doctor = db.relationship('Doctor', back_populates='documents')
 
 
 class Hospital(db.Model):

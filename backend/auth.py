@@ -127,7 +127,17 @@ def register_staff(data):
         email=user.email,
         phone=user.phone,
         role=data.get("role", "Receptionist"),
+        department=data.get("department"),
+        employment_type=data.get("employment_type", "Full Time"),
+        employee_id=data.get("employee_id"),
+        staff_id_photo=data.get("staff_id_photo"),
+        national_id=data.get("national_id"),
         profile_image=data.get("profile_image"),
+        dob=data.get("dob"),
+        gender=data.get("gender"),
+        address=data.get("address"),
+        emergency_contact_name=data.get("emergency_contact_name"),
+        emergency_contact_phone=data.get("emergency_contact_phone"),
     )
     db.session.add(staff)
     db.session.commit()

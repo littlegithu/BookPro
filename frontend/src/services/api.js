@@ -74,9 +74,12 @@ export function transformAppointment(a) {
     : '';
   const timeStr = a.appointment_time || (dateObj ? dateObj.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '');
   const statusMap = {
-    'Scheduled': 'confirmed',
+    'Scheduled': 'scheduled',
+    'Checked In': 'checked-in',
     'Completed': 'completed',
     'Cancelled': 'cancelled',
+    'Pending': 'pending',
+    'Called': 'called',
   };
   const doctor = a.doctor || {};
   return {
@@ -94,6 +97,7 @@ export function transformAppointment(a) {
     doctor_id: a.doctor_id,
     hospital_id: a.hospital_id,
     notes: a.notes || '',
+    room: a.room || null,
   };
 }
 
@@ -309,4 +313,249 @@ export async function registerStaff(data) {
     method: 'POST',
     body: JSON.stringify(data),
   });
+}
+
+export async function loginStaff(data) {
+  return request('/staff/login', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function fetchStaffDashboard() {
+  const data = await request('/staff/dashboard');
+  return data;
+}
+
+export async function fetchStaffPatients(searchQuery) {
+  const params = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
+  const data = await request(`/staff/patients${params}`);
+  if (Array.isArray(data)) {
+    return data.map(transformPatient);
+  }
+  return [];
+}
+
+export async function checkInPatient(appointmentId) {
+  return request('/staff/check-in', {
+    method: 'POST',
+    body: JSON.stringify({ appointment_id: appointmentId }),
+  });
+}
+
+export async function fetchStaffQueue() {
+  return request('/staff/queue');
+}
+
+export async function fetchStaffAppointments(params) {
+  const queryParams = params ? new URLSearchParams(params).toString() : '';
+  const data = await request(`/staff/appointments${queryParams ? '?' + queryParams : ''}`);
+  if (Array.isArray(data)) {
+    return data.map(transformAppointment);
+  }
+  return [];
+}
+
+export async function fetchStaffDoctorsAvailability() {
+  return request('/staff/doctors/availability');
+}
+
+export async function fetchDepartments() {
+  return request('/staff/departments');
+}
+
+export async function fetchStaffReports() {
+  return request('/staff/reports');
+}
+
+export async function fetchStaffProfile() {
+  return request('/staff/profile');
+}
+
+export async function updateStaffProfile(data) {
+  return request('/staff/profile', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function createStaffPatient(data) {
+  return request('/staff/patients/register', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function fetchStaffPatient(id) {
+  return request(`/staff/patients/${id}`);
+}
+
+export async function callNextPatient() {
+  return request('/staff/queue/action', {
+    method: 'POST',
+    body: JSON.stringify({ action: 'call_next' }),
+  });
+}
+
+export async function markPatientComplete(appointmentId) {
+  return request('/staff/queue/action', {
+    method: 'POST',
+    body: JSON.stringify({ action: 'mark_complete', appointment_id: appointmentId }),
+  });
+}
+
+export async function fetchDoctorDashboard() {
+  return request('/api/doctor/dashboard');
+}
+
+export async function fetchDoctorAppointments(params) {
+  const queryParams = params ? new URLSearchParams(params).toString() : '';
+  return request(`/api/doctor/appointments${queryParams ? '?' + queryParams : ''}`);
+}
+
+export async function fetchDoctorAppointment(id) {
+  return request(`/api/doctor/appointments/${id}`);
+}
+
+export async function updateDoctorAppointment(id, data) {
+  return request(`/api/doctor/appointments/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function cancelDoctorAppointment(id) {
+  return request(`/api/doctor/appointments/${id}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function fetchDoctorPatients(searchQuery) {
+  const params = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
+  const data = await request(`/api/doctor/patients${params}`);
+  return data;
+}
+
+export async function fetchDoctorPatient(id) {
+  return request(`/api/doctor/patients/${id}`);
+}
+
+export async function fetchDoctorMedicalRecords(searchQuery) {
+  const params = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
+  return request(`/api/doctor/medical-records${params}`);
+}
+
+export async function fetchDoctorMedicalRecord(id) {
+  return request(`/api/doctor/medical-records/${id}`);
+}
+
+export async function createDoctorMedicalRecord(data) {
+  return request('/api/doctor/medical-records', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateDoctorMedicalRecord(id, data) {
+  return request(`/api/doctor/medical-records/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteDoctorMedicalRecord(id) {
+  return request(`/api/doctor/medical-records/${id}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function fetchDoctorPrescriptions(searchQuery) {
+  const params = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
+  return request(`/api/doctor/prescriptions${params}`);
+}
+
+export async function fetchDoctorPrescription(id) {
+  return request(`/api/doctor/prescriptions/${id}`);
+}
+
+export async function createDoctorPrescription(data) {
+  return request('/api/doctor/prescriptions', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateDoctorPrescription(id, data) {
+  return request(`/api/doctor/prescriptions/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function cancelPrescription(id) {
+  return request(`/api/doctor/prescriptions/${id}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function fetchDoctorSchedule() {
+  return request('/api/doctor/schedule/today');
+}
+
+export async function fetchDoctorAvailability() {
+  return request('/api/doctor/availability/settings');
+}
+
+export async function updateDoctorAvailability(data) {
+  return request('/api/doctor/availability/settings', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function getDoctorReviews() {
+  return request('/api/doctor/reviews');
+}
+
+export async function fetchDoctorNotifications(unreadOnly = false) {
+  const params = unreadOnly ? '?unread_only=true' : '';
+  return request(`/api/doctor/notifications${params}`);
+}
+
+export async function markNotificationRead(id, isRead = true) {
+  return request(`/api/doctor/notifications/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ is_read: isRead }),
+  });
+}
+
+export async function fetchDoctorDocuments(docType) {
+  const params = docType ? `?doc_type=${encodeURIComponent(docType)}` : '';
+  return request(`/api/doctor/documents${params}`);
+}
+
+export async function uploadDoctorDocument(data) {
+  return request('/api/doctor/documents', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function fetchDoctorProfile() {
+  return request('/api/doctor/profile');
+}
+
+export async function updateDoctorProfile(data) {
+  return request('/api/doctor/profile', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function fetchDoctorAnalytics() {
+  return request('/api/doctor/analytics');
+}
+
+export async function fetchDoctorHospitals() {
+  return request('/api/doctor/hospitals');
 }
