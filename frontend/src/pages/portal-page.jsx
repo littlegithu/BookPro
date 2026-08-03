@@ -8,8 +8,8 @@ import { registerDoctor, registerHospital, registerStaff } from '../services/api
 import { Stethoscope, Building2, Users } from 'lucide-react'
 
 const ROLES = [
-  { key: 'doctor', label: 'Doctor', icon: Stethoscope, description: 'Register as a medical practitioner' },
-  { key: 'hospital', label: 'Hospital', icon: Building2, description: 'Register your hospital or clinic' },
+  { key: 'doctor', label: 'Doctor', icon: Stethoscope, description: 'Register as a doctor' },
+  { key: 'hospital', label: 'Hospital', icon: Building2, description: 'Register your hospital' },
   { key: 'staff', label: 'Staff', icon: Users, description: 'Register as hospital staff' },
 ]
 
@@ -149,7 +149,7 @@ export default function PortalPage() {
               <button
                 key={r.key}
                 onClick={() => handleRoleSelect(r.key)}
-                className="bg-card rounded-2xl border border-border p-8 shadow-card hover:shadow-lg transition-shadow text-center cursor-pointer flex flex-col items-center justify-center min-h-[240px]"
+                className="bg-card rounded-2xl border border-border p-8 shadow-card hover:shadow-lg transition-shadow text-center cursor-pointer flex flex-col items-center justify-center min-h-60"
               >
                 <div className="flex-1 flex items-center justify-center w-full">
                   <div className="w-24 h-24 rounded-full bg-teal/10 flex items-center justify-center">
@@ -163,7 +163,7 @@ export default function PortalPage() {
           </div>
         ) : (
           <div>
-            <div className="w-full mb-4 fixed top-20 left-[3.75rem] z-50 flex justify-start">
+            <div className="w-full mb-4 fixed top-20 left-15 z-50 flex justify-start">
               <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg">
                 <button
                   onClick={() => setRole(null)}
