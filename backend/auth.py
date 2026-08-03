@@ -144,7 +144,28 @@ def register_doctor(data):
 
 
 def register_staff(data):
+    staff_fields = ["hospital_id", "role", "department", "employment_type", "employee_id", 
+                    "staff_id_photo", "national_id", "profile_image", "dob", "gender", 
+                    "address", "emergency_contact_name", "emergency_contact_phone"]
+    
+    hospital_id = data.get("hospital_id", 1)
+    role = data.get("role", "Receptionist")
+    department = data.get("department")
+    employment_type = data.get("employment_type", "Full Time")
+    employee_id = data.get("employee_id")
+    staff_id_photo = data.get("staff_id_photo")
+    national_id = data.get("national_id")
+    profile_image = data.get("profile_image")
+    dob = data.get("dob")
+    gender = data.get("gender")
+    address = data.get("address")
+    emergency_contact_name = data.get("emergency_contact_name")
+    emergency_contact_phone = data.get("emergency_contact_phone")
+    
     data.pop("password_confirm", None)
+    for field in staff_fields:
+        data.pop(field, None)
+    
     if "password" in data:
         data["password"] = hash_password(data["password"])
     user = User(**data)
@@ -164,23 +185,23 @@ def register_staff(data):
 
     staff = Staff(
         user_id=user.id,
-        hospital_id=data.get("hospital_id"),
+        hospital_id=hospital_id,
         first_name=user.first_name,
         last_name=user.last_name,
         email=user.email,
         phone=user.phone,
-        role=data.get("role", "Receptionist"),
-        department=data.get("department"),
-        employment_type=data.get("employment_type", "Full Time"),
-        employee_id=data.get("employee_id"),
-        staff_id_photo=data.get("staff_id_photo"),
-        national_id=data.get("national_id"),
-        profile_image=data.get("profile_image"),
-        dob=data.get("dob"),
-        gender=data.get("gender"),
-        address=data.get("address"),
-        emergency_contact_name=data.get("emergency_contact_name"),
-        emergency_contact_phone=data.get("emergency_contact_phone"),
+        role=role,
+        department=department,
+        employment_type=employment_type,
+        employee_id=employee_id,
+        staff_id_photo=staff_id_photo,
+        national_id=national_id,
+        profile_image=profile_image,
+        dob=dob,
+        gender=gender,
+        address=address,
+        emergency_contact_name=emergency_contact_name,
+        emergency_contact_phone=emergency_contact_phone,
     )
     db.session.add(staff)
     db.session.commit()

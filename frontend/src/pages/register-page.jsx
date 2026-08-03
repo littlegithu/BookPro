@@ -1,6 +1,7 @@
 
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
 import Navbar from '../components/layout/navbar'
@@ -17,9 +18,18 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
-    if (!name || !email || !password) { setError('Please fill in all fields.'); return }
-    if (password !== confirm) { setError('Passwords do not match.'); return }
-    setError(''); setLoading(true)
+    if (!name || !email || !password) {
+      setError('Please fill in all fields.')
+      toast.error('Please fill in all fields.')
+      return
+    }
+    if (password !== confirm) {
+      setError('Passwords do not match.')
+      toast.error('Passwords do not match.')
+      return
+    }
+    setError('')
+    setLoading(true)
     try {
       const [firstName, lastName] = name.split(' ')
       const user = await apiRegisterUser({
@@ -27,6 +37,7 @@ export default function RegisterPage() {
         last_name: lastName || name,
         email: email,
         password,
+        password_confirm: password,
       })
       const userData = {
         id: user.id,
@@ -38,9 +49,12 @@ export default function RegisterPage() {
         profile_image: user.profile_image || null,
       }
       login(userData, 'mock-jwt-token')
+      toast.success('Account created successfully!')
       navigate('/dashboard', { replace: true })
     } catch (err) {
-      setError(err.message || 'Registration failed')
+      const errorMsg = err.message || 'Registration failed'
+      setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setLoading(false)
     }

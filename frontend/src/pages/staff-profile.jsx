@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { User, Mail, Phone, MapPin, Calendar, Shield, Save } from 'lucide-react'
+import { toast } from 'react-hot-toast'
+import { Save } from 'lucide-react'
 import StaffDashboardLayout from '../components/layout/staff-dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import { useAuth } from '../context/auth-context'
@@ -44,6 +45,7 @@ export default function StaffProfilePage() {
         })
       } catch (err) {
         setError('Failed to load profile')
+        toast.error('Failed to load profile')
       } finally {
         setLoading(false)
       }
@@ -62,8 +64,11 @@ export default function StaffProfilePage() {
     try {
       await updateStaffProfile(formData)
       setSuccess('Profile updated successfully')
+      toast.success('Profile updated successfully!')
     } catch (err) {
-      setError(err.message || 'Failed to update profile')
+      const errorMsg = err.message || 'Failed to update profile'
+      setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setSaving(false)
     }

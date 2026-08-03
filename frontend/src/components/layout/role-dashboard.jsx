@@ -7,6 +7,6 @@ export default function RoleDashboard() {
   const { user, isStaff, staffRole } = useAuth()
 
   if (isStaff && staffRole()) return <StaffDashboardPage />
-  if (user?.role === 'doctor') return <DoctorDashboardPage />
+  if (user?.role === 'doctor' || user?.doctor) return <DoctorDashboardPage />
   return <DashboardPage />
 }

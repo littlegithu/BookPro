@@ -13,6 +13,7 @@ flask-cors = "*"
 marshmallow = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
+requests = "*"
 
 [dev-packages]
 

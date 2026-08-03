@@ -56,7 +56,7 @@ class EmailService:
                         "code": error_data.get("code", "unknown_error"),
                         "status_code": response.status_code
                     }
-                except:
+                except ValueError:
                     return {"success": False, "error": response.text, "status_code": response.status_code}
 
             return {"success": True, "message": response.json()}
