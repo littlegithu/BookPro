@@ -566,3 +566,24 @@ export async function initiateMpesaStkPush(data) {
     body: JSON.stringify(data),
   });
 }
+
+export async function sendEmail(data) {
+  return request('/api/notifications/email', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function sendAppointmentNotification(data) {
+  return request('/api/notifications/appointment', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function sendPrescriptionNotification(data) {
+  return request('/api/notifications/prescription', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
