@@ -559,3 +559,53 @@ export async function fetchDoctorAnalytics() {
 export async function fetchDoctorHospitals() {
   return request('/api/doctor/hospitals');
 }
+
+export async function initiateMpesaStkPush(data) {
+  return request('/api/payments/mpesa/stkpush', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function sendEmail(data) {
+  return request('/api/notifications/email', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function sendAppointmentNotification(data) {
+  return request('/api/notifications/appointment', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function sendPrescriptionNotification(data) {
+  return request('/api/notifications/prescription', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function verifyEmail(token) {
+  return request(`/api/auth/verify-email?token=${token}`);
+}
+
+export async function resendVerification(email) {
+  return request('/api/auth/resend-verification', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function sendMagicLink(email) {
+  return request('/api/auth/magic-login', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function verifyMagicLink(token) {
+  return request(`/api/auth/magic-verify?token=${token}`);
+}
