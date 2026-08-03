@@ -587,3 +587,25 @@ export async function sendPrescriptionNotification(data) {
     body: JSON.stringify(data),
   });
 }
+
+export async function verifyEmail(token) {
+  return request(`/api/auth/verify-email?token=${token}`);
+}
+
+export async function resendVerification(email) {
+  return request('/api/auth/resend-verification', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function sendMagicLink(email) {
+  return request('/api/auth/magic-login', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function verifyMagicLink(token) {
+  return request(`/api/auth/magic-verify?token=${token}`);
+}

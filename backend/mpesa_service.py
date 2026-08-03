@@ -1,18 +1,10 @@
 import requests
-import base64
-import json
 from datetime import datetime
-from flask import request, jsonify
-from extensions import db
 
 
 class MpesaService:
     BASE_URL = "https://uat.buni.kcbgroup.com/mm/api/request/1.0.0"
     ROUTE_CODE = "207"
-
-    @staticmethod
-    def _get_auth_token():
-        pass
 
     @staticmethod
     def stk_push(phoneNumber, amount, invoiceNumber, callbackUrl, transactionDescription, orgShortCode=None, orgPassKey=None, sharedShortCode=False):
@@ -46,9 +38,12 @@ class MpesaService:
                 f"{MpesaService.BASE_URL}/stkpush",
                 headers=headers,
                 params=params,
-                data=json.dumps(payload)
+                json=payload
             )
-            return response.json()
+            try:
+                return response.json()
+            except:
+                return {"error": "Invalid response from Mpesa API", "status_code": response.status_code, "response": response.text}
         except Exception as e:
             return {"error": str(e)}
 
