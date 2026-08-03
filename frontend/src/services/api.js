@@ -19,7 +19,10 @@ async function request(path, options = {}) {
       const parsed = JSON.parse(text);
       error = { message: parsed.error || parsed.message || res.statusText, ...parsed };
     } catch {
-      // keep default error
+      error.message = "Please check your information and try again";
+    }
+    if (res.status === 502 || res.status === 500) {
+      error.message = "Please check your information and try again";
     }
     return Promise.reject(error);
   }

@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields, validate, validates_schema, ValidationError
 
 
 class BaseSchema(Schema):
@@ -9,8 +9,16 @@ class BaseSchema(Schema):
         r'^(?:\+254|0)?(7|1)\d{8}$',
         error="Phone must be a valid Kenyan phone number, e.g. 0712345678 or +254712345678"
     ))
+    password = fields.Str(required=True, load_only=True, validate=validate.Length(min=8))
+    password_confirm = fields.Str(required=True, load_only=True)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
+
+    @validates_schema
+    def validate_password_match(self, data, **kwargs):
+        if "password" in data and "password_confirm" in data:
+            if data["password"] != data["password_confirm"]:
+                raise ValidationError("Passwords do not match", field_name="password_confirm")
 
 
 class UserSchema(BaseSchema):

@@ -34,6 +34,7 @@ export default function LoginPage() {
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
+        role: user.role,
         patientId: user.patient?.id || null,
         profile_image: user.profile_image || null,
       }

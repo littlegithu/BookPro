@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/auth-context'
 import { ThemeProvider } from './context/theme-context'
 import ProtectedRoute from './components/layout/protected-route'
+import RoleDashboard from './components/layout/role-dashboard'
 import DashboardLayout from './components/layout/dashboard-layout'
 import AdminLayout from './admin/components/AdminLayout'
 
@@ -12,7 +13,6 @@ import PortalPage from './pages/portal-page'
 import ResetPasswordPage from './pages/reset-password'
 import BrowsePage from './pages/browse-page'
 import DoctorProfilePage from './pages/doctor-profile-page'
-import DashboardPage from './pages/dashboard'
 import AppointmentsPage from './pages/appointment-page'
 import MedicalRecordsPage from './pages/medical-records-page'
 import AppointmentDetailPage from './pages/appointment-detail'
@@ -33,7 +33,7 @@ export default function App() {
           <Route path="/doctors" element={<DashboardLayout><BrowsePage /></DashboardLayout>} />
           <Route path="/doctors/:id" element={<DashboardLayout><DoctorProfilePage /></DashboardLayout>} />
 
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/appointments/:id" element={<AppointmentDetailPage />} />
           <Route path="/medical-records" element={<MedicalRecordsPage />} />

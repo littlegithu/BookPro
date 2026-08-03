@@ -16,6 +16,7 @@ def generate_token():
 
 
 def register_user(data):
+    data.pop("password_confirm", None)
     if "password" in data:
         data["password"] = hash_password(data["password"])
     user = User(**data)
@@ -45,6 +46,7 @@ def register_user(data):
 
 
 def register_hospital(data):
+    data.pop("password_confirm", None)
     hospital = Hospital(**data)
     db.session.add(hospital)
     try:
@@ -56,9 +58,18 @@ def register_hospital(data):
 
 
 def register_doctor(data):
+    data.pop("password_confirm", None)
     if "password" in data:
         data["password"] = hash_password(data["password"])
-    user = User(**data)
+    user_data = {
+        "first_name": data.get("first_name"),
+        "last_name": data.get("last_name"),
+        "email": data.get("email"),
+        "phone": data.get("phone"),
+        "password": data.get("password"),
+        "profile_image": data.get("profile_image"),
+    }
+    user = User(**user_data)
     user.role = "doctor"
     if not user.token:
         user.token = generate_token()
@@ -94,6 +105,7 @@ def register_doctor(data):
 
 
 def register_staff(data):
+    data.pop("password_confirm", None)
     if "password" in data:
         data["password"] = hash_password(data["password"])
     user = User(**data)

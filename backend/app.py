@@ -1,7 +1,8 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, jsonify
+from werkzeug.exceptions import HTTPException
 from flask_cors import CORS
 from flask_restful import Api
 from extensions import bcrypt, db, migrate
@@ -77,6 +78,16 @@ from admin.resources import AdminDoctorList, AdminDoctorDetail
 api.add_resource(AdminDashboard, "/api/admin/dashboard")
 api.add_resource(AdminDoctorList, "/api/admin/doctors")
 api.add_resource(AdminDoctorDetail, "/api/admin/doctors/<int:id>")
+
+
+@app.errorhandler(HTTPException)
+def handle_http_exception(e):
+    return jsonify({"error": e.description}), e.code
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    app.logger.error(f"Unhandled exception: {e}")
+    return jsonify({"error": "An unexpected error occurred. Please try again."}), 500
 
 
 if __name__ == "__main__":
