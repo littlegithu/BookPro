@@ -26,6 +26,16 @@ import StaffCheckInPage from './pages/staff-check-in'
 import StaffQueuePage from './pages/staff-queue'
 import StaffAppointmentsPage from './pages/staff-appointments'
 import StaffRegistrationPage from './pages/staff-registration'
+import StaffProfilePage from './pages/staff-profile'
+import StaffSettingsPage from './pages/staff-settings'
+import StaffDepartmentsPage from './pages/staff-departments'
+import StaffPatientsPage from './pages/staff-patients'
+import StaffDoctorsPage from './pages/staff-doctors'
+import StaffNotificationsPage from './pages/staff-notifications'
+import StaffBillingPage from './pages/staff-billing'
+import StaffReportsPage from './pages/staff-reports'
+import StaffLabPage from './pages/staff-lab'
+import StaffPharmacyPage from './pages/staff-pharmacy'
 
 export default function App() {
   return (
@@ -48,6 +58,16 @@ export default function App() {
           <Route path="/staff/queue" element={<ProtectedRoute><StaffQueuePage /></ProtectedRoute>} />
           <Route path="/staff/appointments" element={<ProtectedRoute><StaffAppointmentsPage /></ProtectedRoute>} />
           <Route path="/staff/register" element={<ProtectedRoute><StaffRegistrationPage /></ProtectedRoute>} />
+          <Route path="/staff/profile" element={<ProtectedRoute><StaffProfilePage /></ProtectedRoute>} />
+          <Route path="/staff/settings" element={<ProtectedRoute><StaffSettingsPage /></ProtectedRoute>} />
+          <Route path="/staff/departments" element={<ProtectedRoute><StaffDepartmentsPage /></ProtectedRoute>} />
+          <Route path="/staff/patients" element={<ProtectedRoute><StaffPatientsPage /></ProtectedRoute>} />
+          <Route path="/staff/doctors" element={<ProtectedRoute><StaffDoctorsPage /></ProtectedRoute>} />
+          <Route path="/staff/notifications" element={<ProtectedRoute><StaffNotificationsPage /></ProtectedRoute>} />
+          <Route path="/staff/billing" element={<ProtectedRoute><StaffBillingPage /></ProtectedRoute>} />
+          <Route path="/staff/reports" element={<ProtectedRoute><StaffReportsPage /></ProtectedRoute>} />
+          <Route path="/staff/lab" element={<ProtectedRoute><StaffLabPage /></ProtectedRoute>} />
+          <Route path="/staff/pharmacy" element={<ProtectedRoute><StaffPharmacyPage /></ProtectedRoute>} />
 
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/appointments/:id" element={<AppointmentDetailPage />} />
