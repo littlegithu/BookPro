@@ -1,25 +1,24 @@
-from datetime import datetime, date, timedelta
+from datetime import date, datetime
+
+from admin.permissions import staff_required
+from extensions import db
 from flask import request
 from flask_restful import Resource
-from sqlalchemy import func
+from models import Appointment, Doctor, Hospital, Patient
+from schemas import (
+    Appointment_schema,
+    Appointments_schema,
+    Patient_schema,
+    Patients_schema,
+    Staff_schema,
+    StaffDashboard_schema,
+)
 from sqlalchemy.orm import joinedload
-
-from extensions import db
-from admin.permissions import staff_required, admin_or_hospital_admin_required
-from model import (
-    Appointment, Doctor, Hospital, Patient, Staff, Notification, User
-)
-from schema import (
-    Appointment_schema, Appointments_schema,
-    Patient_schema, Patients_schema,
-    Staff_schema, StaffDashboard_schema,
-    Notification_schema, Notifications_schema,
-)
 
 
 def get_today_date_filter():
-    today_start = datetime.combine(date.today(), datetime.min.time())
-    today_end = datetime.combine(date.today(), datetime.max.time())
+    today_start = datetime.combine(date.today, datetime.min.time())
+    today_end = datetime.combine(date.today, datetime.max.time())
     return today_start, today_end
 
 
@@ -48,7 +47,7 @@ def has_permission(required_role):
 
 class StaffLogin(Resource):
     def post(self):
-        from auth import login_user, generate_token, hash_password
+        from auth import generate_token, login_user
 
         data = request.get_json(force=True, silent=True)
         if not data:
@@ -168,7 +167,7 @@ class PatientCheckIn(Resource):
 
         appointment = Appointment.query.get_or_404(appointment_id)
 
-        if appointment.appointment_date.date() != date.today():
+        if appointment.appointment_date.date() != date.today:
             return {"error": "Can only check in patients with today's appointments"}, 400
 
         old_status = appointment.status

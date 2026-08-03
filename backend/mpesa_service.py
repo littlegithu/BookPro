@@ -1,5 +1,6 @@
-import requests
 from datetime import datetime
+
+import requests
 
 
 class MpesaService:
@@ -8,7 +9,7 @@ class MpesaService:
 
     @staticmethod
     def stk_push(phoneNumber, amount, invoiceNumber, callbackUrl, transactionDescription, orgShortCode=None, orgPassKey=None, sharedShortCode=False):
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        timestamp = datetime.now.strftime("%Y%m%d%H%M%S")
         messageId = f"BP_{timestamp}_{phoneNumber}"
 
         headers = {

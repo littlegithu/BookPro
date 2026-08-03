@@ -1,9 +1,20 @@
 from datetime import date, datetime, time
+
 from app import app
 from auth import generate_token, hash_password
-from model import (
-    Appointment, Doctor, Hospital, MedicalRecord, Patient, Prescription,
-    Review, User, db, DoctorSchedule, Notification, DoctorDocument,
+from models import (
+    Appointment,
+    Doctor,
+    DoctorDocument,
+    DoctorSchedule,
+    Hospital,
+    MedicalRecord,
+    Notification,
+    Patient,
+    Prescription,
+    Review,
+    User,
+    db,
 )
 from sqlalchemy import text
 
@@ -586,7 +597,7 @@ with app.app_context():
     db.session.commit()
     print(f"Seeded {len(patients)} patients.")
 
-    now = datetime.now()
+    now = datetime.now
     today = now.date()
     appointments = [
         Appointment(

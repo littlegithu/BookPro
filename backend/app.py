@@ -1,11 +1,10 @@
 import os
 
 from dotenv import load_dotenv
+from extensions import bcrypt, db, migrate
 from flask import Flask, jsonify
-from werkzeug.exceptions import HTTPException
 from flask_cors import CORS
 from flask_restful import Api
-from extensions import bcrypt, db, migrate
 from resources import (
     AppointmentDetail,
     AppointmentList,
@@ -26,6 +25,7 @@ from resources import (
     UserList,
     UserLogin,
 )
+from werkzeug.exceptions import HTTPException
 
 load_dotenv()
 
@@ -73,50 +73,59 @@ api.add_resource(DoctorRegistration, "/api/doctors/register")
 api.add_resource(StaffRegistration, "/api/staff/register")
 
 from admin.dashboard import AdminDashboard
-from admin.resources import AdminDoctorList, AdminDoctorDetail
+from admin.resources import AdminDoctorDetail, AdminDoctorList
+from auth_resources import (
+    EmailVerification,
+    MagicLinkLogin,
+    MagicLinkVerify,
+    ResendVerification,
+)
 from doctor_resources import (
-    DoctorDashboard,
-    DoctorAppointmentList,
-    DoctorAppointmentDetail,
-    DoctorPatientList,
-    DoctorPatientDetail,
-    DoctorMedicalRecordList,
-    DoctorMedicalRecordDetail,
-    DoctorPrescriptionList,
-    DoctorPrescriptionDetail,
-    DoctorScheduleList,
-    DoctorScheduleDetail,
-    DoctorOwnAvailability,
-    DoctorReviewList,
-    DoctorNotifications,
-    DoctorNotificationDetail,
-    DoctorDocuments,
-    DoctorProfile,
     DoctorAnalytics,
+    DoctorAppointmentDetail,
+    DoctorAppointmentList,
+    DoctorDashboard,
+    DoctorDocuments,
     DoctorHospitals,
+    DoctorMedicalRecordDetail,
+    DoctorMedicalRecordList,
+    DoctorNotificationDetail,
+    DoctorNotifications,
+    DoctorOwnAvailability,
+    DoctorPatientDetail,
+    DoctorPatientList,
+    DoctorPrescriptionDetail,
+    DoctorPrescriptionList,
+    DoctorProfile,
+    DoctorReviewList,
+    DoctorScheduleDetail,
+    DoctorScheduleList,
     DoctorTodaySchedule,
 )
-
-from staff_resources import (
-    StaffLogin,
-    StaffDashboard,
-    PatientCheckIn,
-    PatientSearch,
-    QueueManagement,
-    QueueAction,
-    AppointmentManagement,
-    DoctorAvailability as StaffDoctorAvailability,
-    DepartmentDirectory,
-    StaffNotifications,
-    StaffReports,
-    StaffProfile,
-    PatientRegistration,
-    StaffPatientDetail,
+from email_resources import (
+    AppointmentEmailNotification,
+    EmailNotification,
+    PrescriptionEmailNotification,
 )
-
 from mpesa_resources import STKPushResource
-from email_resources import EmailNotification, AppointmentEmailNotification, PrescriptionEmailNotification
-from auth_resources import EmailVerification, ResendVerification, MagicLinkLogin, MagicLinkVerify
+from staff_resources import (
+    AppointmentManagement,
+    DepartmentDirectory,
+    PatientCheckIn,
+    PatientRegistration,
+    PatientSearch,
+    QueueAction,
+    QueueManagement,
+    StaffDashboard,
+    StaffLogin,
+    StaffNotifications,
+    StaffPatientDetail,
+    StaffProfile,
+    StaffReports,
+)
+from staff_resources import (
+    DoctorAvailability as StaffDoctorAvailability,
+)
 
 api.add_resource(AdminDashboard, "/api/admin/dashboard")
 api.add_resource(AdminDoctorList, "/api/admin/doctors")
@@ -181,4 +190,3 @@ def handle_exception(e):
 
 if __name__ == "__main__":
     app.run(debug=True)
-

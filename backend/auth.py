@@ -1,9 +1,10 @@
 import secrets
+from datetime import datetime, timedelta
 
-from flask import jsonify, request, current_app
-from flask_bcrypt import check_password_hash, generate_password_hash
-from model import Patient, User, Doctor, Hospital, Staff
 from extensions import db
+from flask import current_app, request
+from flask_bcrypt import check_password_hash, generate_password_hash
+from models import Doctor, Hospital, MagicLink, Patient, Staff, User
 from sqlalchemy.exc import IntegrityError
 
 
@@ -40,7 +41,7 @@ BookPro Team
             body=body
         )
         return result.get("success", False)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         current_app.logger.error(f"Failed to send verification email: {e}")
         return False
 
@@ -216,14 +217,12 @@ def login_user_token(token):
 
 
 def create_magic_link(email):
-    from model import MagicLink
-
     user = User.query.filter_by(email=email).first()
     if not user:
         return None, "If an account exists with that email, a magic link has been sent"
 
     token = secrets.token_urlsafe(32)
-    expires_at = datetime.now() + timedelta(hours=1)
+    expires_at = datetime.now + timedelta(hours=1)
 
     MagicLink.query.filter_by(used=False).filter(MagicLink.expires_at < expires_at).delete()
 
@@ -273,7 +272,7 @@ def verify_magic_link(token):
     if not magic_link:
         return None
 
-    if magic_link.expires_at < datetime.now():
+    if magic_link.expires_at < datetime.now:
         db.session.delete(magic_link)
         db.session.commit()
         return None

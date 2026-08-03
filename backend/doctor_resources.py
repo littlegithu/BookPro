@@ -1,29 +1,43 @@
-from datetime import datetime, date
+from datetime import date, datetime
+
+from admin.permissions import doctor_required
+from extensions import db
 from flask import request
 from flask_restful import Resource
+from models import (
+    Appointment,
+    Doctor,
+    DoctorDocument,
+    DoctorSchedule,
+    Hospital,
+    MedicalRecord,
+    Notification,
+    Patient,
+    Prescription,
+    Review,
+)
+from schemas import (
+    Appointment_schema,
+    Appointments_schema,
+    DoctorDocument_schema,
+    DoctorDocuments_schema,
+    DoctorSchedule_schema,
+    DoctorSchedules_schema,
+    MedicalRecord_schema,
+    MedicalRecords_schema,
+    Notification_schema,
+    Notifications_schema,
+    Prescription_schema,
+    Prescriptions_schema,
+    Reviews_schema,
+)
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 
-from extensions import db
-from admin.permissions import doctor_required
-from model import (
-    Appointment, Doctor, MedicalRecord, Patient, Prescription,
-    Review, Hospital, Notification, DoctorSchedule, DoctorDocument,
-)
-from schema import (
-    Appointment_schema, Appointments_schema,
-    MedicalRecord_schema, MedicalRecords_schema,
-    Prescription_schema, Prescriptions_schema,
-    Reviews_schema,
-    DoctorSchedule_schema, DoctorSchedules_schema,
-    Notification_schema, Notifications_schema,
-    DoctorDocument_schema, DoctorDocuments_schema,
-)
-
 
 def get_today_date_filter():
-    today_start = datetime.combine(date.today(), datetime.min.time())
-    today_end = datetime.combine(date.today(), datetime.max.time())
+    today_start = datetime.combine(date.today, datetime.min.time())
+    today_end = datetime.combine(date.today, datetime.max.time())
     return today_start, today_end
 
 
@@ -242,14 +256,14 @@ class DoctorPatientList(Resource):
             upcoming = Appointment.query.filter(
                 Appointment.doctor_id == doctor.id,
                 Appointment.patient_id == patient.id,
-                Appointment.appointment_date > datetime.now(),
+                Appointment.appointment_date > datetime.now,
                 Appointment.status.in_(['Scheduled', 'Pending']),
             ).order_by(Appointment.appointment_date.asc()).first()
 
             dob = patient.dob
             age = None
             if dob:
-                age = (date.today() - dob).days // 365
+                age = (date.today - dob).days // 365
 
             result.append({
                 'id': patient.id,
@@ -291,7 +305,7 @@ class DoctorPatientDetail(Resource):
         ).order_by(Prescription.created_at.desc()).all()
 
         dob = patient.dob
-        age = (date.today() - dob).days // 365 if dob else None
+        age = (date.today - dob).days // 365 if dob else None
 
         appointment_history = []
         for appt in appointments:
@@ -800,7 +814,7 @@ class DoctorAnalytics(Resource):
         doctor = request.doctor
         from collections import defaultdict
 
-        today = date.today()
+        today = date.today
         seven_months_ago = today - __import__('datetime').timedelta(days=210)
 
         appts_q = Appointment.query.filter(
