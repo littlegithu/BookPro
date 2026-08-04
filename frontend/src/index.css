@@ -172,11 +172,17 @@
     }
   body {
     @apply bg-background text-foreground;
-    }
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
   button:not(:disabled), [role="button"]:not(:disabled) {
     cursor: pointer;
-    }
+  }
   html {
     @apply font-sans;
-    }
+  }
+  #root {
+    flex: 1;
+  }
 }

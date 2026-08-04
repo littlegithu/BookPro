@@ -104,7 +104,7 @@ export default function BrowsePage() {
     <div className="bg-surface min-h-screen pt-16">
       <Navbar showLogo={false} />
       <div className="sticky top-0 z-40 bg-surface/80 backdrop-blur border-b border-border">
-        <div className="max-w-7xl mx-auto px-15 py-3">
+        <div className="max-w-7xl mx-auto px-[3.75rem] py-3">
           <form ref={searchFormRef} onSubmit={handleSearch} className="flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-2.5 relative dark:bg-card dark:border-white/15">
             <Search size={18} className="text-slate-light shrink-0 dark:text-white/60" />
             <input
@@ -145,7 +145,7 @@ export default function BrowsePage() {
           </form>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-15 py-10">
+      <div className="max-w-7xl mx-auto px-[3.75rem] py-10">
         <p className="text-[11px] font-semibold text-teal uppercase tracking-wider mb-2">Find a doctor</p>
         <h1 className="font-display font-bold text-[36px] text-navy mb-2 dark:text-white">Browse by specialty</h1>
         <p className="text-[15px] text-slate mb-8 max-w-135 dark:text-white/60">Every doctor on BookPro is verified and licensed. Filter by specialty to find the care you need.</p>

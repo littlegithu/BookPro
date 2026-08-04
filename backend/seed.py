@@ -42,8 +42,6 @@ with app.app_context():
         password=hash_password("admin123"),
         role="admin",
         token=generate_token(),
-        email_verified=True,
-        email_verification_token=None,
     )
     db.session.add(admin_user)
     db.session.commit()
@@ -499,6 +497,34 @@ with app.app_context():
         ),
         Doctor(
             user_id=admin_user.id,
+            first_name="Robin",
+            last_name="Njoki",
+            email="robin.njoki@example.com",
+            specialty="Dermatology",
+            specialties="Skin Care,Acne Treatment,Eczema Management,Aesthetic Dermatology",
+            profile_image="https://placehold.co/150x150/10B981/FFFFFF?text=RN",
+            languages="English, Swahili",
+            education="MBChB from University of Nairobi; Dermatology Residency at Kenyatta National Hospital; Aesthetic Medicine Fellowship.",
+            certifications="Kenya Dermatology Society Member; Cosmetic Dermatology Certified; Laser Treatment Certified.",
+            working_days="Mon-Fri",
+            consultation_type="Both",
+            verification_status="Verified",
+            hospital_ids="3",
+            bio="Dr. Njoki is a skilled dermatologist with 9 years of experience.",
+            available=True,
+            rating=4.7,
+            reviews=0,
+            phone="0711000006",
+            years_practice=9,
+            working_hours="Thu-Sat 10AM-5PM",
+            fee=2800,
+            duration=30,
+            hospital_name=hospitals[2].name,
+            hospital_location=hospitals[2].address,
+            hospital_phone=hospitals[2].phone,
+        ),
+        Doctor(
+            user_id=admin_user.id,
             first_name="Sarah",
             last_name="Jepchirchir",
             email="sarah.jepchirchir@example.com",
@@ -527,6 +553,9 @@ with app.app_context():
         ),
     ]
     db.session.add_all(doctors)
+    db.session.commit()
+    
+    admin_user.role = "doctor"
     db.session.commit()
     print(f"Seeded {len(doctors)} doctors.")
 

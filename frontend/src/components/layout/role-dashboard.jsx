@@ -1,6 +1,6 @@
 import { useAuth } from '../../context/auth-context'
 import DashboardPage from '../../pages/dashboard'
-import DoctorDashboardPage from '../../pages/doctor-dashboard'
+import DoctorDashboardPage from '../../pages/doctor/dashboard'
 import StaffDashboardPage from '../../pages/staff-dashboard'
 
 export default function RoleDashboard() {

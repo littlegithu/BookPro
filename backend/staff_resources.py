@@ -54,11 +54,9 @@ class StaffLogin(Resource):
         if not data:
             return {"error": "Invalid JSON body"}, 400
 
-        user, is_verified = login_user(data) or (None, False)
+        user, is_verified = login_user(data) or (None, True)
         if not user:
             return {"message": "Invalid credentials"}, 401
-        if not is_verified:
-            return {"message": "Please verify your email before logging in. Check your inbox for the verification link.", "email_verified": False}, 403
 
         token = user.token or generate_token()
         user.token = token

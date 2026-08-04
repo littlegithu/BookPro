@@ -1,9 +1,10 @@
 import secrets
+from datetime import datetime, timedelta
 
-from flask import jsonify, request, current_app
-from flask_bcrypt import check_password_hash, generate_password_hash
-from model import Patient, User, Doctor, Hospital, Staff
 from extensions import db
+from flask import current_app, request
+from flask_bcrypt import check_password_hash, generate_password_hash
+from models import Doctor, Hospital, Patient, Staff, User
 from sqlalchemy.exc import IntegrityError
 
 
@@ -15,36 +16,6 @@ def generate_token():
     return secrets.token_hex(32)
 
 
-def generate_email_verification_token():
-    return secrets.token_urlsafe(32)
-
-
-def send_verification_email(email, verification_token):
-    try:
-        from email_service import email_service
-        verification_url = f"{request.host_url}api/auth/verify-email?token={verification_token}"
-        subject = "Verify your email - BookPro"
-        body = f"""Dear BookPro User,
-
-Please verify your email address by clicking the link below:
-{verification_url}
-
-If you didn't register for BookPro, please ignore this email.
-
-Thank you,
-BookPro Team
-"""
-        result = email_service.send_email(
-            to_email=email,
-            subject=subject,
-            body=body
-        )
-        return result.get("success", False)
-    except Exception as e:
-        current_app.logger.error(f"Failed to send verification email: {e}")
-        return False
-
-
 def register_user(data):
     data.pop("password_confirm", None)
     if "password" in data:
@@ -52,16 +23,12 @@ def register_user(data):
     user = User(**data)
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = generate_email_verification_token()
-    user.email_verified = False
     db.session.add(user)
     try:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
-
-    send_verification_email(user.email, user.email_verification_token)
 
     new_patient = Patient(
         user_id=user.id,
@@ -107,16 +74,12 @@ def register_doctor(data):
     user.role = "doctor"
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = generate_email_verification_token()
-    user.email_verified = False
     db.session.add(user)
     try:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
-
-    send_verification_email(user.email, user.email_verification_token)
 
     doctor = Doctor(
         user_id=user.id,
@@ -143,15 +106,34 @@ def register_doctor(data):
 
 
 def register_staff(data):
+    staff_fields = ["hospital_id", "role", "department", "employment_type", "employee_id", 
+                    "staff_id_photo", "national_id", "profile_image", "dob", "gender", 
+                    "address", "emergency_contact_name", "emergency_contact_phone"]
+    
+    hospital_id = data.get("hospital_id", 1)
+    role = data.get("role", "Receptionist")
+    department = data.get("department")
+    employment_type = data.get("employment_type", "Full Time")
+    employee_id = data.get("employee_id")
+    staff_id_photo = data.get("staff_id_photo")
+    national_id = data.get("national_id")
+    profile_image = data.get("profile_image")
+    dob = data.get("dob")
+    gender = data.get("gender")
+    address = data.get("address")
+    emergency_contact_name = data.get("emergency_contact_name")
+    emergency_contact_phone = data.get("emergency_contact_phone")
+    
     data.pop("password_confirm", None)
+    for field in staff_fields:
+        data.pop(field, None)
+    
     if "password" in data:
         data["password"] = hash_password(data["password"])
     user = User(**data)
     user.role = "staff"
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = generate_email_verification_token()
-    user.email_verified = False
     db.session.add(user)
     try:
         db.session.commit()
@@ -159,27 +141,25 @@ def register_staff(data):
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
 
-    send_verification_email(user.email, user.email_verification_token)
-
     staff = Staff(
         user_id=user.id,
-        hospital_id=data.get("hospital_id"),
+        hospital_id=hospital_id,
         first_name=user.first_name,
         last_name=user.last_name,
         email=user.email,
         phone=user.phone,
-        role=data.get("role", "Receptionist"),
-        department=data.get("department"),
-        employment_type=data.get("employment_type", "Full Time"),
-        employee_id=data.get("employee_id"),
-        staff_id_photo=data.get("staff_id_photo"),
-        national_id=data.get("national_id"),
-        profile_image=data.get("profile_image"),
-        dob=data.get("dob"),
-        gender=data.get("gender"),
-        address=data.get("address"),
-        emergency_contact_name=data.get("emergency_contact_name"),
-        emergency_contact_phone=data.get("emergency_contact_phone"),
+        role=role,
+        department=department,
+        employment_type=employment_type,
+        employee_id=employee_id,
+        staff_id_photo=staff_id_photo,
+        national_id=national_id,
+        profile_image=profile_image,
+        dob=dob,
+        gender=gender,
+        address=address,
+        emergency_contact_name=emergency_contact_name,
+        emergency_contact_phone=emergency_contact_phone,
     )
     db.session.add(staff)
     db.session.commit()
@@ -200,10 +180,7 @@ def login_user(data):
     password = data.get("password")
     user = User.query.filter_by(email=email).first()
     if not user or not check_password_hash(user.password, password):
-        return None, False
-
-    if user.email_verified is False:
-        return user, False
+        return None, True
 
     return user, True
 
@@ -213,72 +190,3 @@ def login_user_token(token):
         return None
     user = User.query.filter_by(token=token).first()
     return user
-
-
-def create_magic_link(email):
-    from model import MagicLink
-
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        return None, "If an account exists with that email, a magic link has been sent"
-
-    token = secrets.token_urlsafe(32)
-    expires_at = datetime.now() + timedelta(hours=1)
-
-    MagicLink.query.filter_by(used=False).filter(MagicLink.expires_at < expires_at).delete()
-
-    magic_link = MagicLink(user_id=user.id, token=token, expires_at=expires_at)
-    db.session.add(magic_link)
-    db.session.commit()
-
-    send_magic_link_email(user.email, token)
-
-    return user, "If an account exists with that email, a magic link has been sent"
-
-
-def send_magic_link_email(email, token):
-    try:
-        from email_service import email_service
-        login_url = f"{request.host_url}magic-link?token={token}"
-        subject = "Your Magic Login Link - BookPro"
-        body = f"""
-Dear BookPro User,
-
-Click the link below to log in to your account:
-{login_url}
-
-This link will expire in 1 hour.
-
-If you didn't request this login, you can ignore this email.
-
-Thank you,
-BookPro Team
-"""
-        result = email_service.send_email(
-            to_email=email,
-            subject=subject,
-            body=body
-        )
-        return result.get("success", False)
-    except Exception as e:
-        current_app.logger.error(f"Failed to send magic link email: {e}")
-        return False
-
-
-def verify_magic_link(token):
-    if not token:
-        return None
-
-    magic_link = MagicLink.query.filter_by(token=token, used=False).first()
-    if not magic_link:
-        return None
-
-    if magic_link.expires_at < datetime.now():
-        db.session.delete(magic_link)
-        db.session.commit()
-        return None
-
-    magic_link.used = True
-    db.session.commit()
-
-    return magic_link.user

@@ -14,10 +14,10 @@ async function request(path, options = {}) {
   const res = await fetch(url, config);
   if (!res.ok) {
     const text = await res.text();
-    let error = { message: res.statusText };
+    let error = { message: res.statusText, status: res.status };
     try {
       const parsed = JSON.parse(text);
-      error = { message: parsed.error || parsed.message || res.statusText, ...parsed };
+      error = { message: parsed.error || parsed.message || res.statusText, status: res.status, ...parsed };
     } catch {
       error.message = "Please check your information and try again";
     }
@@ -51,7 +51,7 @@ export function transformDoctor(d) {
     hospital_location: d.hospital_location || '',
     hospital_phone: d.hospital_phone || '',
     bio: d.bio || '',
-    specialties: specialtiesList,
+    specialties: specialtiesList || [],
     phone: d.phone || '',
     email: d.email || '',
     fee: d.fee || 0,
@@ -405,159 +405,202 @@ export async function markPatientComplete(appointmentId) {
 }
 
 export async function fetchDoctorDashboard() {
-  return request('/api/doctor/dashboard');
+  return request('/doctor/dashboard');
 }
 
 export async function fetchDoctorAppointments(params) {
   const queryParams = params ? new URLSearchParams(params).toString() : '';
-  return request(`/api/doctor/appointments${queryParams ? '?' + queryParams : ''}`);
+  return request(`/doctor/appointments${queryParams ? '?' + queryParams : ''}`);
 }
 
 export async function fetchDoctorAppointment(id) {
-  return request(`/api/doctor/appointments/${id}`);
+  return request(`/doctor/appointments/${id}`);
 }
 
 export async function updateDoctorAppointment(id, data) {
-  return request(`/api/doctor/appointments/${id}`, {
+  return request(`/doctor/appointments/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   });
 }
 
 export async function cancelDoctorAppointment(id) {
-  return request(`/api/doctor/appointments/${id}`, {
+  return request(`/doctor/appointments/${id}`, {
     method: 'DELETE',
   });
 }
 
 export async function fetchDoctorPatients(searchQuery) {
   const params = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
-  const data = await request(`/api/doctor/patients${params}`);
+  const data = await request(`/doctor/patients${params}`);
   return data;
 }
 
 export async function fetchDoctorPatient(id) {
-  return request(`/api/doctor/patients/${id}`);
+  return request(`/doctor/patients/${id}`);
 }
 
 export async function fetchDoctorMedicalRecords(searchQuery) {
   const params = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
-  return request(`/api/doctor/medical-records${params}`);
+  return request(`/doctor/medical-records${params}`);
 }
 
 export async function fetchDoctorMedicalRecord(id) {
-  return request(`/api/doctor/medical-records/${id}`);
+  return request(`/doctor/medical-records/${id}`);
 }
 
 export async function createDoctorMedicalRecord(data) {
-  return request('/api/doctor/medical-records', {
+  return request('/doctor/medical-records', {
     method: 'POST',
     body: JSON.stringify(data),
   });
 }
 
 export async function updateDoctorMedicalRecord(id, data) {
-  return request(`/api/doctor/medical-records/${id}`, {
+  return request(`/doctor/medical-records/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   });
 }
 
 export async function deleteDoctorMedicalRecord(id) {
-  return request(`/api/doctor/medical-records/${id}`, {
+  return request(`/doctor/medical-records/${id}`, {
     method: 'DELETE',
   });
 }
 
 export async function fetchDoctorPrescriptions(searchQuery) {
   const params = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
-  return request(`/api/doctor/prescriptions${params}`);
+  return request(`/doctor/prescriptions${params}`);
 }
 
 export async function fetchDoctorPrescription(id) {
-  return request(`/api/doctor/prescriptions/${id}`);
+  return request(`/doctor/prescriptions/${id}`);
 }
 
 export async function createDoctorPrescription(data) {
-  return request('/api/doctor/prescriptions', {
+  return request('/doctor/prescriptions', {
     method: 'POST',
     body: JSON.stringify(data),
   });
 }
 
 export async function updateDoctorPrescription(id, data) {
-  return request(`/api/doctor/prescriptions/${id}`, {
+  return request(`/doctor/prescriptions/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   });
 }
 
 export async function cancelPrescription(id) {
-  return request(`/api/doctor/prescriptions/${id}`, {
+  return request(`/doctor/prescriptions/${id}`, {
     method: 'DELETE',
   });
 }
 
 export async function fetchDoctorSchedule() {
-  return request('/api/doctor/schedule/today');
+  return request('/doctor/schedule/today');
+}
+
+export async function fetchDoctorScheduleSlots() {
+  return request('/doctor/availability/schedule');
+}
+
+export async function createDoctorScheduleSlot(data) {
+  return request('/doctor/availability/schedule', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateDoctorScheduleSlot(id, data) {
+  return request(`/doctor/availability/schedule/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteDoctorScheduleSlot(id) {
+  return request(`/doctor/availability/schedule/${id}`, {
+    method: 'DELETE',
+  });
 }
 
 export async function fetchDoctorAvailability() {
-  return request('/api/doctor/availability/settings');
+  return request('/doctor/availability/settings');
 }
 
 export async function updateDoctorAvailability(data) {
-  return request('/api/doctor/availability/settings', {
+  return request('/doctor/availability/settings', {
     method: 'PUT',
     body: JSON.stringify(data),
   });
 }
 
 export async function getDoctorReviews() {
-  return request('/api/doctor/reviews');
+  return request('/doctor/reviews');
 }
 
 export async function fetchDoctorNotifications(unreadOnly = false) {
   const params = unreadOnly ? '?unread_only=true' : '';
-  return request(`/api/doctor/notifications${params}`);
+  return request(`/doctor/notifications${params}`);
 }
 
 export async function markNotificationRead(id, isRead = true) {
-  return request(`/api/doctor/notifications/${id}`, {
+  return request(`/doctor/notifications/${id}`, {
     method: 'PUT',
     body: JSON.stringify({ is_read: isRead }),
   });
 }
 
+export async function deleteNotification(id) {
+  return request(`/doctor/notifications/${id}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function fetchDoctorDocuments(docType) {
   const params = docType ? `?doc_type=${encodeURIComponent(docType)}` : '';
-  return request(`/api/doctor/documents${params}`);
+  return request(`/doctor/documents${params}`);
 }
 
 export async function uploadDoctorDocument(data) {
-  return request('/api/doctor/documents', {
+  return request('/doctor/documents', {
     method: 'POST',
     body: JSON.stringify(data),
   });
 }
 
+export async function deleteDoctorDocument(id) {
+  return request(`/doctor/documents/${id}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function updateDoctorDocument(id, data) {
+  return request(`/doctor/documents/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
 export async function fetchDoctorProfile() {
-  return request('/api/doctor/profile');
+  return request('/doctor/profile');
 }
 
 export async function updateDoctorProfile(data) {
-  return request('/api/doctor/profile', {
+  return request('/doctor/profile', {
     method: 'PUT',
     body: JSON.stringify(data),
   });
 }
 
 export async function fetchDoctorAnalytics() {
-  return request('/api/doctor/analytics');
+  return request('/doctor/analytics');
 }
 
 export async function fetchDoctorHospitals() {
-  return request('/api/doctor/hospitals');
+  return request('/doctor/hospitals');
 }
 
 export async function initiateMpesaStkPush(data) {
@@ -588,24 +631,72 @@ export async function sendPrescriptionNotification(data) {
   });
 }
 
-export async function verifyEmail(token) {
-  return request(`/api/auth/verify-email?token=${token}`);
+export async function fetchDoctorMessages(folder = 'inbox') {
+  const key = `bookpro_messages_${folder}`;
+  const raw = localStorage.getItem(key);
+  return raw ? JSON.parse(raw) : [];
 }
 
-export async function resendVerification(email) {
-  return request('/api/auth/resend-verification', {
+export async function sendDoctorMessage(data) {
+  const inbox = JSON.parse(localStorage.getItem('bookpro_messages_inbox') || '[]');
+  const sent = JSON.parse(localStorage.getItem('bookpro_messages_sent') || '[]');
+  const now = new Date().toISOString();
+  const message = {
+    id: Date.now(),
+    ...data,
+    created_at: now,
+    is_read: false,
+    folder: 'inbox',
+  };
+  inbox.unshift(message);
+  localStorage.setItem('bookpro_messages_inbox', JSON.stringify(inbox));
+  return message;
+}
+
+export async function deleteDoctorMessage(id, folder) {
+  const key = `bookpro_messages_${folder}`;
+  const messages = JSON.parse(localStorage.getItem(key) || '[]');
+  const updated = messages.filter(m => m.id !== id);
+  localStorage.setItem(key, JSON.stringify(updated));
+  return { success: true };
+}
+
+export async function archiveDoctorMessage(id, fromFolder = 'inbox') {
+  const sourceKey = `bookpro_messages_${fromFolder}`;
+  const targetKey = 'bookpro_messages_archived';
+  const source = JSON.parse(localStorage.getItem(sourceKey) || '[]');
+  const target = JSON.parse(localStorage.getItem(targetKey) || '[]');
+  const message = source.find(m => m.id === id);
+  if (message) {
+    const archived = { ...message, folder: 'archived', archived_at: new Date().toISOString() };
+    target.unshift(archived);
+    localStorage.setItem(targetKey, JSON.stringify(target));
+    const updatedSource = source.filter(m => m.id !== id);
+    localStorage.setItem(sourceKey, JSON.stringify(updatedSource));
+    return archived;
+  }
+  return null;
+}
+
+export async function markMessageRead(id, folder, isRead = true) {
+  const key = `bookpro_messages_${folder}`;
+  const messages = JSON.parse(localStorage.getItem(key) || '[]');
+  const message = messages.find(m => m.id === id);
+  if (message) {
+    message.is_read = isRead;
+    localStorage.setItem(key, JSON.stringify(messages));
+    return message;
+  }
+  return null;
+}
+
+export async function createConsultation(data) {
+  return request('/doctor/consultation', {
     method: 'POST',
-    body: JSON.stringify({ email }),
+    body: JSON.stringify(data),
   });
 }
 
-export async function sendMagicLink(email) {
-  return request('/api/auth/magic-login', {
-    method: 'POST',
-    body: JSON.stringify({ email }),
-  });
-}
-
-export async function verifyMagicLink(token) {
-  return request(`/api/auth/magic-verify?token=${token}`);
+export async function fetchConsultation(appointmentId) {
+  return request(`/doctor/consultation?appointment_id=${appointmentId}`);
 }

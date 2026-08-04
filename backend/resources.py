@@ -86,11 +86,9 @@ class UserLogin(Resource):
         from auth import generate_token, login_user
 
         data = get_json_data()
-        user, is_verified = login_user(data) or (None, False)
+        user, is_verified = login_user(data) or (None, True)
         if not user:
             return {"message": "Invalid credentials"}, 401
-        if not is_verified:
-            return {"message": "Please verify your email before logging in. Check your inbox for the verification link.", "email_verified": False}, 403
         if not user.token:
             user.token = generate_token()
             db.session.commit()

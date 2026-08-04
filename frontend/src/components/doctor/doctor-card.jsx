@@ -24,7 +24,7 @@ export default function DoctorCard({ doctor }) {
       </div>
       <div className="flex flex-wrap gap-1.5 mb-3.5">
         {tags.map(tag => <SpecialtyBadge key={tag} label={tag} />)}
-        {tags.length === 0 && doctor.specialties.slice(0, 2).map(s => <SpecialtyBadge key={s} label={s} />)}
+        {tags.length === 0 && (doctor.specialties || []).slice(0, 2).map(s => <SpecialtyBadge key={s} label={s} />)}
       </div>
       <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3.5 text-[11px] text-slate-light dark:text-white/60">
         {experience && <span className="flex items-center gap-1.5"><Briefcase size={14} /> {experience}</span>}
