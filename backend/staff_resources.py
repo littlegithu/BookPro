@@ -4,7 +4,7 @@ from admin.permissions import staff_required
 from extensions import db
 from flask import request
 from flask_restful import Resource
-from models import Appointment, Doctor, Hospital, Patient
+from models import Appointment, Doctor, Hospital, Patient, Staff
 from schemas import (
     Appointment_schema,
     Appointments_schema,

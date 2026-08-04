@@ -133,7 +133,7 @@ with app.app_context():
     print("Doctor:      doctor@example.com / doctor123")
 
     # --- HOSPITAL ADMIN USER ---
-    hospital_admin_email = "hospital@example.com"
+    hospital_admin_email = hospital.email  # use hospital email for matching
     hospital_admin_user = User.query.filter_by(email=hospital_admin_email).first()
     if not hospital_admin_user:
         hospital_admin_user = User(
@@ -155,4 +155,4 @@ with app.app_context():
     print("Patient:     patient@example.com / patient123")
     print("Staff:       staff@example.com / staff123")
     print("Doctor:      doctor@example.com / doctor123")
-    print("Hospital:    hospital@example.com / hospital123  -> login via /staff/login with 'Hospital login' checked")
+    print(f"Hospital:    {hospital.email} / hospital123  -> login via /staff/login with 'Hospital login' checked")
