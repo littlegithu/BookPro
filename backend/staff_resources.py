@@ -711,6 +711,7 @@ class StaffPatientDetail(Resource):
 class HospitalLogin(Resource):
     def post(self):
         from auth import generate_token, login_hospital
+        from models import User
 
         data = request.get_json(force=True, silent=True)
         if not data:
@@ -721,7 +722,12 @@ class HospitalLogin(Resource):
             return {"message": "Invalid credentials"}, 401
 
         token = generate_token()
-        hospital.token = token
+
+        user = User.query.filter_by(email=hospital.email, role='hospital_admin').first()
+        if not user:
+            return {"message": "Hospital admin account not found"}, 404
+
+        user.token = token
         db.session.commit()
 
         return {

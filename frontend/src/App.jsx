@@ -110,6 +110,7 @@ export default function App() {
           <Route path="/staff/pharmacy/medications" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
           <Route path="/hospital/dashboard" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
           <Route path="/hospital/doctors" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
+          <Route path="/hospital/appointments" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
 
           <Route path="/doctor/dashboard" element={<ProtectedRoute><DoctorDashboardPage /></ProtectedRoute>} />
           <Route path="/doctor/schedule" element={<ProtectedRoute><DoctorSchedulePage /></ProtectedRoute>} />

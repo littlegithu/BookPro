@@ -217,7 +217,10 @@ def login_user_token(token):
 def login_hospital(data):
     email = data.get("email")
     password = data.get("password")
-    hospital = Hospital.query.filter_by(email=email).first()
-    if not hospital or not hospital.password or not check_password_hash(hospital.password, password):
+    if not email or not password:
         return None
+    user = User.query.filter_by(email=email, role='hospital_admin').first()
+    if not user or not user.password or not check_password_hash(user.password, password):
+        return None
+    hospital = Hospital.query.filter_by(email=email).first()
     return hospital

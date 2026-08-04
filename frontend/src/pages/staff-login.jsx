@@ -5,6 +5,12 @@ import AuthForm from '../components/auth/auth-form'
 import Navbar from '../components/layout/navbar'
 import { loginUser, loginStaff, loginHospital } from '../services/api'
 
+const LOGIN_MODES = [
+  { key: 'user', label: 'Patient / User' },
+  { key: 'staff', label: 'Staff' },
+  { key: 'hospital', label: 'Hospital Admin' },
+]
+
 export default function StaffLoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -12,8 +18,7 @@ export default function StaffLoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [isStaff, setIsStaff] = useState(false)
-  const [isHospital, setIsHospital] = useState(false)
+  const [mode, setMode] = useState('user')
 
   const handleSubmit = async () => {
     if (!email || !password) { setError('Please fill in all fields.'); return }
@@ -21,7 +26,7 @@ export default function StaffLoginPage() {
     try {
       let result
       let userData
-      if (isHospital) {
+      if (mode === 'hospital') {
         result = await loginHospital({ email, password })
         const hospital = result.hospital
         userData = {
@@ -33,7 +38,7 @@ export default function StaffLoginPage() {
         }
         login(userData, result.token)
         navigate('/hospital/dashboard', { replace: true })
-      } else if (isStaff) {
+      } else if (mode === 'staff') {
         result = await loginStaff({ email, password })
         if (result.user && result.user.staff) {
           const staffData = result.user.staff
@@ -81,37 +86,68 @@ export default function StaffLoginPage() {
     }
   }
 
+  const titles = {
+    user: 'User Login',
+    staff: 'Staff Login',
+    hospital: 'Hospital Login',
+  }
+  const subtitles = {
+    user: 'Log in to your patient or doctor account',
+    staff: 'Log in to your staff account',
+    hospital: 'Log in to your hospital admin account',
+  }
+  const labels = {
+    user: 'Continue',
+    staff: 'Login as Staff',
+    hospital: 'Login as Hospital',
+  }
+
   return (
     <div className="min-h-screen bg-surface pt-16">
       <Navbar />
       <div className="flex items-center justify-center">
-        <AuthForm
-          title={isHospital ? "Hospital Login" : isStaff ? "Staff Login" : "User Login"}
-          subtitle={isHospital ? "Log in to your hospital account" : isStaff ? "Log in to your staff account" : "Log in to your account"}
-          fields={[
-            { name:'email', label:'Email address', type:'email', placeholder:'you@hospital.com', value:email, onChange:setEmail },
-            { name:'password', label:'Password', type:'password', placeholder:'Enter password', value:password, onChange:setPassword },
-          ]}
-          submitLabel={isHospital ? "Login as Hospital" : isStaff ? "Login as Staff" : "Continue"}
-          onSubmit={handleSubmit}
-          error={error}
-          loading={loading}
-          footer={
-            <div>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={isStaff} onChange={(e) => { setIsStaff(e.target.checked); setIsHospital(false) }} className="w-4 h-4" />
-                <span className="text-sm text-slate-light">Staff login</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer mt-2">
-                <input type="checkbox" checked={isHospital} onChange={(e) => { setIsHospital(e.target.checked); setIsStaff(false) }} className="w-4 h-4" />
-                <span className="text-sm text-slate-light">Hospital login</span>
-              </label>
-              <div className="mt-2">
-                <Link to="/register" className="text-teal hover:underline text-sm">Need an account?</Link>
-              </div>
+        <div className="w-full max-w-md px-4">
+          <div className="bg-card rounded-2xl border border-border p-6 shadow-card">
+            <div className="text-center mb-6">
+              <h1 className="font-display font-bold text-2xl text-navy mb-2">{titles[mode]}</h1>
+              <p className="text-sm text-slate-light">{subtitles[mode]}</p>
             </div>
-          }
-        />
+
+            <div className="flex rounded-lg bg-surface p-1 mb-5 border border-border">
+              {LOGIN_MODES.map(item => (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => setMode(item.key)}
+                  className={`flex-1 py-1.5 rounded-md text-[12px] font-medium transition-colors ${
+                    mode === item.key ? 'bg-teal text-white shadow-sm' : 'text-slate hover:text-navy'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            <AuthForm
+              title=""
+              subtitle=""
+              fields={[
+                { name:'email', label:'Email address', type:'email', placeholder:'you@hospital.com', value:email, onChange:setEmail },
+                { name:'password', label:'Password', type:'password', placeholder:'Enter password', value:password, onChange:setPassword },
+              ]}
+              submitLabel={labels[mode]}
+              onSubmit={handleSubmit}
+              error={error}
+              loading={loading}
+              footer={
+                <span>
+                  Need an account?{' '}
+                  <Link to="/register" className="text-teal hover:underline font-medium">Sign up</Link>
+                </span>
+              }
+            />
+          </div>
+        </div>
       </div>
     </div>
   )
