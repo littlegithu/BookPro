@@ -60,19 +60,19 @@ export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmi
               <label className="block text-[12px] font-medium text-navy mb-1.5">{field.label}</label>
                {field.type === 'select' ? (
                  <div className="relative">
-                   <input
-                     ref={selectInputRef}
-                     type="text"
-                    value={openSelect === field.name ? selectQuery : (field.value && field.optionLabels && field.options
-                        ? (field.optionLabels[field.options.indexOf(field.value)] || field.value)
-                        : field.value)}
-                    onChange={e => {
-                      if (openSelect !== field.name) {
-                        setOpenSelect(field.name)
-                      }
-                      field.onChange(e.target.value)
-                      setSelectQuery(e.target.value)
-                    }}
+                    <input
+                      ref={selectInputRef}
+                      type="text"
+                     value={openSelect === field.name ? selectQuery : (field.value && field.optionLabels && field.options
+                         ? (field.optionLabels[field.options.indexOf(field.value)] || String(field.value))
+                         : String(field.value ?? ''))}
+                     onChange={e => {
+                       if (openSelect !== field.name) {
+                         setOpenSelect(field.name)
+                       }
+                       field.onChange(e.target.value)
+                       setSelectQuery(e.target.value)
+                     }}
                     onBlur={() => {
                       setTimeout(() => {
                         setOpenSelect(null)
@@ -127,13 +127,13 @@ export default function AuthForm({ title, subtitle, fields, submitLabel, onSubmi
                      {field.type === 'time' && (
                        <Clock size={16} className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none ${theme === 'dark' ? 'text-white/40' : 'text-slate-light'}`} />
                      )}
-                   <input
-                     type={field.type === 'password' && showPassword[field.name] ? 'text' : field.type ?? 'text'}
-                     placeholder={field.placeholder}
-                     value={field.value}
-                     onChange={e => field.onChange(e.target.value)}
-                     className={`w-full border border-border rounded-lg px-4 py-3 text-[13px] text-navy bg-surface outline-none focus:border-teal focus:bg-card transition-colors ${field.type === 'date' || field.type === 'time' ? 'pl-10' : ''} ${field.type === 'password' ? 'pr-10' : ''}`}
-                   />
+                    <input
+                      type={field.type === 'password' && showPassword[field.name] ? 'text' : field.type ?? 'text'}
+                      placeholder={field.placeholder}
+                      value={field.value ?? ''}
+                      onChange={e => field.onChange(e.target.value)}
+                      className={`w-full border border-border rounded-lg px-4 py-3 text-[13px] text-navy bg-surface outline-none focus:border-teal focus:bg-card transition-colors ${field.type === 'date' || field.type === 'time' ? 'pl-10' : ''} ${field.type === 'password' ? 'pr-10' : ''}`}
+                    />
                    {field.type === 'password' && (
                      <button
                        type="button"

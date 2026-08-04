@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
 import Navbar from '../components/layout/navbar'
-import { registerDoctor, registerHospital, registerStaff, loginHospital } from '../services/api'
+import { registerDoctor, registerHospital, registerStaff } from '../services/api'
 import { Stethoscope, Building2, Users } from 'lucide-react'
 
 const ROLES = [

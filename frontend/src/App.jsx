@@ -2,8 +2,8 @@ import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/auth-context'
 import { ThemeProvider } from './context/theme-context'
 import ProtectedRoute from './components/layout/protected-route'
+import StaffProtectedRoute from './components/layout/staff-protected-route'
 import RoleDashboard from './components/layout/role-dashboard'
-import DashboardLayout from './components/layout/dashboard-layout'
 import AdminLayout from './admin/components/AdminLayout'
 
 import LandingPage from './pages/landing-page'
@@ -26,7 +26,7 @@ import ProfilePage from './pages/profile-page'
 
 import DoctorsAdminPage from './admin/pages/Doctors'
 
-import StaffDashboardPage from './pages/staff-dashboard' // eslint-disable-line no-unused-vars
+import StaffDashboardPage from './pages/staff-dashboard'
 import StaffCheckInPage from './pages/staff-check-in'
 import StaffQueuePage from './pages/staff-queue'
 import StaffAppointmentsPage from './pages/staff-appointments'
@@ -81,33 +81,33 @@ export default function App() {
           <Route path="/doctors/:id" element={<DoctorProfilePage />} />
 
           <Route path="/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
-          <Route path="/staff/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
+          <Route path="/staff/dashboard" element={<StaffProtectedRoute><RoleDashboard /></StaffProtectedRoute>} />
           <Route path="/staff/login" element={<StaffLoginPage />} />
-          <Route path="/staff/check-in" element={<ProtectedRoute><StaffCheckInPage /></ProtectedRoute>} />
-          <Route path="/staff/queue" element={<ProtectedRoute><StaffQueuePage /></ProtectedRoute>} />
-          <Route path="/staff/appointments" element={<ProtectedRoute><StaffAppointmentsPage /></ProtectedRoute>} />
-          <Route path="/staff/register" element={<ProtectedRoute><StaffRegistrationPage /></ProtectedRoute>} />
-          <Route path="/staff/profile" element={<ProtectedRoute><StaffProfilePage /></ProtectedRoute>} />
-          <Route path="/staff/settings" element={<ProtectedRoute><StaffSettingsPage /></ProtectedRoute>} />
-          <Route path="/staff/departments" element={<ProtectedRoute><StaffDepartmentsPage /></ProtectedRoute>} />
-          <Route path="/staff/patients" element={<ProtectedRoute><StaffPatientsPage /></ProtectedRoute>} />
-          <Route path="/staff/doctors" element={<ProtectedRoute><StaffDoctorsPage /></ProtectedRoute>} />
-          <Route path="/staff/notifications" element={<ProtectedRoute><StaffNotificationsPage /></ProtectedRoute>} />
-          <Route path="/staff/billing" element={<ProtectedRoute><StaffBillingPage /></ProtectedRoute>} />
-          <Route path="/staff/reports" element={<ProtectedRoute><StaffReportsPage /></ProtectedRoute>} />
-          <Route path="/staff/lab" element={<ProtectedRoute><StaffLabPage /></ProtectedRoute>} />
-          <Route path="/staff/pharmacy" element={<ProtectedRoute><StaffPharmacyPage /></ProtectedRoute>} />
-          <Route path="/staff/tasks" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/transactions" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/records" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/archives" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/management" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/nurses/patients" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/nurses/appointments" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/lab/orders" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/lab/results" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/pharmacy/prescriptions" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
-          <Route path="/staff/pharmacy/medications" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/check-in" element={<StaffProtectedRoute><StaffCheckInPage /></StaffProtectedRoute>} />
+          <Route path="/staff/queue" element={<StaffProtectedRoute><StaffQueuePage /></StaffProtectedRoute>} />
+          <Route path="/staff/appointments" element={<StaffProtectedRoute><StaffAppointmentsPage /></StaffProtectedRoute>} />
+          <Route path="/staff/register" element={<StaffProtectedRoute><StaffRegistrationPage /></StaffProtectedRoute>} />
+          <Route path="/staff/profile" element={<StaffProtectedRoute><StaffProfilePage /></StaffProtectedRoute>} />
+          <Route path="/staff/settings" element={<StaffProtectedRoute><StaffSettingsPage /></StaffProtectedRoute>} />
+          <Route path="/staff/departments" element={<StaffProtectedRoute><StaffDepartmentsPage /></StaffProtectedRoute>} />
+          <Route path="/staff/patients" element={<StaffProtectedRoute><StaffPatientsPage /></StaffProtectedRoute>} />
+          <Route path="/staff/doctors" element={<StaffProtectedRoute><StaffDoctorsPage /></StaffProtectedRoute>} />
+          <Route path="/staff/notifications" element={<StaffProtectedRoute><StaffNotificationsPage /></StaffProtectedRoute>} />
+          <Route path="/staff/billing" element={<StaffProtectedRoute><StaffBillingPage /></StaffProtectedRoute>} />
+          <Route path="/staff/reports" element={<StaffProtectedRoute><StaffReportsPage /></StaffProtectedRoute>} />
+          <Route path="/staff/lab" element={<StaffProtectedRoute><StaffLabPage /></StaffProtectedRoute>} />
+          <Route path="/staff/pharmacy" element={<StaffProtectedRoute><StaffPharmacyPage /></StaffProtectedRoute>} />
+          <Route path="/staff/tasks" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/transactions" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/records" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/archives" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/management" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/nurses/patients" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/nurses/appointments" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/lab/orders" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/lab/results" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/pharmacy/prescriptions" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
+          <Route path="/staff/pharmacy/medications" element={<StaffProtectedRoute><StaffDashboardPage /></StaffProtectedRoute>} />
           <Route path="/hospital/dashboard" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
           <Route path="/hospital/doctors" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
 
