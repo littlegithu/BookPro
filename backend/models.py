@@ -346,6 +346,7 @@ class Hospital(db.Model):
     phone = db.Column(db.String, nullable=False, unique=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
     website = db.Column(db.String(200), nullable=True)
+    password = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 

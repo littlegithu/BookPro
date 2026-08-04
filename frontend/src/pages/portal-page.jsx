@@ -112,24 +112,30 @@ export default function PortalPage() {
         }
         result = await registerStaff(staffData)
       }
-const user = result.user || result.data?.user
-        const token = result.token || 'mock-jwt-token'
-        if (user) {
-          const userData = {
-            id: user.id,
-            name: `${user.first_name} ${user.last_name}`,
-            email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            role: user.role,
-            staff: result.staff || user.staff,
-            patientId: user.patient?.id || null,
-            profile_image: user.profile_image || null,
-          }
-          login(userData, token)
-          toast.success(`${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully!`)
-          navigate(role === 'staff' ? '/staff/dashboard' : role === 'hospital' ? '/staff/dashboard' : '/dashboard', { replace: true })
+      const user = result.user || result.data?.user
+      const token = result.token || 'mock-jwt-token'
+      if (user) {
+        const userData = {
+          id: user.id,
+          name: `${user.first_name} ${user.last_name}`,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          role: user.role,
+          staff: result.staff || user.staff,
+          patientId: user.patient?.id || null,
+          profile_image: user.profile_image || null,
         }
+        login(userData, token)
+        toast.success(`${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully!`)
+        if (role === 'hospital') {
+          navigate('/hospital/dashboard', { replace: true })
+        } else if (role === 'staff') {
+          navigate('/staff/dashboard', { replace: true })
+        } else {
+          navigate('/dashboard', { replace: true })
+        }
+      }
     } catch (err) {
       const errorMsg = err.message || "Please check your information and try again"
       setError(errorMsg)
@@ -186,9 +192,21 @@ const user = result.user || result.data?.user
                 error={error}
                 loading={loading}
                 twoColumn={role === 'doctor'}
-                footer={
+                 footer={
                   <span>
-                    Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link>
+                    Already have an account?{' '}
+                    <Link
+                      to={
+                        role === 'staff'
+                          ? '/staff/login'
+                          : role === 'hospital'
+                          ? '/staff/login'
+                          : '/login'
+                      }
+                      className="text-teal hover:underline font-medium"
+                    >
+                      Log in
+                    </Link>
                   </span>
                 }
               />

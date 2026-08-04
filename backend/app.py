@@ -100,6 +100,8 @@ from mpesa_resources import STKPushResource
 from staff_resources import (
     AppointmentManagement,
     DepartmentDirectory,
+    HospitalDashboard,
+    HospitalLogin,
     PatientCheckIn,
     PatientRegistration,
     PatientSearch,
@@ -143,7 +145,9 @@ api.add_resource(DoctorAnalytics, "/api/doctor/analytics")
 api.add_resource(DoctorHospitals, "/api/doctor/hospitals")
 
 api.add_resource(StaffLogin, "/api/staff/login")
+api.add_resource(HospitalLogin, "/api/hospital/login")
 api.add_resource(StaffDashboard, "/api/staff/dashboard")
+api.add_resource(HospitalDashboard, "/api/hospital/dashboard")
 api.add_resource(PatientCheckIn, "/api/staff/check-in")
 api.add_resource(PatientSearch, "/api/staff/patients")
 api.add_resource(QueueManagement, "/api/staff/queue")
