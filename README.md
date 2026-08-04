@@ -51,6 +51,7 @@ pipenv run flask db migrate -m "Initial migration"
 pipenv run flask db upgrade
 pipenv run python seed.py
 pipenv run flask run
+pipenv run gunicorn --bind 0.0.0.0:5000 app:app - Alternate option
 ```
 
 The backend will run on `http://localhost:5000`.
