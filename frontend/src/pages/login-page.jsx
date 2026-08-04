@@ -44,6 +44,9 @@ export default function LoginPage() {
         role: user.role,
         patientId: user.patient?.id || null,
         profile_image: user.profile_image || null,
+        staff: user?.staff || null,
+        doctor: user?.doctor || null,
+        patient: user?.patient || null,
       }
       login(userData, token)
       toast.success('Login successful!')

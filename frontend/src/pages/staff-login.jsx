@@ -35,8 +35,8 @@ export default function StaffLoginPage() {
         navigate('/hospital/dashboard', { replace: true })
       } else if (isStaff) {
         result = await loginStaff({ email, password })
-        if (result.user && result.user.staff) {
-          const staffData = result.user.staff
+        const staffData = result.user?.staff
+        if (staffData) {
           userData = {
             id: result.user.id,
             name: `${staffData.first_name || result.user.first_name} ${staffData.last_name || result.user.last_name}`,
@@ -49,6 +49,8 @@ export default function StaffLoginPage() {
           }
           login(userData, result.token)
           navigate('/staff/dashboard', { replace: true })
+        } else {
+          setError('No staff record found for this user.')
         }
       } else {
         result = await loginUser({ email, password })
