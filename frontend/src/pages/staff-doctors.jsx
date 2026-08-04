@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Stethoscope, Search, Calendar } from 'lucide-react'
+import { Stethoscope, Search, Calendar, Star } from 'lucide-react'
 import StaffDashboardLayout from '../components/layout/staff-dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import { useAuth } from '../context/auth-context'
@@ -84,7 +84,7 @@ export default function StaffDoctorsPage() {
                       <div>
                         <h3 className="font-display font-semibold text-navy">{doctor.full_name}</h3>
                         <p className="text-[13px] text-slate-light">{doctor.specialty}</p>
-                        <p className="text-[12px] text-slate-light">Rating: {doctor.rating || 0} ★</p>
+                        <p className="text-[12px] text-slate-light">Rating: {doctor.rating || 0} <Star size={12} className="inline" /></p>
                       </div>
                     </div>
                     <div className="text-right">

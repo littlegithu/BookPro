@@ -7,6 +7,11 @@ import DashboardLayout from './components/layout/dashboard-layout'
 import AdminLayout from './admin/components/AdminLayout'
 
 import LandingPage from './pages/landing-page'
+import AboutPage from './pages/about-page'
+import PrivacyPolicyPage from './pages/privacy-policy-page'
+import TermsOfUsePage from './pages/terms-of-use-page'
+import CookiePolicyPage from './pages/cookie-policy-page'
+import ContactPage from './pages/contact-page'
 import LoginPage from './pages/login-page'
 import StaffLoginPage from './pages/staff-login'
 import RegisterPage from './pages/register-page'
@@ -14,7 +19,6 @@ import PortalPage from './pages/portal-page'
 import ResetPasswordPage from './pages/reset-password'
 import BrowsePage from './pages/browse-page'
 import DoctorProfilePage from './pages/doctor-profile-page'
-import HospitalDetailPage from './pages/hospital-detail'
 import AppointmentsPage from './pages/appointment-page'
 import MedicalRecordsPage from './pages/medical-records-page'
 import AppointmentDetailPage from './pages/appointment-detail'
@@ -38,20 +42,41 @@ import StaffReportsPage from './pages/staff-reports'
 import StaffLabPage from './pages/staff-lab'
 import StaffPharmacyPage from './pages/staff-pharmacy'
 
+import DoctorDashboardPage from './pages/doctor/dashboard'
+import DoctorSchedulePage from './pages/doctor/schedule'
+import DoctorAppointmentsPage from './pages/doctor/appointments'
+import DoctorPatientsPage from './pages/doctor/patients'
+import DoctorMedicalRecordsPage from './pages/doctor/medical-records'
+import DoctorPrescriptionsPage from './pages/doctor/prescriptions'
+import DoctorAvailabilityPage from './pages/doctor/availability'
+import DoctorReviewsPage from './pages/doctor/reviews'
+import DoctorAnalyticsPage from './pages/doctor/analytics'
+import DoctorHospitalsPage from './pages/doctor/hospitals'
+import DoctorDocumentsPage from './pages/doctor/documents'
+import DoctorProfileSettingsPage from './pages/doctor/profile-settings'
+import DoctorSettingsPage from './pages/doctor/settings'
+import DoctorNotificationsPage from './pages/doctor/notifications'
+import DoctorConsultationPage from './pages/doctor/consultation'
+import DoctorMessagesPage from './pages/doctor/messages'
+
 export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms-of-use" element={<TermsOfUsePage />} />
+          <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/staff/login" element={<StaffLoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/portal" element={<PortalPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/doctors" element={<DashboardLayout><BrowsePage /></DashboardLayout>} />
-          <Route path="/doctors/:id" element={<DashboardLayout><DoctorProfilePage /></DashboardLayout>} />
-          <Route path="/hospitals/:id" element={<DashboardLayout><HospitalDetailPage /></DashboardLayout>} />
+          <Route path="/doctors" element={<BrowsePage />} />
+          <Route path="/doctors/:id" element={<DoctorProfilePage />} />
 
           <Route path="/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
           <Route path="/staff/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
@@ -70,6 +95,23 @@ export default function App() {
           <Route path="/staff/reports" element={<ProtectedRoute><StaffReportsPage /></ProtectedRoute>} />
           <Route path="/staff/lab" element={<ProtectedRoute><StaffLabPage /></ProtectedRoute>} />
           <Route path="/staff/pharmacy" element={<ProtectedRoute><StaffPharmacyPage /></ProtectedRoute>} />
+
+          <Route path="/doctor/dashboard" element={<ProtectedRoute><DoctorDashboardPage /></ProtectedRoute>} />
+          <Route path="/doctor/schedule" element={<ProtectedRoute><DoctorSchedulePage /></ProtectedRoute>} />
+          <Route path="/doctor/appointments" element={<ProtectedRoute><DoctorAppointmentsPage /></ProtectedRoute>} />
+          <Route path="/doctor/patients" element={<ProtectedRoute><DoctorPatientsPage /></ProtectedRoute>} />
+          <Route path="/doctor/medical-records" element={<ProtectedRoute><DoctorMedicalRecordsPage /></ProtectedRoute>} />
+          <Route path="/doctor/prescriptions" element={<ProtectedRoute><DoctorPrescriptionsPage /></ProtectedRoute>} />
+          <Route path="/doctor/availability" element={<ProtectedRoute><DoctorAvailabilityPage /></ProtectedRoute>} />
+          <Route path="/doctor/reviews" element={<ProtectedRoute><DoctorReviewsPage /></ProtectedRoute>} />
+          <Route path="/doctor/analytics" element={<ProtectedRoute><DoctorAnalyticsPage /></ProtectedRoute>} />
+          <Route path="/doctor/hospitals" element={<ProtectedRoute><DoctorHospitalsPage /></ProtectedRoute>} />
+          <Route path="/doctor/documents" element={<ProtectedRoute><DoctorDocumentsPage /></ProtectedRoute>} />
+          <Route path="/doctor/profile" element={<ProtectedRoute><DoctorProfileSettingsPage /></ProtectedRoute>} />
+          <Route path="/doctor/settings" element={<ProtectedRoute><DoctorSettingsPage /></ProtectedRoute>} />
+          <Route path="/doctor/notifications" element={<ProtectedRoute><DoctorNotificationsPage /></ProtectedRoute>} />
+          <Route path="/doctor/consultation" element={<ProtectedRoute><DoctorConsultationPage /></ProtectedRoute>} />
+          <Route path="/doctor/messages" element={<ProtectedRoute><DoctorMessagesPage /></ProtectedRoute>} />
 
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/appointments/:id" element={<AppointmentDetailPage />} />

@@ -12,13 +12,14 @@ export default function RegisterPage() {
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !phone) {
       setError('Please fill in all fields.')
       toast.error('Please fill in all fields.')
       return
@@ -36,6 +37,7 @@ export default function RegisterPage() {
         first_name: firstName || name,
         last_name: lastName || name,
         email: email,
+        phone: phone,
         password,
         password_confirm: password,
       })
@@ -69,6 +71,7 @@ export default function RegisterPage() {
         fields={[
           { name:'name', label:'Full name', type:'text', placeholder:'Your full name', value:name, onChange:setName },
           { name:'email', label:'Email address', type:'email', placeholder:'you@email.com', value:email, onChange:setEmail },
+          { name:'phone', label:'Phone number', type:'tel', placeholder:'0712345678', value:phone, onChange:setPhone },
           { name:'password', label:'Password', type:'password', placeholder:'Create a password', value:password, onChange:setPassword },
           { name:'confirm', label:'Confirm password', type:'password', placeholder:'Repeat password', value:confirm, onChange:setConfirm },
         ]}

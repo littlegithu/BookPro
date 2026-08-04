@@ -35,11 +35,11 @@ export default function AppointmentsPage() {
   }, [user?.patientId])
 
   const filtered = tab === 'All' ? appts
-    : tab === 'Upcoming' ? appts.filter(a => a.status === 'confirmed' || a.status === 'pending' || a.status === 'Scheduled')
+    : tab === 'Upcoming' ? appts.filter(a => a.status === 'scheduled' || a.status === 'pending' || a.status === 'called')
     : tab === 'Completed' ? appts.filter(a => a.status === 'completed')
     : appts.filter(a => a.status === 'cancelled')
 
-  const upcoming = filtered.filter(a => a.status === 'confirmed' || a.status === 'pending' || a.status === 'Scheduled')
+  const upcoming = filtered.filter(a => a.status === 'scheduled' || a.status === 'pending' || a.status === 'called')
   const past = filtered.filter(a => a.status === 'completed' || a.status === 'cancelled')
 
   const handleCancel = async (id) => {

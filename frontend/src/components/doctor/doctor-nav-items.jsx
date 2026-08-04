@@ -1,18 +1,18 @@
-import { Link } from 'react-router-dom'
-import { LayoutGrid, Calendar, User, ClipboardList, FileText, BarChart2, Stethoscope, Shield, Settings, Bell, LogOut, CalendarClock } from 'lucide-react'
+import { Calendar, FileText, ClipboardList, User, BarChart2, Settings, Bell, LogOut, Mail, Home, Users, Pill, Clock, Star, Hospital } from 'lucide-react'
 
 export const doctorNavItems = [
-  { label: 'Dashboard', to: '/doctor/dashboard', icon: <LayoutGrid size={18} />, end: true },
-  { label: "Today's Schedule", to: '/doctor/schedule', icon: <CalendarClock size={18} /> },
-  { label: 'Appointments', to: '/doctor/appointments', icon: <Calendar size={18} /> },
-  { label: 'Patients', to: '/doctor/patients', icon: <User size={18} /> },
-  { label: 'Medical Records', to: '/doctor/medical-records', icon: <ClipboardList size={18} /> },
-  { label: 'Prescriptions', to: '/doctor/prescriptions', icon: <FileText size={18} /> },
-  { label: 'Availability', to: '/doctor/availability', icon: <Calendar size={18} /> },
-  { label: 'Reviews', to: '/doctor/reviews', icon: <Stethoscope size={18} /> },
+  { label: 'Dashboard', to: '/doctor/dashboard', icon: <Home size={18} />, end: true },
+  { label: "Today's Schedule", to: '/doctor/schedule', icon: <Calendar size={18} /> },
+  { label: 'Appointments', to: '/doctor/appointments', icon: <ClipboardList size={18} /> },
+  { label: 'Patients', to: '/doctor/patients', icon: <Users size={18} /> },
+  { label: 'Medical Records', to: '/doctor/medical-records', icon: <FileText size={18} /> },
+  { label: 'Prescriptions', to: '/doctor/prescriptions', icon: <Pill size={18} /> },
+  { label: 'Availability', to: '/doctor/availability', icon: <Clock size={18} /> },
+  { label: 'Reviews', to: '/doctor/reviews', icon: <Star size={18} /> },
   { label: 'Analytics', to: '/doctor/analytics', icon: <BarChart2 size={18} /> },
-  { label: 'Hospital', to: '/doctor/hospitals', icon: <Shield size={18} /> },
+  { label: 'Hospital', to: '/doctor/hospitals', icon: <Hospital size={18} /> },
   { label: 'Documents', to: '/doctor/documents', icon: <FileText size={18} /> },
+  { label: 'Messages', to: '/doctor/messages', icon: <Mail size={18} /> },
 ]
 
 export const doctorAccountItems = [
