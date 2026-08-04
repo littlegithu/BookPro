@@ -14,6 +14,7 @@ import PortalPage from './pages/portal-page'
 import ResetPasswordPage from './pages/reset-password'
 import BrowsePage from './pages/browse-page'
 import DoctorProfilePage from './pages/doctor-profile-page'
+import HospitalDetailPage from './pages/hospital-detail'
 import AppointmentsPage from './pages/appointment-page'
 import MedicalRecordsPage from './pages/medical-records-page'
 import AppointmentDetailPage from './pages/appointment-detail'
@@ -50,6 +51,7 @@ export default function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/doctors" element={<DashboardLayout><BrowsePage /></DashboardLayout>} />
           <Route path="/doctors/:id" element={<DashboardLayout><DoctorProfilePage /></DashboardLayout>} />
+          <Route path="/hospitals/:id" element={<DashboardLayout><HospitalDetailPage /></DashboardLayout>} />
 
           <Route path="/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
           <Route path="/staff/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />

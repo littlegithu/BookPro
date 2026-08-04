@@ -17,8 +17,8 @@ from sqlalchemy.orm import joinedload
 
 
 def get_today_date_filter():
-    today_start = datetime.combine(date.today, datetime.min.time())
-    today_end = datetime.combine(date.today, datetime.max.time())
+    today_start = datetime.combine(date.today(), datetime.min.time())
+    today_end = datetime.combine(date.today(), datetime.max.time())
     return today_start, today_end
 
 
@@ -167,7 +167,7 @@ class PatientCheckIn(Resource):
 
         appointment = Appointment.query.get_or_404(appointment_id)
 
-        if appointment.appointment_date.date() != date.today:
+        if appointment.appointment_date.date() != date.today():
             return {"error": "Can only check in patients with today's appointments"}, 400
 
         old_status = appointment.status

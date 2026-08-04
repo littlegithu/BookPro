@@ -16,6 +16,7 @@ from schemas import (
     Review_schema,
     Reviews_schema,
     StaffRegistration_schema,
+    Staff_schema,
     user_schema,
     users_schema,
 )
@@ -382,7 +383,7 @@ class DoctorRegistration(Resource):
             if isinstance(result[0], dict) and "error" in result[0]:
                 return result
             user, doctor = result
-            return {"message": "Doctor registered successfully", "user": user_schema.dump(user), "doctor": Doctor_schema.dump(doctor)}, 201
+            return {"message": "Doctor registered successfully", "token": user.token, "user": user_schema.dump(user), "doctor": Doctor_schema.dump(doctor)}, 201
         return result, 400
 
 
@@ -399,5 +400,5 @@ class StaffRegistration(Resource):
             if isinstance(result[0], dict) and "error" in result[0]:
                 return result
             user, staff = result
-            return {"message": "Staff registered successfully", "user": user_schema.dump(user), "staff": {"id": staff.id, "role": staff.role, "hospital_id": staff.hospital_id}}, 201
+            return {"message": "Staff registered successfully", "token": user.token, "user": user_schema.dump(user), "staff": Staff_schema.dump(staff)}, 201
         return result, 400

@@ -7,6 +7,12 @@ name = "pypi"
 flake8 = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
+flask = "*"
+flask-restful = "*"
+flask-sqlalchemy = "*"
+flask-bcrypt = "*"
+flask-cors = "*"
+marshmallow = "*"
 
 [dev-packages]
 
