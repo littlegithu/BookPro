@@ -113,6 +113,7 @@ from staff_resources import (
     StaffPatientDetail,
     StaffProfile,
     StaffReports,
+    StaffTasks,
 )
 from staff_resources import (
     DoctorAvailability as StaffDoctorAvailability,
@@ -159,6 +160,7 @@ api.add_resource(StaffReports, "/api/staff/reports")
 api.add_resource(StaffProfile, "/api/staff/profile")
 api.add_resource(PatientRegistration, "/api/staff/patients/register")
 api.add_resource(StaffPatientDetail, "/api/staff/patients/<int:id>")
+api.add_resource(StaffTasks, "/api/staff/tasks")
 
 api.add_resource(STKPushResource, "/api/payments/mpesa/stkpush")
 

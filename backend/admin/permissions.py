@@ -52,20 +52,24 @@ def staff_required(f):
         if not auth_header or not auth_header.startswith('Bearer '):
             return {"error": "Authorization token required"}, 401
         token = auth_header.split(' ')[1]
-        try:
-            from auth import login_user_token
-            user = login_user_token(token)
-            if not user:
-                return {"error": "Invalid or expired token"}, 401
-            if user.role != 'staff':
-                return {"error": "Staff access required"}, 403
-            if not user.staff:
-                return {"error": "Staff profile not found"}, 404
-            request.staff_user = user
+        from auth import login_user_token
+        user = login_user_token(token)
+        if not user:
+            return {"error": "Invalid or expired token"}, 401
+        if user.role not in ('staff', 'admin', 'hospital_admin', 'platform_admin'):
+            return {"error": "Staff access required"}, 403
+        if user.role == 'staff' and not user.staff:
+            return {"error": "Staff profile not found"}, 404
+        request.staff_user = user
+        if user.role == 'staff':
             request.staff = user.staff
-            return f(*args, **kwargs)
-        except Exception:
-            return {"error": "Invalid token"}, 401
+            request.role = user.staff.role
+            request.hospital_id = user.staff.hospital_id
+        else:
+            request.staff = None
+            request.role = user.role
+            request.hospital_id = 1
+        return f(*args, **kwargs)
     return decorated
 
 

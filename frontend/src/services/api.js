@@ -364,6 +364,10 @@ export async function fetchStaffQueue() {
   return request('/staff/queue');
 }
 
+export async function fetchStaffTasks() {
+  return request('/staff/tasks');
+}
+
 export async function fetchStaffAppointments(params) {
   const queryParams = params ? new URLSearchParams(params).toString() : '';
   const data = await request(`/staff/appointments${queryParams ? '?' + queryParams : ''}`);
