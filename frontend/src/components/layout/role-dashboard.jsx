@@ -7,8 +7,8 @@ import HospitalDashboardPage from '../../pages/hospital-dashboard'
 export default function RoleDashboard() {
   const { user, isStaff, staffRole, isHospital } = useAuth()
 
-  if (isStaff && staffRole()) return <StaffDashboardPage />
-  if (isHospital && isHospital()) return <HospitalDashboardPage />
+  if (isStaff() && staffRole()) return <StaffDashboardPage />
+  if (isHospital() && isHospital()) return <HospitalDashboardPage />
   if (user?.role === 'doctor' || user?.doctor) return <DoctorDashboardPage />
   return <DashboardPage />
 }
