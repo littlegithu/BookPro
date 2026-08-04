@@ -192,9 +192,21 @@ export default function PortalPage() {
                 error={error}
                 loading={loading}
                 twoColumn={role === 'doctor'}
-                footer={
+                 footer={
                   <span>
-                    Already have an account? <Link to="/login" className="text-teal hover:underline font-medium">Log in</Link>
+                    Already have an account?{' '}
+                    <Link
+                      to={
+                        role === 'staff'
+                          ? '/staff/login'
+                          : role === 'hospital'
+                          ? '/staff/login'
+                          : '/login'
+                      }
+                      className="text-teal hover:underline font-medium"
+                    >
+                      Log in
+                    </Link>
                   </span>
                 }
               />

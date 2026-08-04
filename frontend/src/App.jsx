@@ -97,7 +97,19 @@ export default function App() {
           <Route path="/staff/reports" element={<ProtectedRoute><StaffReportsPage /></ProtectedRoute>} />
           <Route path="/staff/lab" element={<ProtectedRoute><StaffLabPage /></ProtectedRoute>} />
           <Route path="/staff/pharmacy" element={<ProtectedRoute><StaffPharmacyPage /></ProtectedRoute>} />
+          <Route path="/staff/tasks" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/transactions" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/records" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/archives" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/management" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/nurses/patients" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/nurses/appointments" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/lab/orders" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/lab/results" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/pharmacy/prescriptions" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
+          <Route path="/staff/pharmacy/medications" element={<ProtectedRoute><StaffDashboardPage /></ProtectedRoute>} />
           <Route path="/hospital/dashboard" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
+          <Route path="/hospital/doctors" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
 
           <Route path="/doctor/dashboard" element={<ProtectedRoute><DoctorDashboardPage /></ProtectedRoute>} />
           <Route path="/doctor/schedule" element={<ProtectedRoute><DoctorSchedulePage /></ProtectedRoute>} />

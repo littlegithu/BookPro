@@ -127,11 +127,6 @@ with app.app_context():
     else:
         print(f"Doctor user already exists: {doctor_user.email}")
 
-    print("\nDone! You can now login with:")
-    print("Patient:     patient@example.com / patient123")
-    print("Staff:       staff@example.com / staff123")
-    print("Doctor:      doctor@example.com / doctor123")
-
     # --- HOSPITAL ADMIN USER ---
     hospital_admin_email = hospital.email  # use hospital email for matching
     hospital_admin_user = User.query.filter_by(email=hospital_admin_email).first()
@@ -151,8 +146,57 @@ with app.app_context():
     else:
         print(f"Hospital admin user already exists: {hospital_admin_user.email}")
 
+    # --- 5TH DOCTOR USER ---
+    doctor2_email = "doctor2@example.com"
+    doctor2_user = User.query.filter_by(email=doctor2_email).first()
+    if not doctor2_user:
+        doctor2_user = User(
+            first_name="James",
+            last_name="Mwangi",
+            email=doctor2_email,
+            phone="0767890124",
+            password=hash_password("doctor123"),
+            role="doctor",
+            token=generate_token(),
+        )
+        db.session.add(doctor2_user)
+        db.session.commit()
+        doctor2 = Doctor(
+            user_id=doctor2_user.id,
+            first_name="James",
+            last_name="Mwangi",
+            email=doctor2_email,
+            specialty="Neurology",
+            profile_image="https://placehold.co/150x150/0F7B6C/FFFFFF?text=JM",
+            languages="English, Swahili",
+            education="MD from Moi University",
+            certifications="FCP- Neurology",
+            working_days="Mon-Fri",
+            consultation_type="Both",
+            verification_status="Verified",
+            hospital_ids=str(hospital.id),
+            bio="Experienced neurologist.",
+            available=True,
+            rating=4.9,
+            reviews=0,
+            phone="0767890124",
+            years_practice=10,
+            working_hours="Mon-Fri 8AM-4PM",
+            fee=3000,
+            duration=30,
+            hospital_name=hospital.name,
+            hospital_location=hospital.address,
+            hospital_phone=hospital.phone,
+        )
+        db.session.add(doctor2)
+        db.session.commit()
+        print(f"Created 2nd doctor user: {doctor2_user.email} / doctor123")
+    else:
+        print(f"2nd doctor user already exists: {doctor2_user.email}")
+
     print("\nDone! You can now login with:")
     print("Patient:     patient@example.com / patient123")
     print("Staff:       staff@example.com / staff123")
-    print("Doctor:      doctor@example.com / doctor123")
+    print("Doctor 1:    doctor@example.com / doctor123")
+    print("Doctor 2:    doctor2@example.com / doctor123")
     print(f"Hospital:    {hospital.email} / hospital123  -> login via /staff/login with 'Hospital login' checked")

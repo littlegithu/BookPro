@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/auth-context'
 import AuthForm from '../components/auth/auth-form'
+import Navbar from '../components/layout/navbar'
 import { loginUser, loginStaff, loginHospital } from '../services/api'
 
 export default function StaffLoginPage() {
@@ -81,34 +82,37 @@ export default function StaffLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface pt-16 flex items-center justify-center">
-      <AuthForm
-        title={isHospital ? "Hospital Login" : isStaff ? "Staff Login" : "User Login"}
-        subtitle={isHospital ? "Log in to your hospital account" : isStaff ? "Log in to your staff account" : "Log in to your account"}
-        fields={[
-          { name:'email', label:'Email address', type:'email', placeholder:'you@hospital.com', value:email, onChange:setEmail },
-          { name:'password', label:'Password', type:'password', placeholder:'Enter password', value:password, onChange:setPassword },
-        ]}
-        submitLabel={isHospital ? "Login as Hospital" : isStaff ? "Login as Staff" : "Continue"}
-        onSubmit={handleSubmit}
-        error={error}
-        loading={loading}
-        footer={
-          <div>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={isStaff} onChange={(e) => { setIsStaff(e.target.checked); setIsHospital(false) }} className="w-4 h-4" />
-              <span className="text-sm text-slate-light">Staff login</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer mt-2">
-              <input type="checkbox" checked={isHospital} onChange={(e) => { setIsHospital(e.target.checked); setIsStaff(false) }} className="w-4 h-4" />
-              <span className="text-sm text-slate-light">Hospital login</span>
-            </label>
-            <div className="mt-2">
-              <Link to="/register" className="text-teal hover:underline text-sm">Need an account?</Link>
+    <div className="min-h-screen bg-surface pt-16">
+      <Navbar />
+      <div className="flex items-center justify-center">
+        <AuthForm
+          title={isHospital ? "Hospital Login" : isStaff ? "Staff Login" : "User Login"}
+          subtitle={isHospital ? "Log in to your hospital account" : isStaff ? "Log in to your staff account" : "Log in to your account"}
+          fields={[
+            { name:'email', label:'Email address', type:'email', placeholder:'you@hospital.com', value:email, onChange:setEmail },
+            { name:'password', label:'Password', type:'password', placeholder:'Enter password', value:password, onChange:setPassword },
+          ]}
+          submitLabel={isHospital ? "Login as Hospital" : isStaff ? "Login as Staff" : "Continue"}
+          onSubmit={handleSubmit}
+          error={error}
+          loading={loading}
+          footer={
+            <div>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={isStaff} onChange={(e) => { setIsStaff(e.target.checked); setIsHospital(false) }} className="w-4 h-4" />
+                <span className="text-sm text-slate-light">Staff login</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer mt-2">
+                <input type="checkbox" checked={isHospital} onChange={(e) => { setIsHospital(e.target.checked); setIsStaff(false) }} className="w-4 h-4" />
+                <span className="text-sm text-slate-light">Hospital login</span>
+              </label>
+              <div className="mt-2">
+                <Link to="/register" className="text-teal hover:underline text-sm">Need an account?</Link>
+              </div>
             </div>
-          </div>
-        }
-      />
+          }
+        />
+      </div>
     </div>
   )
 }
