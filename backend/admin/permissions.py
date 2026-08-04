@@ -33,8 +33,6 @@ def doctor_required(f):
             user = login_user_token(token)
             if not user:
                 return {"error": "Invalid or expired token"}, 401
-            if user.role != 'doctor':
-                return {"error": "Doctor access required"}, 403
             if not user.doctor:
                 return {"error": "Doctor profile not found"}, 404
             request.doctor_user = user
