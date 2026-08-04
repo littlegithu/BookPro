@@ -5,13 +5,13 @@ services:
     buildCommand: pip install pipenv && pipenv install --deploy
     startCommand: cd backend && gunicorn app:app
     envVars:
-      - key: DATABASE_URL
+      - key: https://bookpro-sc0z.onrender.com
         fromDatabase:
           name: bookpro-db
           property: connectionString
-      - key: SECRET_KEY
+      - key: vGuXgidGMnqXUUKdoOgx3dbydayC6Hs6JLK2oNWSc5c=
         generateValue: true
       - key: FLASK_ENV
         value: production
       - key: ALLOWED_ORIGINS
-        value: https://your-frontend.vercel.app,http://localhost:5173,http://localhost:3000
+        value: https://book-pro-wp54.vercel.app/,http://localhost:5173,http://localhost:3000
