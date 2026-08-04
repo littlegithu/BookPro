@@ -198,6 +198,11 @@ export async function fetchHospitals() {
   return [];
 }
 
+export async function fetchHospital(id) {
+  const data = await request(`/hospitals/${id}`);
+  return transformHospital(data);
+}
+
 export async function fetchAppointments(patientId) {
   const data = await request('/appointments');
   if (Array.isArray(data)) {
