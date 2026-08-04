@@ -1,4 +1,5 @@
-export const API_BASE = '/api';
+const BACKEND_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+export const API_BASE = BACKEND_URL ? `${BACKEND_URL}/api` : '/api';
 
 async function request(path, options = {}) {
   const token = localStorage.getItem('bookpro_token')
