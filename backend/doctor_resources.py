@@ -36,8 +36,8 @@ from sqlalchemy.orm import joinedload
 
 
 def get_today_date_filter():
-    today_start = datetime.combine(date.today, datetime.min.time())
-    today_end = datetime.combine(date.today, datetime.max.time())
+    today_start = datetime.combine(date.today(), datetime.min.time())
+    today_end = datetime.combine(date.today(), datetime.max.time())
     return today_start, today_end
 
 
