@@ -3,6 +3,7 @@ import { AuthProvider } from './context/auth-context'
 import { ThemeProvider } from './context/theme-context'
 import ProtectedRoute from './components/layout/protected-route'
 import StaffProtectedRoute from './components/layout/staff-protected-route'
+import DoctorProtectedRoute from './components/layout/doctor-protected-route'
 import RoleDashboard from './components/layout/role-dashboard'
 import AdminLayout from './admin/components/AdminLayout'
 
@@ -112,22 +113,22 @@ export default function App() {
           <Route path="/hospital/doctors" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
           <Route path="/hospital/appointments" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
 
-          <Route path="/doctor/dashboard" element={<ProtectedRoute><DoctorDashboardPage /></ProtectedRoute>} />
-          <Route path="/doctor/schedule" element={<ProtectedRoute><DoctorSchedulePage /></ProtectedRoute>} />
-          <Route path="/doctor/appointments" element={<ProtectedRoute><DoctorAppointmentsPage /></ProtectedRoute>} />
-          <Route path="/doctor/patients" element={<ProtectedRoute><DoctorPatientsPage /></ProtectedRoute>} />
-          <Route path="/doctor/medical-records" element={<ProtectedRoute><DoctorMedicalRecordsPage /></ProtectedRoute>} />
-          <Route path="/doctor/prescriptions" element={<ProtectedRoute><DoctorPrescriptionsPage /></ProtectedRoute>} />
-          <Route path="/doctor/availability" element={<ProtectedRoute><DoctorAvailabilityPage /></ProtectedRoute>} />
-          <Route path="/doctor/reviews" element={<ProtectedRoute><DoctorReviewsPage /></ProtectedRoute>} />
-          <Route path="/doctor/analytics" element={<ProtectedRoute><DoctorAnalyticsPage /></ProtectedRoute>} />
-          <Route path="/doctor/hospitals" element={<ProtectedRoute><DoctorHospitalsPage /></ProtectedRoute>} />
-          <Route path="/doctor/documents" element={<ProtectedRoute><DoctorDocumentsPage /></ProtectedRoute>} />
-          <Route path="/doctor/profile" element={<ProtectedRoute><DoctorProfileSettingsPage /></ProtectedRoute>} />
-          <Route path="/doctor/settings" element={<ProtectedRoute><DoctorSettingsPage /></ProtectedRoute>} />
-          <Route path="/doctor/notifications" element={<ProtectedRoute><DoctorNotificationsPage /></ProtectedRoute>} />
-          <Route path="/doctor/consultation" element={<ProtectedRoute><DoctorConsultationPage /></ProtectedRoute>} />
-          <Route path="/doctor/messages" element={<ProtectedRoute><DoctorMessagesPage /></ProtectedRoute>} />
+          <Route path="/doctor/dashboard" element={<DoctorProtectedRoute><DoctorDashboardPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/schedule" element={<DoctorProtectedRoute><DoctorSchedulePage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/appointments" element={<DoctorProtectedRoute><DoctorAppointmentsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/patients" element={<DoctorProtectedRoute><DoctorPatientsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/medical-records" element={<DoctorProtectedRoute><DoctorMedicalRecordsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/prescriptions" element={<DoctorProtectedRoute><DoctorPrescriptionsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/availability" element={<DoctorProtectedRoute><DoctorAvailabilityPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/reviews" element={<DoctorProtectedRoute><DoctorReviewsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/analytics" element={<DoctorProtectedRoute><DoctorAnalyticsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/hospitals" element={<DoctorProtectedRoute><DoctorHospitalsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/documents" element={<DoctorProtectedRoute><DoctorDocumentsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/profile" element={<DoctorProtectedRoute><DoctorProfileSettingsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/settings" element={<DoctorProtectedRoute><DoctorSettingsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/notifications" element={<DoctorProtectedRoute><DoctorNotificationsPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/consultation" element={<DoctorProtectedRoute><DoctorConsultationPage /></DoctorProtectedRoute>} />
+          <Route path="/doctor/messages" element={<DoctorProtectedRoute><DoctorMessagesPage /></DoctorProtectedRoute>} />
 
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/appointments/:id" element={<AppointmentDetailPage />} />
