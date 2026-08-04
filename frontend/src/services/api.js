@@ -327,6 +327,18 @@ export async function loginStaff(data) {
   });
 }
 
+export async function loginHospital(data) {
+  return request('/hospital/login', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function fetchHospitalDashboard() {
+  const data = await request('/hospital/dashboard');
+  return data;
+}
+
 export async function fetchStaffDashboard() {
   const data = await request('/staff/dashboard');
   return data;

@@ -42,6 +42,8 @@ import StaffReportsPage from './pages/staff-reports'
 import StaffLabPage from './pages/staff-lab'
 import StaffPharmacyPage from './pages/staff-pharmacy'
 
+import HospitalDashboardPage from './pages/hospital-dashboard'
+
 import DoctorDashboardPage from './pages/doctor/dashboard'
 import DoctorSchedulePage from './pages/doctor/schedule'
 import DoctorAppointmentsPage from './pages/doctor/appointments'
@@ -95,6 +97,7 @@ export default function App() {
           <Route path="/staff/reports" element={<ProtectedRoute><StaffReportsPage /></ProtectedRoute>} />
           <Route path="/staff/lab" element={<ProtectedRoute><StaffLabPage /></ProtectedRoute>} />
           <Route path="/staff/pharmacy" element={<ProtectedRoute><StaffPharmacyPage /></ProtectedRoute>} />
+          <Route path="/hospital/dashboard" element={<ProtectedRoute><HospitalDashboardPage /></ProtectedRoute>} />
 
           <Route path="/doctor/dashboard" element={<ProtectedRoute><DoctorDashboardPage /></ProtectedRoute>} />
           <Route path="/doctor/schedule" element={<ProtectedRoute><DoctorSchedulePage /></ProtectedRoute>} />

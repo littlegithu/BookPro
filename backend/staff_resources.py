@@ -706,3 +706,100 @@ class StaffPatientDetail(Resource):
         result = Patient_schema.dump(patient)
         result['visit_history'] = visit_history
         return result
+
+
+class HospitalLogin(Resource):
+    def post(self):
+        from auth import generate_token, login_hospital
+
+        data = request.get_json(force=True, silent=True)
+        if not data:
+            return {"error": "Invalid JSON body"}, 400
+
+        hospital = login_hospital(data)
+        if not hospital:
+            return {"message": "Invalid credentials"}, 401
+
+        token = generate_token()
+        hospital.token = token
+        db.session.commit()
+
+        return {
+            "message": "Login successful",
+            "token": token,
+            "hospital": {
+                "id": hospital.id,
+                "name": hospital.name,
+                "address": hospital.address,
+                "phone": hospital.phone,
+                "email": hospital.email,
+                "website": hospital.website,
+            }
+        }, 200
+
+
+class HospitalDashboard(Resource):
+    def get(self):
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return {"error": "Authorization token required"}, 401
+        token = auth_header.split(' ')[1]
+        from auth import login_user_token
+        user = login_user_token(token)
+        if not user or user.role != 'hospital_admin':
+            return {"error": "Hospital admin access required"}, 403
+
+        hospital = Hospital.query.filter_by(email=user.email).first()
+        if not hospital:
+            return {"error": "Hospital not found"}, 404
+
+        today_start, today_end = get_today_date_filter()
+
+        doctors_count = Doctor.query.filter_by(hospital_id=hospital.id).count()
+        appointments_today = Appointment.query.filter(
+            Appointment.hospital_id == hospital.id,
+            Appointment.appointment_date >= today_start,
+            Appointment.appointment_date <= today_end,
+        ).count()
+        patients_today = Patient.query.filter(
+            Patient.id.in_(
+                db.session.query(Appointment.patient_id).filter(
+                    Appointment.hospital_id == hospital.id,
+                    Appointment.appointment_date >= today_start,
+                    Appointment.appointment_date <= today_end,
+                ).distinct()
+            )
+        ).count()
+        staff_count = db.session.query(Staff).filter(Staff.hospital_id == hospital.id).count()
+
+        recent_appointments = Appointment.query.filter(
+            Appointment.hospital_id == hospital.id,
+            Appointment.appointment_date >= today_start,
+            Appointment.appointment_date <= today_end,
+        ).options(joinedload(Appointment.patient), joinedload(Appointment.doctor)).order_by(Appointment.appointment_time).limit(5).all()
+
+        return {
+            'hospital': {
+                'id': hospital.id,
+                'name': hospital.name,
+                'address': hospital.address,
+                'phone': hospital.phone,
+                'email': hospital.email,
+                'website': hospital.website,
+            },
+            'overview': {
+                'doctors_count': doctors_count,
+                'appointments_today': appointments_today,
+                'patients_today': patients_today,
+                'staff_count': staff_count,
+            },
+            'recent_appointments': [
+                {
+                    'id': a.id,
+                    'patient_name': f"{a.patient.first_name} {a.patient.last_name}" if a.patient else 'Unknown',
+                    'doctor_name': f"{a.doctor.first_name} {a.doctor.last_name}" if a.doctor else 'Unknown',
+                    'time': a.appointment_time.strftime('%H:%M') if a.appointment_time else None,
+                    'status': a.status,
+                } for a in recent_appointments
+            ]
+        }, 200

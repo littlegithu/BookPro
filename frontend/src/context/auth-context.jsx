@@ -35,6 +35,11 @@ export function AuthProvider({ children }) {
     return user.role === 'staff' || (user.staff && user.staff.role)
   }
 
+  const isHospital = () => {
+    if (!user) return false
+    return user.role === 'hospital_admin'
+  }
+
   const staffRole = () => {
     if (!user) return null
     if (user.staff && user.staff.role) return user.staff.role
@@ -43,7 +48,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, updateProfileImage, isAuthenticated: !!token, isStaff, staffRole }}>
+    <AuthContext.Provider value={{ user, token, login, logout, updateProfileImage, isAuthenticated: !!token, isStaff, isHospital, staffRole }}>
       {children}
     </AuthContext.Provider>
   )

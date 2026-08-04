@@ -48,13 +48,35 @@ def register_user(data):
 
 def register_hospital(data):
     data.pop("password_confirm", None)
+    password = data.pop("password", None)
     hospital = Hospital(**data)
+    if password:
+        hospital.password = hash_password(password)
     db.session.add(hospital)
     try:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return {"error": "Hospital email or phone already exists"}, 409
+
+    if password:
+        user_data = {
+            "first_name": hospital.name,
+            "last_name": "Admin",
+            "email": hospital.email,
+            "phone": hospital.phone,
+            "password": password,
+            "role": "hospital_admin",
+        }
+        user = User(**user_data)
+        if not user.token:
+            user.token = generate_token()
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+
     return hospital
 
 
@@ -190,3 +212,12 @@ def login_user_token(token):
         return None
     user = User.query.filter_by(token=token).first()
     return user
+
+
+def login_hospital(data):
+    email = data.get("email")
+    password = data.get("password")
+    hospital = Hospital.query.filter_by(email=email).first()
+    if not hospital or not hospital.password or not check_password_hash(hospital.password, password):
+        return None
+    return hospital
