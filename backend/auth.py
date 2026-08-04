@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from extensions import db
 from flask import current_app, request
 from flask_bcrypt import check_password_hash, generate_password_hash
-from models import Doctor, Hospital, MagicLink, Patient, Staff, User
+from models import Doctor, Hospital, Patient, Staff, User
 from sqlalchemy.exc import IntegrityError
 
 
@@ -16,39 +16,19 @@ def generate_token():
     return secrets.token_hex(32)
 
 
-def generate_email_verification_token():
-    return secrets.token_urlsafe(32)
-
-
-def send_verification_email(email, verification_token):
-    try:
-        base_url = request.host_url.rstrip('/') if request else current_app.config.get('APP_URL', 'http://localhost:5000')
-    except RuntimeError:
-        base_url = current_app.config.get('APP_URL', 'http://localhost:5000')
-    
-    verification_url = f"{base_url}/verify-email?token={verification_token}"
-    current_app.logger.info(f"Verification link generated for {email}: {verification_url}")
-    return True
-
-
 def register_user(data):
     data.pop("password_confirm", None)
     if "password" in data:
         data["password"] = hash_password(data["password"])
     user = User(**data)
-    user.role = "user"
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = None  # Not needed since verification is optional
-    user.email_verified = True  # Set as verified by default
     db.session.add(user)
     try:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
-
-    send_verification_email(user.email, user.email_verification_token)
 
     new_patient = Patient(
         user_id=user.id,
@@ -94,17 +74,12 @@ def register_doctor(data):
     user.role = "doctor"
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = None  # Not needed since verification is optional
-    user.email_verified = True  # Set as verified by default
     db.session.add(user)
     try:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
-
-    # Skip sending verification email since verification is optional
-    # send_verification_email(user.email, user.email_verification_token)
 
     doctor = Doctor(
         user_id=user.id,
@@ -159,17 +134,12 @@ def register_staff(data):
     user.role = "staff"
     if not user.token:
         user.token = generate_token()
-    user.email_verification_token = None  # Not needed since verification is optional
-    user.email_verified = True  # Set as verified by default
     db.session.add(user)
     try:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return {"error": "Phone or email already exists"}, 409
-
-    # Skip sending verification email since verification is optional
-    # send_verification_email(user.email, user.email_verification_token)
 
     staff = Staff(
         user_id=user.id,
@@ -210,12 +180,7 @@ def login_user(data):
     password = data.get("password")
     user = User.query.filter_by(email=email).first()
     if not user or not check_password_hash(user.password, password):
-        return None, False
-
-    # Email verification is now optional - allow all verified/unverified users to login
-    # If verification is required, uncomment the following lines:
-    # if user.email_verified is False:
-    #     return user, False
+        return None, True
 
     return user, True
 
@@ -225,47 +190,3 @@ def login_user_token(token):
         return None
     user = User.query.filter_by(token=token).first()
     return user
-
-
-def create_magic_link(email):
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        return None, "If an account exists with that email, a magic link has been sent"
-
-    token = secrets.token_urlsafe(32)
-    expires_at = datetime.now + timedelta(hours=1)
-
-    MagicLink.query.filter_by(used=False).filter(MagicLink.expires_at < expires_at).delete()
-
-    magic_link = MagicLink(user_id=user.id, token=token, expires_at=expires_at)
-    db.session.add(magic_link)
-    db.session.commit()
-
-    send_magic_link_email(user.email, token)
-
-    return user, "If an account exists with that email, a magic link has been sent"
-
-
-def send_magic_link_email(email, token):
-    """Magic link email disabled - email API removed"""
-    current_app.logger.info(f"Magic link would be sent to {email} with token {token}")
-    return True
-
-
-def verify_magic_link(token):
-    if not token:
-        return None
-
-    magic_link = MagicLink.query.filter_by(token=token, used=False).first()
-    if not magic_link:
-        return None
-
-    if magic_link.expires_at < datetime.now:
-        db.session.delete(magic_link)
-        db.session.commit()
-        return None
-
-    magic_link.used = True
-    db.session.commit()
-
-    return magic_link.user

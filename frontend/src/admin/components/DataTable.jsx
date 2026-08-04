@@ -1,4 +1,10 @@
 export default function DataTable({ columns, rows }) {
+  const renderCellValue = (value) => {
+    if (value === null || value === undefined) return ''
+    if (typeof value === 'object') return JSON.stringify(value)
+    return value
+  }
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <div className="overflow-x-auto">
@@ -17,7 +23,7 @@ export default function DataTable({ columns, rows }) {
               <tr key={i} className="hover:bg-gray-50 transition-colors">
                 {columns.map(col => (
                   <td key={col.key} className="px-4 py-3 text-gray-700 whitespace-nowrap">
-                    {row[col.key]}
+                    {renderCellValue(row[col.key])}
                   </td>
                 ))}
               </tr>

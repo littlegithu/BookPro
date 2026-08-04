@@ -1,6 +1,5 @@
-import { DoctorSidebar } from './doctor-sidebar.jsx';
+import DoctorSidebar from '../doctor/doctor-sidebar.jsx';
 import { useAuth } from '../../context/auth-context';
-import { Outlet } from 'react-router-dom';
 
 export default function DoctorDashboardLayout({ children }) {
   const { user } = useAuth();

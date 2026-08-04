@@ -1,15 +1,17 @@
-import { useParams } from 'react-router-dom'
-import { Briefcase, Clock, Check, Stethoscope, Hospital, MapPin, Phone, Globe, ShieldCheck } from 'lucide-react'
+import { useParams, Link } from 'react-router-dom'
+import { Briefcase, Clock, Check, Stethoscope, Hospital, MapPin, Phone, Globe, ShieldCheck, LogIn } from 'lucide-react'
 import Navbar from '../components/layout/navbar'
 import Breadcrumb from '../components/shared/breadcrumb'
 import SpecialtyBadge from '../components/shared/specialty-badge'
 import BookingForm from '../components/booking/booking-form'
 import ReviewsSection from '../components/doctor/reviews-section'
-import { fetchDoctor } from '../services/api'
+import { fetchDoctor, transformDoctor } from '../services/api'
+import { useAuth } from '../context/auth-context'
 import { useState, useEffect } from 'react'
 
 export default function DoctorProfilePage() {
   const { id } = useParams()
+  const { isAuthenticated, user } = useAuth()
   const [doctor, setDoctor] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -18,7 +20,7 @@ export default function DoctorProfilePage() {
     async function load() {
       try {
         const data = await fetchDoctor(id)
-        setDoctor(data)
+        setDoctor(transformDoctor(data))
       } catch (err) {
         setError(err.message || 'Failed to load doctor profile')
       } finally {
@@ -32,7 +34,7 @@ export default function DoctorProfilePage() {
     return (
       <div className="bg-surface min-h-screen">
         <Navbar />
-        <div className="max-w-7xl mx-auto px-15 py-10">
+        <div className="max-w-7xl mx-auto px-[3.75rem] py-10">
           <p className="text-slate">Loading doctor profile...</p>
         </div>
       </div>
@@ -43,7 +45,7 @@ export default function DoctorProfilePage() {
     return (
       <div className="bg-surface min-h-screen">
         <Navbar />
-        <div className="max-w-7xl mx-auto px-15 py-10">
+        <div className="max-w-7xl mx-auto px-[3.75rem] py-10">
           <p className="text-red-500">{error || 'Doctor not found.'}</p>
         </div>
       </div>
@@ -65,7 +67,7 @@ export default function DoctorProfilePage() {
 
     <div className="bg-surface min-h-screen pt-16">
       <Navbar showLogo={false} />
-      <div className="max-w-7xl mx-auto px-15">
+      <div className="max-w-7xl mx-auto px-[3.75rem]">
         <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Doctors', to: '/doctors' }, { label: doctor.name }]} />
 
         <div className="grid grid-cols-[1fr_400px] gap-7 pb-16">
@@ -196,7 +198,25 @@ export default function DoctorProfilePage() {
           </div>
 
           <div className="sticky top-5">
-            <BookingForm doctorId={doctor.id} doctorName={doctor.name} hospitalIds={doctor.hospital_ids} fee={doctor.fee} />
+            {isAuthenticated ? (
+              <BookingForm doctorId={doctor.id} doctorName={doctor.name} hospitalIds={doctor.hospital_ids} fee={doctor.fee} />
+            ) : (
+              <div className="bg-card rounded-xl border border-border p-6">
+                <h2 className="font-display font-bold text-[18px] text-navy mb-1">Book an appointment</h2>
+                <p className="text-[12px] text-slate-light mb-5">Sign in to book appointments with {doctor.name}</p>
+                <a
+                  href="/login"
+                  className="w-full flex items-center justify-center gap-2 bg-teal text-white text-[14px] font-semibold py-3.5 rounded-lg hover:bg-teal-mid transition-colors"
+                >
+                  <LogIn size={16} />
+                  Sign In to Book
+                </a>
+                <p className="text-[12px] text-slate-light mt-3 text-center">
+                  Don't have an account?{' '}
+                  <a href="/register" className="text-teal hover:underline font-medium">Sign up</a>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

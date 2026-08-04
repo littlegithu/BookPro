@@ -74,12 +74,6 @@ api.add_resource(StaffRegistration, "/api/staff/register")
 
 from admin.dashboard import AdminDashboard
 from admin.resources import AdminDoctorDetail, AdminDoctorList
-from auth_resources import (
-    EmailVerification,
-    MagicLinkLogin,
-    MagicLinkVerify,
-    ResendVerification,
-)
 from doctor_resources import (
     DoctorAnalytics,
     DoctorAppointmentDetail,
@@ -163,11 +157,6 @@ api.add_resource(PatientRegistration, "/api/staff/patients/register")
 api.add_resource(StaffPatientDetail, "/api/staff/patients/<int:id>")
 
 api.add_resource(STKPushResource, "/api/payments/mpesa/stkpush")
-
-api.add_resource(EmailVerification, "/api/auth/verify-email")
-api.add_resource(ResendVerification, "/api/auth/resend-verification")
-api.add_resource(MagicLinkLogin, "/api/auth/magic-login")
-api.add_resource(MagicLinkVerify, "/api/auth/magic-verify")
 
 
 @app.errorhandler(HTTPException)

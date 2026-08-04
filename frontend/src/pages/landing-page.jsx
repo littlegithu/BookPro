@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Shield, ClipboardList, Timer, Play, Hospital, MapPin } from 'lucide-react'
 import Navbar from '../components/layout/navbar'
+import Footer from '../components/layout/footer'
 import DoctorGrid from '../components/doctor/doctor-grid'
 import { fetchDoctors, fetchHospitals } from '../services/api'
 
@@ -42,7 +43,7 @@ export default function LandingPage() {
       <Navbar />
 
       {/* Hero */}
-      <div className="max-w-7xl mx-auto px-15 py-22 grid grid-cols-2 gap-18 items-center">
+      <div className="max-w-7xl mx-auto px-[3.75rem] py-[5.5rem] grid grid-cols-2 gap-[4.5rem] items-center">
         <div>
           <span className="inline-flex items-center gap-1.5 bg-teal-light text-teal text-[11px] font-semibold px-3.5 py-1.5 rounded-full mb-5 uppercase tracking-wider">
             <Shield size={12} /> Verified clinical care
@@ -54,9 +55,9 @@ export default function LandingPage() {
             Find verified doctors across our network of partner hospitals, pick a time that works for you, and walk in ready.
           </p>
           <div className="flex gap-3 items-center">
-            <Link to="/doctors" className="bg-teal text-white text-[14px] font-medium px-6 py-3 rounded-lg hover:bg-teal-mid transition-colors">
-              Book an appointment
-            </Link>
+            <a href="#doctors-section" className="bg-teal text-white text-[14px] font-medium px-6 py-3 rounded-lg hover:bg-teal-mid transition-colors">
+              Browse doctors
+            </a>
             <a href="#how-it-works" className="text-[14px] font-medium text-navy border border-border-strong px-6 py-3 rounded-lg hover:bg-surface transition-colors flex items-center gap-1.5">
               <Play size={13} /> See how it works
             </a>
@@ -68,6 +69,12 @@ export default function LandingPage() {
                 <p className="text-[12px] text-slate-light mt-0.5">{l}</p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-8">
+            <Link to="/login" className="text-[14px] font-medium text-teal hover:underline">
+              Already have an account? Sign in
+            </Link>
           </div>
         </div>
 
@@ -99,9 +106,9 @@ export default function LandingPage() {
       </div>
 
       {/* Hospital strip */}
-      <div className="max-w-7xl mx-auto border-t border-border py-10 px-10">
+      <div className="max-w-7xl mx-auto border-t border-border py-[2.5rem] px-[2.5rem]">
         <div className="max-w-7xl mx-auto">
-          <p className="text-[11px] font-semibold text-slate-light uppercase tracking-wider mb-3.5 px-10">Our partnered hospitals</p>
+          <p className="text-[11px] font-semibold text-slate-light uppercase tracking-wider mb-3.5 px-[2.5rem]">Our partnered hospitals</p>
           <div className="flex w-full gap-4">
             {hospitals.map(h => (
               <div key={h.id} className="flex max-w-7xl mx-auto items-center justify-between gap-3 px-8 py-2.5">
@@ -116,10 +123,10 @@ export default function LandingPage() {
       </div>
 
       {/* Doctor grid */}
-      <div className="bg-card border-b border-border py-10 px-15">
+      <div id="doctors-section" className="bg-card border-b border-border py-[2.5rem] px-[3.75rem]">
         <div className="max-w-7xl mx-auto">
           {loading ? (
-            <div className="flex items-center justify-center py-10">
+            <div className="flex items-center justify-center py-[2.5rem]">
               <span className="inline-block w-6 h-6 border-2 border-teal border-t-transparent rounded-full animate-spin" aria-hidden="true" />
             </div>
           ) : (
@@ -129,7 +136,7 @@ export default function LandingPage() {
       </div>
 
       {/* Features */}
-      <div id="how-it-works" className="max-w-7xl mx-auto px-15 py-16">
+      <div id="how-it-works" className="max-w-7xl mx-auto px-[3.75rem] py-16">
         <p className="text-[11px] font-semibold text-teal uppercase tracking-wider mb-2">Why BookPro</p>
         <h2 className="font-display font-bold text-[32px] text-navy mb-10">Care that fits your life</h2>
         <div className="grid grid-cols-3 gap-5">
@@ -141,10 +148,10 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-      </div>
+</div>
 
       {/* CTA strip */}
-      <div className="bg-teal py-14 px-15">
+      <div className="bg-teal py-14 px-[3.75rem]">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-8">
           <div>
             <h2 className="font-display font-bold text-[28px] text-white mb-1.5">Ready to take care of your health?</h2>
@@ -156,31 +163,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="bg-[#1E2D3D] px-15 pt-14 pb-8 dark:bg-[#1E2D3D]">
-        <div className="max-w-7xl mx-auto grid grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-10">
-          <div>
-            <p className="font-display font-bold text-[18px] text-white">Book<span style={{ color: '#5CD6C4' }}>Pro</span></p>
-            <p className="text-[13px] mt-3 max-w-55 leading-[1.75]" style={{ color: 'rgba(255,255,255,0.42)' }}>
-              Clinical checkups made simple across our network of partner hospitals.
-            </p>
-          </div>
-          {[
-            ['Patients', ['Browse doctors', 'How it works', 'My appointments', 'Medical records']],
-            ['Company',  ['About us', 'Contact', 'Careers', 'Blog']],
-            ['Legal',    ['Privacy policy', 'Terms of use', 'Cookie policy']],
-          ].map(([h, links]) => (
-            <div key={h}>
-              <p className="text-[11px] font-semibold uppercase tracking-wider mb-3.5 text-white/65">{h}</p>
-              {links.map(l => <p key={l} className="text-[13px] mb-2 cursor-pointer hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.42)' }}>{l}</p>)}
-            </div>
-          ))}
-        </div>
-        <div className="max-w-7xl mx-auto flex justify-between pt-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
-          <p className="text-[12px] text-white/28">© 2026 BookPro. All rights reserved.</p>
-          <p className="text-[12px] text-white/28">Made with care in Nairobi</p>
-        </div>
-      </div>
+      <Footer />
     </div>
   )
 }
