@@ -29,6 +29,7 @@ import DoctorsAdminPage from './admin/pages/Doctors'
 import StaffDashboardPage from './pages/staff-dashboard' // eslint-disable-line no-unused-vars
 import StaffCheckInPage from './pages/staff-check-in'
 import StaffQueuePage from './pages/staff-queue'
+import StaffTasksPage from './pages/staff-tasks'
 import StaffAppointmentsPage from './pages/staff-appointments'
 import StaffRegistrationPage from './pages/staff-registration'
 import StaffProfilePage from './pages/staff-profile'
@@ -82,8 +83,9 @@ export default function App() {
           <Route path="/staff/dashboard" element={<ProtectedRoute><RoleDashboard /></ProtectedRoute>} />
           <Route path="/staff/login" element={<StaffLoginPage />} />
           <Route path="/staff/check-in" element={<ProtectedRoute><StaffCheckInPage /></ProtectedRoute>} />
-          <Route path="/staff/queue" element={<ProtectedRoute><StaffQueuePage /></ProtectedRoute>} />
-          <Route path="/staff/appointments" element={<ProtectedRoute><StaffAppointmentsPage /></ProtectedRoute>} />
+<Route path="/staff/queue" element={<ProtectedRoute><StaffQueuePage /></ProtectedRoute>} />
+<Route path="/staff/tasks" element={<ProtectedRoute><StaffTasksPage /></ProtectedRoute>} />
+<Route path="/staff/appointments" element={<ProtectedRoute><StaffAppointmentsPage /></ProtectedRoute>} />
           <Route path="/staff/register" element={<ProtectedRoute><StaffRegistrationPage /></ProtectedRoute>} />
           <Route path="/staff/profile" element={<ProtectedRoute><StaffProfilePage /></ProtectedRoute>} />
           <Route path="/staff/settings" element={<ProtectedRoute><StaffSettingsPage /></ProtectedRoute>} />

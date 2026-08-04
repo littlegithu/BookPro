@@ -37,8 +37,10 @@ def has_permission(required_role):
         from functools import wraps
         @wraps(f)
         def decorated(*args, **kwargs):
-            staff_role = request.staff.role if hasattr(request, 'staff') and request.staff else None
-            if staff_role != required_role and staff_role != 'Hospital Admin' and staff_role != 'Platform Admin':
+            user_role = getattr(request, 'role', None)
+            if not user_role:
+                return {"error": "Authorization required"}, 401
+            if user_role != required_role and user_role not in ('admin', 'hospital_admin', 'platform_admin'):
                 return {"error": f"{required_role} access required"}, 403
             return f(*args, **kwargs)
         return decorated
@@ -300,7 +302,7 @@ class PatientSearch(Resource):
     @staff_required
     def get(self):
         search_query = request.args.get('q', type=str)
-        hospital_id = request.staff.hospital_id
+        hospital_id = request.hospital_id
 
         query = Patient.query
         if search_query:
@@ -328,7 +330,7 @@ class QueueManagement(Resource):
     @staff_required
     @has_permission('Receptionist')
     def get(self):
-        hospital_id = request.staff.hospital_id
+        hospital_id = request.hospital_id
         today_start, today_end = get_today_date_filter()
 
         appointments = Appointment.query.options(
@@ -384,7 +386,7 @@ class QueueAction(Resource):
         appointment_id = data.get('appointment_id')
 
         if action == 'call_next':
-            hospital_id = request.staff.hospital_id
+            hospital_id = request.hospital_id
             today_start, today_end = get_today_date_filter()
             appointments = Appointment.query.filter(
                 Appointment.hospital_id == hospital_id,
@@ -412,7 +414,7 @@ class AppointmentManagement(Resource):
     @staff_required
     @has_permission('Receptionist')
     def get(self):
-        hospital_id = request.staff.hospital_id
+        hospital_id = request.hospital_id
         date_from = request.args.get('date_from')
         date_to = request.args.get('date_to')
         status = request.args.get('status')
@@ -491,7 +493,7 @@ class DoctorAvailability(Resource):
     @staff_required
     @has_permission('Receptionist')
     def get(self):
-        hospital_id = request.staff.hospital_id
+        hospital_id = request.hospital_id
 
         doctors = Doctor.query.filter(
             Doctor.hospital_id == hospital_id,
@@ -515,7 +517,7 @@ class DoctorAvailability(Resource):
 class DepartmentDirectory(Resource):
     @staff_required
     def get(self):
-        hospital_id = request.staff.hospital_id
+        hospital_id = request.hospital_id
 
         departments = {}
         for doctor in Doctor.query.filter_by(hospital_id=hospital_id).all():
@@ -540,7 +542,7 @@ class DepartmentDirectory(Resource):
 class StaffNotifications(Resource):
     @staff_required
     def get(self):
-        hospital_id = request.staff.hospital_id
+        hospital_id = request.hospital_id
         unread_only = request.args.get('unread_only', type=lambda v: v.lower() == 'true')
 
         count = Appointment.query.filter(
@@ -555,7 +557,7 @@ class StaffReports(Resource):
     @staff_required
     @has_permission('Receptionist')
     def get(self):
-        hospital_id = request.staff.hospital_id
+        hospital_id = request.hospital_id
         today_start, today_end = get_today_date_filter()
 
         patients_today = Appointment.query.filter(
@@ -672,7 +674,7 @@ class PatientRegistration(Resource):
 class StaffPatientDetail(Resource):
     @staff_required
     def get(self, id):
-        hospital_id = request.staff.hospital_id
+        hospital_id = request.hospital_id
 
         patient = Patient.query.options(
             joinedload(Patient.appointments),
@@ -706,3 +708,134 @@ class StaffPatientDetail(Resource):
         result = Patient_schema.dump(patient)
         result['visit_history'] = visit_history
         return result
+
+
+class StaffTasks(Resource):
+    @staff_required
+    def get(self):
+        hospital_id = request.hospital_id
+        staff_role = getattr(request, 'role', None)
+        today_start, today_end = get_today_date_filter()
+        
+        tasks = []
+        
+        if staff_role == 'Receptionist':
+            appointments = Appointment.query.options(
+                joinedload(Appointment.patient),
+                joinedload(Appointment.doctor),
+            ).filter(
+                Appointment.hospital_id == hospital_id,
+                Appointment.appointment_date >= today_start,
+                Appointment.appointment_date <= today_end,
+            ).order_by(Appointment.appointment_time).all()
+            
+            for appt in appointments:
+                tasks.append({
+                    'type': 'appointment',
+                    'id': appt.id,
+                    'title': 'Patient Check-In',
+                    'description': f"{appt.patient.first_name if appt.patient else 'Unknown'} - {appt.appointment_time}",
+                    'status': appt.status,
+                    'priority': 'high' if appt.status == 'Waiting' else 'normal',
+                })
+        
+        elif staff_role == 'Nurse':
+            appointments = Appointment.query.options(
+                joinedload(Appointment.patient),
+            ).filter(
+                Appointment.hospital_id == hospital_id,
+                Appointment.appointment_date >= today_start,
+                Appointment.appointment_date <= today_end,
+                Appointment.status.in_(['Scheduled', 'Checked In']),
+            ).all()
+            
+            for appt in appointments:
+                tasks.append({
+                    'type': 'patient',
+                    'id': appt.id,
+                    'title': 'Patient Follow-up',
+                    'description': f"{appt.patient.first_name if appt.patient else 'Unknown'}",
+                    'status': appt.status,
+                    'priority': 'high',
+                })
+        
+        elif staff_role == 'Lab Technician':
+            from models import LabTest
+            pending_tests = LabTest.query.filter(
+                LabTest.status == 'pending',
+            ).all()
+            
+            for test in pending_tests:
+                tasks.append({
+                    'type': 'lab_test',
+                    'id': test.id,
+                    'title': 'Lab Test to Process',
+                    'description': test.test_name or 'Routine Test',
+                    'patient_id': test.patient_id,
+                    'status': test.status,
+                    'priority': 'high',
+                })
+        
+        elif staff_role == 'Pharmacist':
+            from models import Prescription
+            pending_rx = Prescription.query.filter(
+                Prescription.status == 'pending',
+            ).all()
+            
+            for rx in pending_rx:
+                tasks.append({
+                    'type': 'prescription',
+                    'id': rx.id,
+                    'title': 'Prescription to Fill',
+                    'description': f"Patient ID: {rx.patient_id}",
+                    'status': rx.status,
+                    'priority': 'high',
+                })
+        
+        elif staff_role == 'Cashier':
+            from models import Payment
+            pending_payments = Payment.query.filter(
+                Payment.status == 'pending',
+            ).all()
+            
+            for payment in pending_payments:
+                tasks.append({
+                    'type': 'payment',
+                    'id': payment.id,
+                    'title': 'Pending Payment',
+                    'description': f"Amount: KES {payment.amount}",
+                    'patient_id': payment.patient_id,
+                    'status': payment.status,
+                    'priority': 'high',
+                })
+        
+        elif staff_role == 'Records Officer':
+            from models import Patient
+            incomplete_records = Patient.query.filter(
+                Patient.first_name == None,
+            ).all()
+            
+            for patient in incomplete_records:
+                tasks.append({
+                    'type': 'record',
+                    'id': patient.id,
+                    'title': 'Incomplete Patient Record',
+                    'description': 'Missing patient information',
+                    'status': 'pending',
+                    'priority': 'medium',
+                })
+        
+        else:
+            pending_appointments = Appointment.query.filter(
+                Appointment.hospital_id == hospital_id,
+                Appointment.appointment_date >= today_start,
+                Appointment.status.in_(['Scheduled', 'Waiting']),
+            ).count()
+            
+            tasks.append({
+                'type': 'summary',
+                'title': 'Today\'s Appointments',
+                'count': pending_appointments,
+            })
+        
+        return {'tasks': tasks}, 200
