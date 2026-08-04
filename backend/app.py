@@ -102,11 +102,6 @@ from doctor_resources import (
     DoctorScheduleList,
     DoctorTodaySchedule,
 )
-from email_resources import (
-    AppointmentEmailNotification,
-    EmailNotification,
-    PrescriptionEmailNotification,
-)
 from mpesa_resources import STKPushResource
 from staff_resources import (
     AppointmentManagement,
@@ -169,9 +164,6 @@ api.add_resource(StaffPatientDetail, "/api/staff/patients/<int:id>")
 
 api.add_resource(STKPushResource, "/api/payments/mpesa/stkpush")
 
-api.add_resource(EmailNotification, "/api/notifications/email")
-api.add_resource(AppointmentEmailNotification, "/api/notifications/appointment")
-api.add_resource(PrescriptionEmailNotification, "/api/notifications/prescription")
 api.add_resource(EmailVerification, "/api/auth/verify-email")
 api.add_resource(ResendVerification, "/api/auth/resend-verification")
 api.add_resource(MagicLinkLogin, "/api/auth/magic-login")

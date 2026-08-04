@@ -8,13 +8,14 @@ import { registerDoctor, registerHospital, registerStaff } from '../services/api
 import { Stethoscope, Building2, Users } from 'lucide-react'
 
 const ROLES = [
-  { key: 'doctor', label: 'Doctor', icon: Stethoscope, description: 'Register as a medical practitioner' },
-  { key: 'hospital', label: 'Hospital', icon: Building2, description: 'Register your hospital or clinic' },
+  { key: 'doctor', label: 'Doctor', icon: Stethoscope, description: 'Register as a doctor' },
+  { key: 'hospital', label: 'Hospital', icon: Building2, description: 'Register your hospital' },
   { key: 'staff', label: 'Staff', icon: Users, description: 'Register as hospital staff' },
 ]
 
 const STAFF_ROLES = ['Receptionist', 'Nurse', 'Lab Technician', 'Pharmacist', 'Cashier', 'Records Officer']
 const EMPLOYMENT_TYPES = ['Full Time', 'Part Time', 'Contract']
+const DEPARTMENTS = ['Front Office', 'Nursing', 'Laboratory', 'Pharmacy', 'Billing', 'Records', 'Administration', 'Radiology', 'ICU', 'Outpatient']
 
 export default function PortalPage() {
   const { login } = useAuth()
@@ -68,7 +69,7 @@ export default function PortalPage() {
           ...baseFieldConfigs,
           { name: 'role', label: 'Role', type: 'select', options: STAFF_ROLES },
           { name: 'hospital_id', label: 'Hospital ID', type: 'number', placeholder: 'e.g. 1' },
-          { name: 'department', label: 'Department', type: 'text', placeholder: 'e.g. Front Office' },
+          { name: 'department', label: 'Department', type: 'select', options: DEPARTMENTS },
           { name: 'employment_type', label: 'Employment Type', type: 'select', options: EMPLOYMENT_TYPES },
         ]
       : baseFieldConfigs
@@ -119,13 +120,14 @@ export default function PortalPage() {
           email: user.email,
           first_name: user.first_name,
           last_name: user.last_name,
-          role: 'doctor',
+          role: user.role,
+          staff: result.staff || user.staff,
           patientId: user.patient?.id || null,
           profile_image: user.profile_image || null,
         }
         login(userData, 'mock-jwt-token')
         toast.success(`${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully!`)
-        navigate('/dashboard', { replace: true })
+        navigate(role === 'staff' ? '/staff/dashboard' : role === 'hospital' ? '/staff/dashboard' : '/dashboard', { replace: true })
       }
     } catch (err) {
       const errorMsg = err.message || "Please check your information and try again"
@@ -149,7 +151,7 @@ export default function PortalPage() {
               <button
                 key={r.key}
                 onClick={() => handleRoleSelect(r.key)}
-                className="bg-card rounded-2xl border border-border p-8 shadow-card hover:shadow-lg transition-shadow text-center cursor-pointer flex flex-col items-center justify-center min-h-[240px]"
+                className="bg-card rounded-2xl border border-border p-8 shadow-card hover:shadow-lg transition-shadow text-center cursor-pointer flex flex-col items-center justify-center min-h-60"
               >
                 <div className="flex-1 flex items-center justify-center w-full">
                   <div className="w-24 h-24 rounded-full bg-teal/10 flex items-center justify-center">
@@ -163,7 +165,7 @@ export default function PortalPage() {
           </div>
         ) : (
           <div>
-            <div className="w-full mb-4 fixed top-20 left-[3.75rem] z-50 flex justify-start">
+            <div className="w-full mb-4 fixed top-20 left-15 z-50 flex justify-start">
               <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg">
                 <button
                   onClick={() => setRole(null)}
