@@ -122,10 +122,6 @@ class StaffDashboard(Resource):
             Appointment.status.in_(['Pending', 'Scheduled']),
         ).count()
 
-        unread_notifications = 0
-        if staff.role in ['Receptionist', 'Nurse', 'Lab Technician', 'Pharmacist', 'Cashier']:
-            pass
-
         check_ins = len([a for a in today_appointments if a.status == 'Completed'])
 
         result = {
@@ -141,7 +137,7 @@ class StaffDashboard(Resource):
             'hospital_id': staff.hospital_id,
             'today_patients_count': len(today_patients),
             'pending_tasks_count': pending_tasks,
-            'unread_notifications_count': unread_notifications,
+            'unread_notifications_count': 0,
             'appointments_today': len(today_appointments),
             'check_ins_today': check_ins,
         }
@@ -149,6 +145,60 @@ class StaffDashboard(Resource):
         hospital = Hospital.query.get(staff.hospital_id)
         if hospital:
             result['hospital_name'] = hospital.name
+
+        if staff.role == 'Nurse':
+            nurse_appointments = Appointment.query.filter(
+                Appointment.hospital_id == staff.hospital_id,
+                Appointment.appointment_date >= today_start,
+                Appointment.appointment_date <= today_end,
+                Appointment.status.in_(['Scheduled', 'Checked In', 'Completed']),
+            ).options(joinedload(Appointment.patient)).order_by(Appointment.appointment_time).all()
+            result['nurse_data'] = {
+                'my_patients_count': len(nurse_appointments),
+                'upcoming_appointments': [
+                    {
+                        'patient_name': f"{a.patient.first_name} {a.patient.last_name}" if a.patient else 'Unknown',
+                        'patient_id': a.patient_id,
+                        'appointment_time': a.appointment_time.strftime('%H:%M') if a.appointment_time else None,
+                        'status': a.status,
+                    } for a in nurse_appointments[:10]
+                ],
+                'patients_seen_today': len([a for a in today_appointments if a.status == 'Completed']),
+            }
+
+        if staff.role == 'Lab Technician':
+            result['lab_data'] = {
+                'pending_tests': Appointment.query.filter(
+                    Appointment.hospital_id == staff.hospital_id,
+                    Appointment.status.in_(['Scheduled', 'Checked In']),
+                ).count(),
+                'tests_today': check_ins,
+                'total_tests': Appointment.query.filter(
+                    Appointment.hospital_id == staff.hospital_id,
+                ).count(),
+            }
+
+        if staff.role == 'Pharmacist':
+            result['pharmacy_data'] = {
+                'prescriptions_to_fill': pending_tasks,
+                'dispensed_today': check_ins,
+                'completed_today': len([a for a in today_appointments if a.status == 'Completed']),
+            }
+
+        if staff.role == 'Cashier':
+            result['billing_data'] = {
+                'pending_payments': pending_tasks,
+                'payments_today': check_ins,
+                'outstanding_balance': 0,
+            }
+
+        if staff.role == 'Records Officer':
+            result['records_data'] = {
+                'total_patients': Patient.query.filter(
+                    Appointment.hospital_id == staff.hospital_id,
+                ).count() if False else 0,
+                'records_needing_attention': 0,
+            }
 
         return StaffDashboard_schema.dump(result)
 
