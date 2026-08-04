@@ -50,22 +50,22 @@ def staff_required(f):
     def decorated(*args, **kwargs):
         auth_header = request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
-            return jsonify({"error": "Authorization token required"}), 401
+            return {"error": "Authorization token required"}, 401
         token = auth_header.split(' ')[1]
         try:
             from auth import login_user_token
             user = login_user_token(token)
             if not user:
-                return jsonify({"error": "Invalid or expired token"}), 401
+                return {"error": "Invalid or expired token"}, 401
             if user.role != 'staff':
-                return jsonify({"error": "Staff access required"}), 403
+                return {"error": "Staff access required"}, 403
             if not user.staff:
-                return jsonify({"error": "Staff profile not found"}), 404
+                return {"error": "Staff profile not found"}, 404
             request.staff_user = user
             request.staff = user.staff
             return f(*args, **kwargs)
         except Exception:
-            return jsonify({"error": "Invalid token"}), 401
+            return {"error": "Invalid token"}, 401
     return decorated
 
 

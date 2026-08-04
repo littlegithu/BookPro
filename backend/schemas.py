@@ -144,6 +144,8 @@ class StaffDashboardSchema(Schema):
     role = fields.Str(dump_only=True)
     department = fields.Str(dump_only=True)
     profile_image = fields.Str(dump_only=True)
+    employee_id = fields.Str(dump_only=True)
+    hospital_id = fields.Int(dump_only=True)
     today_patients_count = fields.Int(dump_only=True)
     pending_tasks_count = fields.Int(dump_only=True)
     unread_notifications_count = fields.Int(dump_only=True)
