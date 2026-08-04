@@ -12,7 +12,9 @@ flask-restful = "*"
 flask-sqlalchemy = "*"
 flask-bcrypt = "*"
 flask-cors = "*"
+flask-migrate = "*"
 marshmallow = "*"
+gunicorn = "*"
 
 [dev-packages]
 
