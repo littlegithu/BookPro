@@ -813,9 +813,10 @@ class DoctorAnalytics(Resource):
     def get(self):
         doctor = request.doctor
         from collections import defaultdict
+        from datetime import timedelta
 
-        today = date.today
-        seven_months_ago = today - __import__('datetime').timedelta(days=210)
+        today = date.today()
+        seven_months_ago = today - timedelta(days=210)
 
         appts_q = Appointment.query.filter(
             Appointment.doctor_id == doctor.id,

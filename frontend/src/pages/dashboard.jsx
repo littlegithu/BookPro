@@ -8,8 +8,9 @@ import DashboardLayout from '../components/layout/dashboard-layout'
 import Topbar from '../components/layout/topbar'
 import AppointmentCard from '../components/appointment/appointment-card'
 import PastVisitList from '../components/appointment/past-visit-list'
+import BookingForm from '../components/booking/booking-form'
 import { useAuth } from '../context/auth-context'
-import { fetchAppointments, cancelAppointment } from '../services/api'
+import { fetchAppointments, cancelAppointment, fetchDoctors } from '../services/api'
 
 export default function DashboardPage() {
   const { user, isAuthenticated } = useAuth()
@@ -20,6 +21,8 @@ export default function DashboardPage() {
   const [cancelError, setCancelError] = useState('')
   const [cancellingId, setCancellingId] = useState(null)
   const [currentTime, setCurrentTime] = useState(new Date())
+  const [doctors, setDoctors] = useState([])
+  const [selectedDoctorId, setSelectedDoctorId] = useState('')
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000)
@@ -29,10 +32,17 @@ export default function DashboardPage() {
   useEffect(() => {
     async function load() {
       try {
-        const data = await fetchAppointments()
-        setAppointments(data)
+        const [apptsData, doctorsData] = await Promise.all([
+          fetchAppointments(),
+          fetchDoctors(),
+        ])
+        setAppointments(apptsData)
+        setDoctors(doctorsData)
+        if (doctorsData.length > 0) {
+          setSelectedDoctorId(String(doctorsData[0].id))
+        }
       } catch (err) {
-        console.error('Failed to load appointments:', err)
+        console.error('Failed to load dashboard data:', err)
       } finally {
         setLoading(false)
       }
@@ -256,6 +266,33 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <Link to="/login" className="block w-full text-center text-[13px] font-medium text-white bg-white/15 py-2 rounded-lg hover:bg-white/25 transition-colors">Login to manage</Link>
+              )}
+            </div>
+          )}
+
+          {/* Booking form */}
+          {isAuthenticated && (
+            <div className="bg-card rounded-xl border border-border p-5">
+              <h2 className="font-display font-semibold text-[17px] text-navy mb-3">Book an Appointment</h2>
+              <div className="mb-3">
+                <label className="block text-[12px] font-medium text-slate-light mb-1">Select a doctor</label>
+                <select
+                  value={selectedDoctorId}
+                  onChange={e => setSelectedDoctorId(e.target.value)}
+                  className="w-full border border-border rounded-lg px-3.5 py-2.5 text-[13px] text-navy bg-surface outline-none focus:border-teal focus:bg-card transition-colors cursor-pointer"
+                >
+                  <option value="">-- Choose a doctor --</option>
+                  {doctors.map(doc => (
+                    <option key={doc.id} value={String(doc.id)}>{doc.name} — {doc.specialty}</option>
+                  ))}
+                </select>
+              </div>
+              {selectedDoctorId && (
+                <BookingForm
+                  doctorId={Number(selectedDoctorId)}
+                  hospitalIds={doctors.find(d => String(d.id) === String(selectedDoctorId))?.hospital_ids || ''}
+                  fee={doctors.find(d => String(d.id) === String(selectedDoctorId))?.fee || 0}
+                />
               )}
             </div>
           )}

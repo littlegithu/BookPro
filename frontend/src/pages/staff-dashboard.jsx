@@ -387,11 +387,11 @@ export default function StaffDashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-surface rounded-lg p-4">
                 <p className="text-[12px] text-slate-light mb-1">Employee ID</p>
-                <p className="text-navy font-medium">{roleData.employee_id || user?.staff?.employee_id || '—'}</p>
+                <p className="text-navy font-medium">{roleData.staff?.employee_id || user?.staff?.employee_id || '—'}</p>
               </div>
               <div className="bg-surface rounded-lg p-4">
                 <p className="text-[12px] text-slate-light mb-1">Department</p>
-                <p className="text-navy font-medium">{roleData.department || user?.staff?.department || '—'}</p>
+                <p className="text-navy font-medium">{roleData.staff?.department || user?.staff?.department || '—'}</p>
               </div>
               <div className="bg-surface rounded-lg p-4">
                 <p className="text-[12px] text-slate-light mb-1">Role</p>
@@ -457,11 +457,11 @@ export default function StaffDashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-surface rounded-lg p-4">
                 <p className="text-[12px] text-slate-light mb-1">Employee ID</p>
-                <p className="text-navy font-medium">{roleData.employee_id || '—'}</p>
+                <p className="text-navy font-medium">{roleData.staff?.employee_id || user?.staff?.employee_id || '—'}</p>
               </div>
               <div className="bg-surface rounded-lg p-4">
                 <p className="text-[12px] text-slate-light mb-1">Department</p>
-                <p className="text-navy font-medium">{roleData.department || '—'}</p>
+                <p className="text-navy font-medium">{roleData.staff?.department || user?.staff?.department || '—'}</p>
               </div>
               <div className="bg-surface rounded-lg p-4">
                 <p className="text-[12px] text-slate-light mb-1">Role</p>

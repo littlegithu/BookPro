@@ -40,7 +40,9 @@ def doctor_required(f):
             request.doctor_user = user
             request.doctor = user.doctor
             return f(*args, **kwargs)
-        except Exception:
+        except Exception as e:
+            from flask import current_app
+            current_app.logger.error(f"Token validation error: {e}")
             return {"error": "Invalid token"}, 401
     return decorated
 

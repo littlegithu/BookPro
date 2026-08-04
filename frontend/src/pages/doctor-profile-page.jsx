@@ -174,9 +174,6 @@ export default function DoctorProfilePage() {
                       <button className="flex items-center gap-1.5 text-[12px] font-medium text-navy bg-surface border border-border rounded-lg px-3 py-1.5 hover:border-teal">
                         <Globe size={14} /> Website
                       </button>
-                      <button className="flex items-center gap-1.5 text-[12px] font-medium text-navy bg-surface border border-border rounded-lg px-3 py-1.5 hover:border-teal">
-                        <MapPin size={14} /> Map
-                      </button>
                     </div>
                   </div>
                 </div>
