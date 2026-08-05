@@ -39,7 +39,7 @@ app.config["SESSION_COOKIE_SECURE"] = os.environ.get("SESSION_COOKIE_SECURE", "F
 app.config["SESSION_COOKIE_HTTPONLY"] = os.environ.get("SESSION_COOKIE_HTTPONLY", "True").lower() == "true"
 
 CORS_ORIGINS = os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000").split(",")
-CORS(app, supports_credentials=True, origins=[origin.strip() for origin in CORS_ORIGINS if origin.strip()])
+CORS(app, supports_credentials=True, origins=[origin.strip().rstrip("/") for origin in CORS_ORIGINS if origin.strip()], methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], allow_headers=["Content-Type", "Authorization"])
 
 migrate.init_app(app=app, db=db)
 db.init_app(app=app)
